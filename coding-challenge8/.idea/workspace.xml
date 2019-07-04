@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/main/kotlin/Location.kt" line="65" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="9893f842-7b2d-41d5-91c9-fdc09a7d0a8a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Location.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/main.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/LocationTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/taskHistory/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.3/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.3/taskHistory/taskHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Location.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Location.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/LocationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/LocationTest.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -35,6 +31,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -63,8 +62,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/Location.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="538">
-              <caret line="62" column="31" selection-start-line="62" selection-start-column="31" selection-end-line="62" selection-end-column="31" />
+            <state relative-caret-position="626">
+              <caret line="97" column="5" selection-start-line="97" selection-start-column="5" selection-end-line="97" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -72,8 +71,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/kotlin/LocationTest.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="39" column="43" lean-forward="true" selection-start-line="39" selection-start-column="43" selection-end-line="39" selection-end-column="93" />
+            <state relative-caret-position="494">
+              <caret line="54" column="71" lean-forward="true" selection-start-line="54" selection-start-column="71" selection-end-line="54" selection-end-column="71" />
               <folding>
                 <element signature="e#28#163#0" expanded="true" />
               </folding>
@@ -186,13 +185,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.LocationTest.Should test that the warehouse is correctly created">
-    <configuration name="LocationTest.Should test that a Free Parking is correctly created" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.LocationTest.Should test that a retail site location that has developed a megastore ">
+    <configuration name="LocationTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;codingchallenge4.LocationTest.Should test that a Free Parking is correctly created&quot;" />
+        <option name="scriptParameters" value="--tests &quot;codingchallenge8.LocationTest&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -207,12 +206,52 @@
       <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="LocationTest.Should test that the Go location is correctly created" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="LocationTest.Should test that a retail site location that has developed a megastore " type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;codingchallenge4.LocationTest.Should test that the Go location is correctly created&quot;" />
+        <option name="scriptParameters" value="--tests &quot;codingchallenge8.LocationTest.Should test that a retail site location that has developed a megastore &quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":cleanTest" />
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="LocationTest.Should test that a retail site location that is undeveloped " type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;codingchallenge8.LocationTest.Should test that a retail site location that is undeveloped &quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":cleanTest" />
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="LocationTest.Should test that a retail site location that is undeveloped, " type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;codingchallenge8.LocationTest.Should test that a retail site location that is undeveloped, &quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -249,9 +288,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.LocationTest.Should test that a retail site location that has developed a megastore " />
+        <item itemvalue="Gradle.LocationTest.Should test that a retail site location that is undeveloped " />
+        <item itemvalue="Gradle.LocationTest" />
+        <item itemvalue="Gradle.LocationTest.Should test that a retail site location that is undeveloped, " />
         <item itemvalue="Gradle.LocationTest.Should test that the warehouse is correctly created" />
-        <item itemvalue="Gradle.LocationTest.Should test that the Go location is correctly created" />
-        <item itemvalue="Gradle.LocationTest.Should test that a Free Parking is correctly created" />
       </list>
     </recent_temporary>
   </component>
@@ -269,35 +310,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="LocationTest_Should_test_that_a_Free_Parking_is_correctly_created - 2019.07.04 at 16h 19m 02s.xml">
-      <configuration name="LocationTest.Should test that a Free Parking is correctly created" configurationId="GradleRunConfiguration" />
+    <history-entry file="LocationTest_Should_test_that_a_retail_site_location_that_is_undeveloped,_ - 2019.07.04 at 17h 47m 41s.xml">
+      <configuration name="LocationTest.Should test that a retail site location that is undeveloped, " configurationId="GradleRunConfiguration" />
     </history-entry>
-    <history-entry file="LocationTest_Should_test_that_a_Free_Parking_is_correctly_created - 2019.07.04 at 16h 19m 15s.xml">
-      <configuration name="LocationTest.Should test that a Free Parking is correctly created" configurationId="GradleRunConfiguration" />
+    <history-entry file="LocationTest_Should_test_that_a_retail_site_location_that_is_undeveloped,_ - 2019.07.04 at 18h 08m 39s.xml">
+      <configuration name="LocationTest.Should test that a retail site location that is undeveloped, " configurationId="GradleRunConfiguration" />
     </history-entry>
-    <history-entry file="LocationTest_Should_test_that_a_Free_Parking_is_correctly_created - 2019.07.04 at 17h 13m 12s.xml">
-      <configuration name="LocationTest.Should test that a Free Parking is correctly created" configurationId="GradleRunConfiguration" />
+    <history-entry file="LocationTest_Should_test_that_a_retail_site_location_that_is_undeveloped,_ - 2019.07.04 at 18h 09m 23s.xml">
+      <configuration name="LocationTest.Should test that a retail site location that is undeveloped, " configurationId="GradleRunConfiguration" />
     </history-entry>
-    <history-entry file="LocationTest_Should_test_that_a_Free_Parking_is_correctly_created - 2019.07.04 at 17h 13m 43s.xml">
-      <configuration name="LocationTest.Should test that a Free Parking is correctly created" configurationId="GradleRunConfiguration" />
+    <history-entry file="LocationTest_Should_test_that_a_retail_site_location_that_is_undeveloped,_ - 2019.07.04 at 18h 09m 44s.xml">
+      <configuration name="LocationTest.Should test that a retail site location that is undeveloped, " configurationId="GradleRunConfiguration" />
     </history-entry>
-    <history-entry file="LocationTest_Should_test_that_a_Free_Parking_is_correctly_created - 2019.07.04 at 17h 19m 01s.xml">
-      <configuration name="LocationTest.Should test that a Free Parking is correctly created" configurationId="GradleRunConfiguration" />
+    <history-entry file="LocationTest_Should_test_that_a_retail_site_location_that_is_undeveloped,_ - 2019.07.04 at 18h 10m 26s.xml">
+      <configuration name="LocationTest.Should test that a retail site location that is undeveloped, " configurationId="GradleRunConfiguration" />
     </history-entry>
-    <history-entry file="LocationTest_Should_test_that_the_Go_location_is_correctly_created - 2019.07.04 at 17h 22m 10s.xml">
-      <configuration name="LocationTest.Should test that the Go location is correctly created" configurationId="GradleRunConfiguration" />
+    <history-entry file="LocationTest_Should_test_that_a_retail_site_location_that_is_undeveloped_ - 2019.07.04 at 18h 36m 41s.xml">
+      <configuration name="LocationTest.Should test that a retail site location that is undeveloped " configurationId="GradleRunConfiguration" />
     </history-entry>
-    <history-entry file="LocationTest_Should_test_that_a_Free_Parking_is_correctly_created - 2019.07.04 at 17h 22m 50s.xml">
-      <configuration name="LocationTest.Should test that a Free Parking is correctly created" configurationId="GradleRunConfiguration" />
+    <history-entry file="LocationTest - 2019.07.04 at 20h 15m 08s.xml">
+      <configuration name="LocationTest" configurationId="GradleRunConfiguration" />
     </history-entry>
-    <history-entry file="LocationTest_Should_test_that_the_Go_location_is_correctly_created - 2019.07.04 at 17h 23m 10s.xml">
-      <configuration name="LocationTest.Should test that the Go location is correctly created" configurationId="GradleRunConfiguration" />
+    <history-entry file="LocationTest_Should_test_that_a_retail_site_location_that_is_undeveloped_ - 2019.07.04 at 20h 25m 58s.xml">
+      <configuration name="LocationTest.Should test that a retail site location that is undeveloped " configurationId="GradleRunConfiguration" />
     </history-entry>
-    <history-entry file="LocationTest_Should_test_that_the_warehouse_is_correctly_created - 2019.07.04 at 17h 28m 37s.xml">
-      <configuration name="LocationTest.Should test that the warehouse is correctly created" configurationId="GradleRunConfiguration" />
+    <history-entry file="LocationTest_Should_test_that_a_retail_site_location_that_has_developed_a_megastore_ - 2019.07.04 at 20h 26m 15s.xml">
+      <configuration name="LocationTest.Should test that a retail site location that has developed a megastore " configurationId="GradleRunConfiguration" />
     </history-entry>
-    <history-entry file="LocationTest_Should_test_that_the_warehouse_is_correctly_created - 2019.07.04 at 17h 28m 58s.xml">
-      <configuration name="LocationTest.Should test that the warehouse is correctly created" configurationId="GradleRunConfiguration" />
+    <history-entry file="LocationTest_Should_test_that_a_retail_site_location_that_has_developed_a_megastore_ - 2019.07.04 at 20h 26m 28s.xml">
+      <configuration name="LocationTest.Should test that a retail site location that has developed a megastore " configurationId="GradleRunConfiguration" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -329,7 +370,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.33015114" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.33731106" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.23150358" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Build" order="10" weight="0.33571997" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -363,8 +404,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/kotlin/LocationTest.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="39" column="43" lean-forward="true" selection-start-line="39" selection-start-column="43" selection-end-line="39" selection-end-column="93" />
+        <state relative-caret-position="494">
+          <caret line="54" column="71" lean-forward="true" selection-start-line="54" selection-start-column="71" selection-end-line="54" selection-end-column="71" />
           <folding>
             <element signature="e#28#163#0" expanded="true" />
           </folding>
@@ -373,8 +414,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/Location.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="538">
-          <caret line="62" column="31" selection-start-line="62" selection-start-column="31" selection-end-line="62" selection-end-column="31" />
+        <state relative-caret-position="626">
+          <caret line="97" column="5" selection-start-line="97" selection-start-column="5" selection-end-line="97" selection-end-column="5" />
         </state>
       </provider>
     </entry>

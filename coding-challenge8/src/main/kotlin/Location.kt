@@ -2,7 +2,6 @@ package codingchallenge8
 
 
 enum class LocationType(val locationString:String){
-    NOTDEFINED (""),
     GO("Go"),
     FREEPARKING("Free Parking"),
     WAREHOUSE ("Warehouse"),
@@ -22,56 +21,80 @@ abstract class Location (_name: String){
     val name: String = _name
 
     abstract val locationType: LocationType
-    abstract val rent: Int
+    abstract val baseRent: Int
     abstract val passThroughValue: Int
     abstract val canBePurchased: Boolean
     abstract val purchasePrice: Int
 
+    abstract fun GetRent():Int
 }
 
 class FreeParking() : Location("Free Parking"){
 
-    override var passThroughValue:Int = 0
-    override var canBePurchased: Boolean = false
-    override var purchasePrice: Int = 0
-    override var rent: Int = 0
-    override var locationType:LocationType = LocationType.FREEPARKING
+    override val passThroughValue:Int = 0
+    override val canBePurchased: Boolean = false
+    override val purchasePrice: Int = 0
+    override val baseRent: Int = 0
+    override val locationType:LocationType = LocationType.FREEPARKING
 
+    override fun GetRent() = baseRent
 }
 
 class Go ():Location ("Go"){
-    override var passThroughValue:Int = 100
-    override var canBePurchased: Boolean = false
-    override var purchasePrice: Int = 0
-    override var rent: Int = 0
-    override var locationType:LocationType = LocationType.GO
+    override val passThroughValue:Int = 100
+    override val canBePurchased: Boolean = false
+    override val purchasePrice: Int = 0
+    override val baseRent: Int = 0
+    override val locationType:LocationType = LocationType.GO
+
+    override fun GetRent() = baseRent
 }
 
 class Warehouse(name:String) : Location(name){
 
-    override var passThroughValue:Int = 0
-    override var canBePurchased: Boolean = true
-    override var purchasePrice: Int = 100
-    override var rent: Int = 20
-    override var locationType:LocationType = LocationType.WAREHOUSE
+    override val passThroughValue:Int = 0
+    override val canBePurchased: Boolean = true
+    override val purchasePrice: Int = 100
+    override val baseRent: Int = 20
+    override val locationType:LocationType = LocationType.WAREHOUSE
+
+    override fun GetRent() = baseRent
 
 }
 
 
 class RetailSite(   name:String,
-                    _purchasePrice:Int
+                    _purchasePrice:Int,
+                    _costOfBuildingStores:String,
+                    _rent:String,
+                    _groupID:Int
                     ) : Location(name){
 
-    override var passThroughValue:Int = 0
-    override var canBePurchased: Boolean = true
-    override var purchasePrice: Int = _purchasePrice
-    override var rent: Int = 20
-    override var locationType:LocationType = LocationType.RETAILSITE
+    override val passThroughValue:Int = 0
+    override val canBePurchased: Boolean = true
+    override val purchasePrice: Int = _purchasePrice
 
-    val developmentStatus: ShopType = ShopType.UNDEVELOPED
-    val costOfBuildingMinistore: Int = 0
-    val costOfBuildingSupermarket: Int = 0
-    val costOfBuildingMegastore: Int = 0
+    override val locationType:LocationType = LocationType.RETAILSITE
 
+    val costOfBuildingMinistore: Int = _costOfBuildingStores.split(",")[0].toInt()
+    val costOfBuildingSupermarket: Int = _costOfBuildingStores.split(",")[1].toInt()
+    val costOfBuildingMegastore: Int = _costOfBuildingStores.split(",")[2].toInt()
+
+    override val baseRent: Int = _rent.split(",")[0].toInt()
+
+    val rentMinistore: Int = _rent.split(",")[1].toInt()
+    val rentSupermarket: Int = _rent.split(",")[2].toInt()
+    val rentMegastore: Int = _rent.split(",")[3].toInt()
+
+    val groupID: Int = _groupID
+    var developmentStatus: ShopType = ShopType.UNDEVELOPED
+
+    override fun GetRent(): Int {
+        when (developmentStatus){
+            ShopType.UNDEVELOPED -> return baseRent
+            ShopType.MINISTORE -> return rentMinistore
+            ShopType.SUPERMARKET -> return rentSupermarket
+            ShopType.MEGASTORE -> return rentMegastore
+        }
+    }
 }
-// ("Oxford Street", 200,"10,20,30","40,50,60,70", 1)
