@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="codingchallenge8.LocationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-07-04T16:47:41" hostname="Nyaheh-PC" time="0.005">
+  <properties/>
+  <testcase name="Should test that a retail site location that is undeveloped, " classname="codingchallenge8.LocationTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
