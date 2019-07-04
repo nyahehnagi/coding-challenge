@@ -48,7 +48,7 @@ class LocationTest {
     }
 
     @Test
-    fun `Should test that a retail site location that developes a megastore `(){
+    fun `Should test that a retail site location that develops a megastore `(){
         val retailSiteLocation = RetailSite("Peter Jones", 200,"10,20,30","40,50,60,70", 1)
         retailSiteLocation.developmentStatus = ShopType.MEGASTORE
         //val retailSiteLocation = RetailSite("Oxford Street", 200)

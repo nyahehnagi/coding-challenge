@@ -13,7 +13,6 @@ enum class ShopType (val shopValue:Int) {
     MINISTORE (1),
     SUPERMARKET (2),
     MEGASTORE (3);
-
 }
 
 abstract class Location (_name: String){
@@ -41,7 +40,7 @@ class FreeParking() : Location("Free Parking"){
 }
 
 class Go ():Location ("Go"){
-    override val passThroughValue:Int = 100
+    override val passThroughValue:Int = PASS_THROUGH_GO
     override val canBePurchased: Boolean = false
     override val purchasePrice: Int = 0
     override val baseRent: Int = 0
@@ -54,12 +53,11 @@ class Warehouse(name:String) : Location(name){
 
     override val passThroughValue:Int = 0
     override val canBePurchased: Boolean = true
-    override val purchasePrice: Int = 100
-    override val baseRent: Int = 20
+    override val purchasePrice: Int = WAREHOUSE_PURCHASE_PRICE
+    override val baseRent: Int = WAREHOUSE_BASE_RENT
     override val locationType:LocationType = LocationType.WAREHOUSE
 
     override fun GetRent() = baseRent
-
 }
 
 
@@ -73,7 +71,6 @@ class RetailSite(   name:String,
     override val passThroughValue:Int = 0
     override val canBePurchased: Boolean = true
     override val purchasePrice: Int = _purchasePrice
-
     override val locationType:LocationType = LocationType.RETAILSITE
 
     val costOfBuildingMinistore: Int = _costOfBuildingStores.split(",")[0].toInt()
