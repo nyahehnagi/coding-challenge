@@ -61,3 +61,18 @@ class LocationTest {
         assertThat(retailSiteLocation.name, equalTo("Peter Jones"))
      }
 }
+
+class GBPTest{
+    @Test
+    fun `should be a positive value for GBP when passed negative amount when created`(){
+        val newGBP = GBP(-10)
+        assertThat(newGBP.value, equalTo(10))
+    }
+
+    @Test
+    fun `should return a string with pound sign prefixed `(){
+        val newGBP = GBP(100)
+        assertThat(newGBP.toString(), equalTo("£100"))
+
+    }
+}

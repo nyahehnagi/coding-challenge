@@ -18,7 +18,6 @@ data class LocationRentalValues (val undevelopedRent: Int,
                                  val rentSupermarket: Int,
                                  val rentMegastore: Int)
 
-
 sealed class Location (_name: String){
 
     val name: String = _name
@@ -89,4 +88,21 @@ class RetailSite : Location {
     fun buildMegastore (){
         retailDevelopmentStatus = ShopType.MEGASTORE
     }
+}
+
+sealed class Money(_value: Int){
+    abstract val value: Int
+}
+
+class GBP (_value:Int): Money(_value){
+    override val value:Int
+    init{
+        // rules state that GBP cannot be negative
+        if (_value >= 0) {value = _value} else value = - _value
+    }
+
+    override fun toString(): String {
+        return "£$value"
+    }
+
 }
