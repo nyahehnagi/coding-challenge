@@ -38,24 +38,24 @@ class LocationTest {
 
     @Test
     fun `Should test that a retail site location that is undeveloped `(){
-        val retailSiteLocation = RetailSite("Oxford Street", 200,"10,20,30","40,50,60,70", 1)
+        val retailSiteLocation = RetailSite("Oxford Street", 200,StoreBuildingCosts(10,20,30), LocationRentalValues(40,50,60,70), 1)
         //val retailSiteLocation = RetailSite("Oxford Street", 200)
         assertThat(retailSiteLocation.locationType.locationString, equalTo("Retail Site"))
         assertThat(retailSiteLocation.GetRent(), equalTo(40))
         assertThat(retailSiteLocation.name, equalTo("Oxford Street"))
         assertThat(retailSiteLocation.canBePurchased, equalTo(true))
-        assertThat(retailSiteLocation.costOfBuildingMegastore, equalTo(30))
+        assertThat(retailSiteLocation.GetRent(), equalTo(40))
     }
 
     @Test
     fun `Should test that a retail site location that develops a megastore `(){
-        val retailSiteLocation = RetailSite("Peter Jones", 200,"10,20,30","40,50,60,70", 1)
+        val retailSiteLocation = RetailSite("Peter Jones", 200,StoreBuildingCosts(10,20,30),LocationRentalValues(40,50,60,70), 1)
         retailSiteLocation.developmentStatus = ShopType.MEGASTORE
         //val retailSiteLocation = RetailSite("Oxford Street", 200)
         assertThat(retailSiteLocation.locationType.locationString, equalTo("Retail Site"))
         assertThat(retailSiteLocation.GetRent(), equalTo(70))
         assertThat(retailSiteLocation.name, equalTo("Peter Jones"))
         assertThat(retailSiteLocation.canBePurchased, equalTo(true))
-        assertThat(retailSiteLocation.costOfBuildingMegastore, equalTo(30))
+
     }
 }

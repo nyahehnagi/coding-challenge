@@ -15,6 +15,16 @@ enum class ShopType (val shopValue:Int) {
     MEGASTORE (3);
 }
 
+data class StoreBuildingCosts ( val costOfBuildingMinistore: Int,
+                                   val costOfBuildingSupermarket: Int,
+                                   val costOfBuildingMegastore: Int)
+
+data class LocationRentalValues (val undevelopedRent: Int,
+                                 val rentMinistore: Int,
+                                 val rentSupermarket: Int,
+                                 val rentMegastore: Int)
+
+
 abstract class Location (_name: String){
 
     val name: String = _name
@@ -63,8 +73,8 @@ class Warehouse(name:String) : Location(name){
 
 class RetailSite(   name:String,
                     _purchasePrice:Int,
-                    _costOfBuildingStores:String,
-                    _rent:String,
+                    _costOfBuildingStores:StoreBuildingCosts,
+                    _locationRentalValues:LocationRentalValues,
                     _groupID:Int
                     ) : Location(name){
 
@@ -73,15 +83,10 @@ class RetailSite(   name:String,
     override val purchasePrice: Int = _purchasePrice
     override val locationType:LocationType = LocationType.RETAILSITE
 
-    val costOfBuildingMinistore: Int = _costOfBuildingStores.split(",")[0].toInt()
-    val costOfBuildingSupermarket: Int = _costOfBuildingStores.split(",")[1].toInt()
-    val costOfBuildingMegastore: Int = _costOfBuildingStores.split(",")[2].toInt()
+    val costOfBuildingStores: StoreBuildingCosts = _costOfBuildingStores
+    val locationRentalValues: LocationRentalValues = _locationRentalValues
 
-    override val baseRent: Int = _rent.split(",")[0].toInt()
-
-    val rentMinistore: Int = _rent.split(",")[1].toInt()
-    val rentSupermarket: Int = _rent.split(",")[2].toInt()
-    val rentMegastore: Int = _rent.split(",")[3].toInt()
+    override val baseRent: Int = locationRentalValues.undevelopedRent
 
     val groupID: Int = _groupID
     var developmentStatus: ShopType = ShopType.UNDEVELOPED
@@ -89,9 +94,9 @@ class RetailSite(   name:String,
     override fun GetRent(): Int {
         when (developmentStatus){
             ShopType.UNDEVELOPED -> return baseRent
-            ShopType.MINISTORE -> return rentMinistore
-            ShopType.SUPERMARKET -> return rentSupermarket
-            ShopType.MEGASTORE -> return rentMegastore
+            ShopType.MINISTORE -> return locationRentalValues.rentMinistore
+            ShopType.SUPERMARKET -> return locationRentalValues.rentSupermarket
+            ShopType.MEGASTORE -> return locationRentalValues.rentMegastore
         }
     }
 }
