@@ -50,12 +50,11 @@ class LocationTest {
     @Test
     fun `Should test that a retail site location that develops a megastore `(){
         val retailSiteLocation = RetailSite("Peter Jones", 200,StoreBuildingCosts(10,20,30),LocationRentalValues(40,50,60,70), 1)
-        retailSiteLocation.developmentStatus = ShopType.MEGASTORE
+        retailSiteLocation.BuildMegastore()
         //val retailSiteLocation = RetailSite("Oxford Street", 200)
         assertThat(retailSiteLocation.locationType.locationString, equalTo("Retail Site"))
         assertThat(retailSiteLocation.GetRent(), equalTo(70))
         assertThat(retailSiteLocation.name, equalTo("Peter Jones"))
         assertThat(retailSiteLocation.canBePurchased, equalTo(true))
-
     }
 }

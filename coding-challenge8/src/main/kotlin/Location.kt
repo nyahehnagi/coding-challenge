@@ -82,21 +82,32 @@ class RetailSite(   name:String,
     override val canBePurchased: Boolean = true
     override val purchasePrice: Int = _purchasePrice
     override val locationType:LocationType = LocationType.RETAILSITE
+    override val baseRent: Int = _locationRentalValues.undevelopedRent
 
-    val costOfBuildingStores: StoreBuildingCosts = _costOfBuildingStores
+    val storeBuildingCosts: StoreBuildingCosts = _costOfBuildingStores
     val locationRentalValues: LocationRentalValues = _locationRentalValues
+    val retailGroup: Int = _groupID
 
-    override val baseRent: Int = locationRentalValues.undevelopedRent
-
-    val groupID: Int = _groupID
-    var developmentStatus: ShopType = ShopType.UNDEVELOPED
+    private var retailDevelopmentStatus: ShopType = ShopType.UNDEVELOPED
 
     override fun GetRent(): Int {
-        when (developmentStatus){
+        when (retailDevelopmentStatus){
             ShopType.UNDEVELOPED -> return baseRent
             ShopType.MINISTORE -> return locationRentalValues.rentMinistore
             ShopType.SUPERMARKET -> return locationRentalValues.rentSupermarket
             ShopType.MEGASTORE -> return locationRentalValues.rentMegastore
         }
+    }
+
+    fun BuildMiniStore (){
+        retailDevelopmentStatus = ShopType.MINISTORE
+    }
+
+    fun BuildSupermarket (){
+        retailDevelopmentStatus = ShopType.SUPERMARKET
+    }
+
+    fun BuildMegastore (){
+        retailDevelopmentStatus = ShopType.MEGASTORE
     }
 }
