@@ -1,18 +1,12 @@
 package codingchallenge8
 
+import codingchallenge8.ShopType.UNDEVELOPED
 
-enum class LocationType(val locationString:String){
-    GO("Go"),
-    FREEPARKING("Free Parking"),
-    WAREHOUSE ("Warehouse"),
-    RETAILSITE ("Retail Site")
-}
-
-enum class ShopType (val shopValue:Int) {
-    UNDEVELOPED (0),
-    MINISTORE (1),
-    SUPERMARKET (2),
-    MEGASTORE (3);
+enum class ShopType {
+    UNDEVELOPED,
+    MINISTORE ,
+    SUPERMARKET,
+    MEGASTORE;
 }
 
 data class StoreBuildingCosts ( val costOfBuildingMinistore: Int,
@@ -29,85 +23,70 @@ abstract class Location (_name: String){
 
     val name: String = _name
 
-    abstract val locationType: LocationType
     abstract val baseRent: Int
-    abstract val passThroughValue: Int
-    abstract val canBePurchased: Boolean
-    abstract val purchasePrice: Int
-
-    abstract fun GetRent():Int
+    abstract fun getRent():Int
 }
 
-class FreeParking() : Location("Free Parking"){
+class FreeParking : Location("Free Parking"){
 
-    override val passThroughValue:Int = 0
-    override val canBePurchased: Boolean = false
-    override val purchasePrice: Int = 0
     override val baseRent: Int = 0
-    override val locationType:LocationType = LocationType.FREEPARKING
-
-    override fun GetRent() = baseRent
+    override fun getRent() = baseRent
 }
 
-class Go ():Location ("Go"){
-    override val passThroughValue:Int = PASS_THROUGH_GO
-    override val canBePurchased: Boolean = false
-    override val purchasePrice: Int = 0
+class Go : Location ("Go"){
     override val baseRent: Int = 0
-    override val locationType:LocationType = LocationType.GO
-
-    override fun GetRent() = baseRent
+    override fun getRent() = baseRent
 }
 
 class Warehouse(name:String) : Location(name){
 
-    override val passThroughValue:Int = 0
-    override val canBePurchased: Boolean = true
-    override val purchasePrice: Int = WAREHOUSE_PURCHASE_PRICE
     override val baseRent: Int = WAREHOUSE_BASE_RENT
-    override val locationType:LocationType = LocationType.WAREHOUSE
+    override fun getRent() = baseRent
 
-    override fun GetRent() = baseRent
+    val purchasePrice: Int = WAREHOUSE_PURCHASE_PRICE
+
 }
 
 
-class RetailSite(   name:String,
-                    _purchasePrice:Int,
-                    _costOfBuildingStores:StoreBuildingCosts,
-                    _locationRentalValues:LocationRentalValues,
-                    _groupID:Int
-                    ) : Location(name){
+class RetailSite : Location {
 
-    override val passThroughValue:Int = 0
-    override val canBePurchased: Boolean = true
-    override val purchasePrice: Int = _purchasePrice
-    override val locationType:LocationType = LocationType.RETAILSITE
-    override val baseRent: Int = _locationRentalValues.undevelopedRent
+    constructor(name: String, _purchasePrice: Int, _costOfBuildingStores: StoreBuildingCosts, _locationRentalValues: LocationRentalValues, _groupID: Int) : super(name) {
+        this.purchasePrice = _purchasePrice
+        this.baseRent = _locationRentalValues.undevelopedRent
+        this.locationRentalValues = _locationRentalValues
+        this.storeBuildingCosts = _costOfBuildingStores
+        this.retailGroup = _groupID
+        this.retailDevelopmentStatus = UNDEVELOPED
+    }
 
-    val storeBuildingCosts: StoreBuildingCosts = _costOfBuildingStores
-    val locationRentalValues: LocationRentalValues = _locationRentalValues
-    val retailGroup: Int = _groupID
+    override val baseRent: Int
 
-    private var retailDevelopmentStatus: ShopType = ShopType.UNDEVELOPED
+    private val locationRentalValues: LocationRentalValues
 
-    override fun GetRent(): Int {
+    val storeBuildingCosts: StoreBuildingCosts
+    val retailGroup: Int
+    val purchasePrice: Int
+
+    private var retailDevelopmentStatus: ShopType
+
+    override fun getRent(): Int {
         when (retailDevelopmentStatus){
-            ShopType.UNDEVELOPED -> return baseRent
+            UNDEVELOPED -> return baseRent
             ShopType.MINISTORE -> return locationRentalValues.rentMinistore
             ShopType.SUPERMARKET -> return locationRentalValues.rentSupermarket
             ShopType.MEGASTORE -> return locationRentalValues.rentMegastore
         }
     }
 
-    fun BuildMiniStore (){
+    fun buildMiniStore (){
         retailDevelopmentStatus = ShopType.MINISTORE
     }
 
-    fun BuildSupermarket (){
+    fun buildSupermarket (){
         retailDevelopmentStatus = ShopType.SUPERMARKET
     }
 
-    fun BuildMegastore (){
+    fun buildMegastore (){
         retailDevelopmentStatus = ShopType.MEGASTORE
     }
 }
