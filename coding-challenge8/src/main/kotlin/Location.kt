@@ -19,7 +19,7 @@ data class LocationRentalValues (val undevelopedRent: Int,
                                  val rentMegastore: Int)
 
 
-abstract class Location (_name: String){
+sealed class Location (_name: String){
 
     val name: String = _name
 
