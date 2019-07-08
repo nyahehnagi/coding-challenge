@@ -24,7 +24,7 @@ sealed class Location (_name: String){
     abstract fun getRent(): Money
 
     // pondering if I add whether a location is purchasable
-    // do I add whether
+    // do I add whether a Location is rentable? hmm
 }
 
 class FreeParking : Location("Free Parking"){
@@ -33,19 +33,19 @@ class FreeParking : Location("Free Parking"){
     override fun getRent() = baseRent
 }
 
-class Go (_fee: Money): Location ("Go"){
+class Go (): Location ("Go"){
 
-    val fee : Money = _fee
+    val fee : Money = GBP(GO_FEE)
     override val baseRent: Money = GBP (0)
     override fun getRent() = baseRent
 }
 
-class Warehouse(name:String) : Location(name){
+class Industry(name:String) : Location(name){
 
-    override val baseRent: Money = GBP (WAREHOUSE_BASE_RENT)
+    override val baseRent: Money = GBP (INDUSTRY_BASE_RENT)
     override fun getRent() = baseRent
 
-    val purchasePrice: Money = GBP (WAREHOUSE_PURCHASE_PRICE)
+    val purchasePrice: Money = GBP (INDUSTRY_PURCHASE_PRICE)
 
 }
 

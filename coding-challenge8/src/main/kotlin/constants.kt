@@ -1,5 +1,5 @@
 package codingchallenge8
 
-const val PASS_THROUGH_GO = 100
-const val WAREHOUSE_PURCHASE_PRICE = 100
-const val WAREHOUSE_BASE_RENT = 20
+const val INDUSTRY_PURCHASE_PRICE = 100
+const val INDUSTRY_BASE_RENT = 20
+const val GO_FEE = 100
