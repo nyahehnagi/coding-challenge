@@ -1,6 +1,6 @@
 package codingchallenge8
 
-import codingchallenge8.ShopType.UNDEVELOPED
+//import codingchallenge8.ShopType.UNDEVELOPED
 
 enum class ShopType {
     UNDEVELOPED,
@@ -9,68 +9,68 @@ enum class ShopType {
     MEGASTORE;
 }
 
-data class StoreBuildingCosts ( val costOfBuildingMinistore: Int,
-                                   val costOfBuildingSupermarket: Int,
-                                   val costOfBuildingMegastore: Int)
+data class StoreBuildingCosts ( val costOfBuildingMinistore: Money,
+                                   val costOfBuildingSupermarket: Money,
+                                   val costOfBuildingMegastore: Money)
 
-data class LocationRentalValues (val undevelopedRent: Int,
-                                 val rentMinistore: Int,
-                                 val rentSupermarket: Int,
-                                 val rentMegastore: Int)
+data class LocationRentalValues (val undevelopedRent: Money,
+                                 val rentMinistore: Money,
+                                 val rentSupermarket: Money,
+                                 val rentMegastore: Money)
 
 sealed class Location (_name: String){
 
     val name: String = _name
 
-    abstract val baseRent: Int
-    abstract fun getRent():Int
+    abstract val baseRent: Money
+    abstract fun getRent(): Money
 }
 
 class FreeParking : Location("Free Parking"){
 
-    override val baseRent: Int = 0
+    override val baseRent: Money = GBP (0)
     override fun getRent() = baseRent
 }
 
 class Go : Location ("Go"){
-    override val baseRent: Int = 0
+    override val baseRent: Money = GBP (0)
     override fun getRent() = baseRent
 }
 
 class Warehouse(name:String) : Location(name){
 
-    override val baseRent: Int = WAREHOUSE_BASE_RENT
+    override val baseRent: Money = GBP (WAREHOUSE_BASE_RENT)
     override fun getRent() = baseRent
 
-    val purchasePrice: Int = WAREHOUSE_PURCHASE_PRICE
+    val purchasePrice: Money = GBP (WAREHOUSE_PURCHASE_PRICE)
 
 }
 
 
 class RetailSite : Location {
 
-    constructor(name: String, _purchasePrice: Int, _costOfBuildingStores: StoreBuildingCosts, _locationRentalValues: LocationRentalValues, _groupID: Int) : super(name) {
+    constructor(name: String, _purchasePrice: Money, _costOfBuildingStores: StoreBuildingCosts, _locationRentalValues: LocationRentalValues, _groupID: Int) : super(name) {
         this.purchasePrice = _purchasePrice
         this.baseRent = _locationRentalValues.undevelopedRent
         this.locationRentalValues = _locationRentalValues
         this.storeBuildingCosts = _costOfBuildingStores
         this.retailGroup = _groupID
-        this.retailDevelopmentStatus = UNDEVELOPED
+        this.retailDevelopmentStatus = ShopType.UNDEVELOPED
     }
 
-    override val baseRent: Int
+    override val baseRent: Money
 
     private val locationRentalValues: LocationRentalValues
 
     val storeBuildingCosts: StoreBuildingCosts
     val retailGroup: Int
-    val purchasePrice: Int
+    val purchasePrice: Money
 
     private var retailDevelopmentStatus: ShopType
 
-    override fun getRent(): Int {
+    override fun getRent(): Money {
         when (retailDevelopmentStatus){
-            UNDEVELOPED -> return baseRent
+            ShopType.UNDEVELOPED -> return baseRent
             ShopType.MINISTORE -> return locationRentalValues.rentMinistore
             ShopType.SUPERMARKET -> return locationRentalValues.rentSupermarket
             ShopType.MEGASTORE -> return locationRentalValues.rentMegastore

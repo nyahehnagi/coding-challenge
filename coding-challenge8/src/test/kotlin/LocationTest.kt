@@ -9,55 +9,55 @@ class LocationTest {
     @Test
     fun `Should test that a Free Parking is correctly created`() {
         val freeParkinglocation = FreeParking()
-        assertThat(freeParkinglocation.getRent(), equalTo(0))
+        assertThat(freeParkinglocation.getRent().value, equalTo(0))
         assertThat(freeParkinglocation.name, equalTo("Free Parking"))
     }
 
     @Test
     fun `Should test that the Go location is correctly created`(){
         val goLocation = Go()
-        assertThat(goLocation.getRent(), equalTo(0))
+        assertThat(goLocation.getRent().value, equalTo(0))
         assertThat(goLocation.name, equalTo("Go"))
     }
 
     @Test
     fun `Should test that a warehouse location is correctly created`(){
         val warehouseLocation = Warehouse("Magna Park")
-        assertThat(warehouseLocation.getRent(), equalTo(20))
+        assertThat(warehouseLocation.getRent().value, equalTo(20))
         assertThat(warehouseLocation.name, equalTo("Magna Park"))
     }
 
 
     @Test
     fun `Should test that a retail site location that is undeveloped `(){
-        val retailSiteLocation = RetailSite("Oxford Street", 200,StoreBuildingCosts(10,20,30), LocationRentalValues(40,50,60,70), 1)
+        val retailSiteLocation = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
         //val retailSiteLocation = RetailSite("Oxford Street", 200)
-        assertThat(retailSiteLocation.getRent(), equalTo(40))
+        assertThat(retailSiteLocation.getRent().value, equalTo(40))
         assertThat(retailSiteLocation.name, equalTo("Oxford Street"))
-        assertThat(retailSiteLocation.getRent(), equalTo(40))
+        assertThat(retailSiteLocation.getRent().value, equalTo(40))
     }
 
     @Test
     fun `Should test that a retail site location that develops a megastore `() {
-        val retailSiteLocation = RetailSite("Peter Jones", 200, StoreBuildingCosts(10, 20, 30), LocationRentalValues(40, 50, 60, 70), 1)
+        val retailSiteLocation = RetailSite("Peter Jones", GBP(200), StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
         retailSiteLocation.buildMegastore()
-        assertThat(retailSiteLocation.getRent(), equalTo(70))
+        assertThat(retailSiteLocation.getRent().value, equalTo(70))
         assertThat(retailSiteLocation.name, equalTo("Peter Jones"))
     }
 
     @Test
     fun `Should test that a retail site location that develops a supermarket `(){
-        val retailSiteLocation = RetailSite("Peter Jones", 200,StoreBuildingCosts(10,20,30),LocationRentalValues(40,50,60,70), 1)
+        val retailSiteLocation = RetailSite("Peter Jones", GBP(200), StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
         retailSiteLocation.buildSupermarket()
-        assertThat(retailSiteLocation.getRent(), equalTo(60))
+        assertThat(retailSiteLocation.getRent().value, equalTo(60))
         assertThat(retailSiteLocation.name, equalTo("Peter Jones"))
      }
 
     @Test
     fun `Should test that a retail site location that develops a ministore `(){
-        val retailSiteLocation = RetailSite("Peter Jones", 200,StoreBuildingCosts(10,20,30),LocationRentalValues(40,50,60,70), 1)
+        val retailSiteLocation = RetailSite("Peter Jones", GBP(200),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)),LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
         retailSiteLocation.buildMiniStore()
-        assertThat(retailSiteLocation.getRent(), equalTo(50))
+        assertThat(retailSiteLocation.getRent().value, equalTo(50))
         assertThat(retailSiteLocation.name, equalTo("Peter Jones"))
      }
 }
