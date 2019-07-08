@@ -15,9 +15,11 @@ class LocationTest {
 
     @Test
     fun `Should test that the Go location is correctly created`(){
-        val goLocation = Go()
+        val goLocation = Go(GBP(100))
         assertThat(goLocation.getRent().value, equalTo(0))
         assertThat(goLocation.name, equalTo("Go"))
+        assertThat(goLocation.fee.value, equalTo(100))
+
     }
 
     @Test
