@@ -1,7 +1,5 @@
 package codingchallenge8
 
-//import codingchallenge8.ShopType.UNDEVELOPED
-
 enum class ShopType {
     UNDEVELOPED,
     MINISTORE ,
@@ -61,12 +59,13 @@ class RetailSite : Location {
     override val baseRent: Money
 
     private val locationRentalValues: LocationRentalValues
+    private var retailDevelopmentStatus: ShopType
 
     val storeBuildingCosts: StoreBuildingCosts
     val retailGroup: Int
     val purchasePrice: Money
 
-    private var retailDevelopmentStatus: ShopType
+
 
     override fun getRent(): Money {
         when (retailDevelopmentStatus){
