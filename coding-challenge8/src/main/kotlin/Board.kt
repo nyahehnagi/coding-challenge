@@ -1,2 +1,0 @@
-package codingchallenge8
-
