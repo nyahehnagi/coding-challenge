@@ -23,7 +23,8 @@ sealed class Location (_name: String){
 }
 
 interface Rent {
-    abstract val baseRent : Money
+    val baseRent : Money
+
 }
 
 interface Purchaseable{
@@ -71,13 +72,11 @@ class RetailSite : Rent, Purchaseable, Location {
 
 
 
-    fun getRent(): Money {
-        when (retailDevelopmentStatus){
-            ShopType.UNDEVELOPED -> return baseRent
-            ShopType.MINISTORE -> return locationRentalValues.rentMinistore
-            ShopType.SUPERMARKET -> return locationRentalValues.rentSupermarket
-            ShopType.MEGASTORE -> return locationRentalValues.rentMegastore
-        }
+    fun getRent(): Money = when (retailDevelopmentStatus) {
+            ShopType.UNDEVELOPED -> baseRent
+            ShopType.MINISTORE -> locationRentalValues.rentMinistore
+            ShopType.SUPERMARKET -> locationRentalValues.rentSupermarket
+            ShopType.MEGASTORE ->  locationRentalValues.rentMegastore
     }
 
     fun buildMiniStore (){
