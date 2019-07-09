@@ -1,5 +1,6 @@
 package codingchallenge8
 
+
 enum class ShopType {
     UNDEVELOPED,
     MINISTORE ,
@@ -19,38 +20,35 @@ data class LocationRentalValues (val undevelopedRent: Money,
 sealed class Location (_name: String){
 
     val name: String = _name
-
-    abstract val baseRent: Money
-    abstract fun getRent(): Money
-
-    // pondering if I add whether a location is purchasable
-    // do I add whether a Location is rentable? hmm
 }
 
-class FreeParking : Location("Free Parking"){
-
-    override val baseRent: Money = GBP (0)
-    override fun getRent() = baseRent
+interface Rent {
+    abstract val baseRent : Money
 }
 
-class Go (): Location ("Go"){
+interface Purchaseable{
+    val isPurchaseable : Boolean
+}
+
+class FreeParking : Location("Free Parking")
+
+class Go : Location ("Go"){
 
     val fee : Money = GBP(GO_FEE)
-    override val baseRent: Money = GBP (0)
-    override fun getRent() = baseRent
 }
 
-class Industry(name:String) : Location(name){
+class Industry(name:String) : Rent, Purchaseable, Location(name){
 
-    override val baseRent: Money = GBP (INDUSTRY_BASE_RENT)
-    override fun getRent() = baseRent
+    override val baseRent : Money = GBP(INDUSTRY_BASE_RENT)
+    override val isPurchaseable:Boolean = true
+    fun getRent() = baseRent
 
     val purchasePrice: Money = GBP (INDUSTRY_PURCHASE_PRICE)
 
 }
 
 
-class RetailSite : Location {
+class RetailSite : Rent, Purchaseable, Location {
 
     constructor(name: String, _purchasePrice: Money, _costOfBuildingStores: StoreBuildingCosts, _locationRentalValues: LocationRentalValues, _groupID: Int) : super(name) {
         this.purchasePrice = _purchasePrice
@@ -61,7 +59,8 @@ class RetailSite : Location {
         this.retailDevelopmentStatus = ShopType.UNDEVELOPED
     }
 
-    override val baseRent: Money
+    override val baseRent : Money
+    override val isPurchaseable:Boolean = true
 
     private val locationRentalValues: LocationRentalValues
     private var retailDevelopmentStatus: ShopType
@@ -72,7 +71,7 @@ class RetailSite : Location {
 
 
 
-    override fun getRent(): Money {
+    fun getRent(): Money {
         when (retailDevelopmentStatus){
             ShopType.UNDEVELOPED -> return baseRent
             ShopType.MINISTORE -> return locationRentalValues.rentMinistore

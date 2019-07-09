@@ -9,17 +9,14 @@ class LocationTest {
     @Test
     fun `Should test that a Free Parking is correctly created`() {
         val freeParkinglocation = FreeParking()
-        assertThat(freeParkinglocation.getRent().value, equalTo(0))
         assertThat(freeParkinglocation.name, equalTo("Free Parking"))
     }
 
     @Test
     fun `Should test that the Go location is correctly created`(){
         val goLocation = Go()
-        assertThat(goLocation.getRent().value, equalTo(0))
         assertThat(goLocation.name, equalTo("Go"))
         assertThat(goLocation.fee.value, equalTo(100))
-
     }
 
     @Test
@@ -27,6 +24,7 @@ class LocationTest {
         val warehouseLocation = Industry("Magna Park")
         assertThat(warehouseLocation.getRent().value, equalTo(20))
         assertThat(warehouseLocation.name, equalTo("Magna Park"))
+        assertThat(warehouseLocation.isPurchaseable, equalTo(true))
     }
 
 
@@ -37,6 +35,7 @@ class LocationTest {
         assertThat(retailSiteLocation.getRent().value, equalTo(40))
         assertThat(retailSiteLocation.name, equalTo("Oxford Street"))
         assertThat(retailSiteLocation.getRent().value, equalTo(40))
+        assertThat(retailSiteLocation.isPurchaseable, equalTo(true))
     }
 
     @Test
