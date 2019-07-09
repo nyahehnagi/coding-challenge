@@ -49,27 +49,30 @@ class Industry(name:String) : Rent, Purchaseable, Location(name){
 }
 
 
-class RetailSite : Rent, Purchaseable, Location {
-
-    constructor(name: String, _purchasePrice: Money, _costOfBuildingStores: StoreBuildingCosts, _locationRentalValues: LocationRentalValues, _groupID: Int) : super(name) {
-        this.purchasePrice = _purchasePrice
-        this.baseRent = _locationRentalValues.undevelopedRent
-        this.locationRentalValues = _locationRentalValues
-        this.storeBuildingCosts = _costOfBuildingStores
-        this.retailGroup = _groupID
-        this.retailDevelopmentStatus = ShopType.UNDEVELOPED
-    }
+class RetailSite (  name: String,
+                    _purchasePrice: Money,
+                    _costOfBuildingStores: StoreBuildingCosts,
+                    _locationRentalValues: LocationRentalValues,
+                    _groupID: Int) : Rent, Purchaseable, Location (name) {
 
     override val baseRent : Money
     override val isPurchaseable:Boolean = true
 
     private val locationRentalValues: LocationRentalValues
-    private var retailDevelopmentStatus: ShopType
+    private var retailDevelopmentStatus: ShopType = ShopType.UNDEVELOPED
 
     val storeBuildingCosts: StoreBuildingCosts
     val retailGroup: Int
     val purchasePrice: Money
 
+
+    init {
+        baseRent  = _locationRentalValues.undevelopedRent
+        locationRentalValues = _locationRentalValues
+        storeBuildingCosts = _costOfBuildingStores
+        retailGroup= _groupID
+        purchasePrice = _purchasePrice
+    }
 
 
     fun getRent(): Money = when (retailDevelopmentStatus) {
