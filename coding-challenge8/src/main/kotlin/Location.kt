@@ -103,7 +103,7 @@ class GBP (_value:Int): Money(_value){
     override val value:Int
     init{
         // rules state that GBP cannot be negative
-        if (_value >= 0) {value = _value} else value = - _value
+        value = if (_value >= 0) {_value} else - _value
     }
 
     override fun toString(): String {
