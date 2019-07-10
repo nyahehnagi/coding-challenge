@@ -24,7 +24,6 @@ sealed class Location (_name: String){
 
 interface Rent {
     val baseRent : Money
-
 }
 
 interface Purchaseable{
