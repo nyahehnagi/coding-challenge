@@ -81,6 +81,7 @@ class RetailSite (  name: String,
             ShopType.MEGASTORE ->  locationRentalValues.rentMegastore
     }
 
+    // Thinking of getting rid of these and taking the building of store outside of the location class
     fun buildMiniStore (){
         retailDevelopmentStatus = ShopType.MINISTORE
     }
