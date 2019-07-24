@@ -31,7 +31,7 @@ class TransactionFactory(){
                            transactionData : TransactionData):ITransaction{
         return when (transactionType){
             TransactionType.BANKTRANSFER -> BankTransfer(transactionData.transactionAmount, transactionData.fromAccountHolder , transactionData.toAccountHolder)
-            TransactionType.BUILDSHOP-> BuildShop(transactionData.location, transactionData.shopType, transactionData.transactionAmount, transactionData.fromAccountHolder , transactionData.toAccountHolder)
+            TransactionType.BUILDSHOP-> BuildShop(transactionData.location, transactionData.shopType, transactionData.fromAccountHolder , transactionData.toAccountHolder)
 
         }
     }
@@ -44,14 +44,16 @@ class BankTransfer (_transactionAmount : Money, _fromAccountHolder : IAccountHol
     override val toAccountHolder: IAccountHolder = _toAccountHolder
 }
 
-class BuildShop (_location : RetailSite,
+class BuildShop (_location : Location?,
                  _shopType: ShopType,
-                 _transactionAmount : Money,
                  _fromAccountHolder : IAccountHolder,
                  _toAccountHolder: IAccountHolder ): ITransaction{
-    override val transactionAmount : Money = _location.getBuildCost(_shopType)
+    override val transactionAmount : Money = if (_location is RetailSite) _location.getBuildCost(_shopType) else throw IllegalArgumentException("Retail Location Required")
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder = _toAccountHolder
+
+
+
 }
 
 /*
