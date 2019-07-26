@@ -1,61 +1,111 @@
 
 package codingchallenge9
 
+import java.lang.IllegalArgumentException
+
+const val STARTING_BALANCE = 200
+
 enum class TransactionType{
         BANKTRANSFER,
         //BANKPAYMENT
-        //RENTPAYMENT ,
+        RENTPAYMENT ,
         //LOCATIONPURCHASE,
         BUILDSHOP
 }
 
 interface IAccountHolder {
+    val name : String
 }
 
-interface ITransaction{
+
+interface ITransaction
+{
     val transactionAmount : Money
     val fromAccountHolder : IAccountHolder
     val toAccountHolder: IAccountHolder
 }
 
-data class TransactionData (val transactionAmount : Money ,
+data class TransactionData (val toAccountHolder: IAccountHolder,
                             val fromAccountHolder : IAccountHolder,
-                            val toAccountHolder: IAccountHolder,
+                            val transactionAmount : Money,
                             val location: Location? = null,
                             val shopType: ShopType = ShopType.UNDEVELOPED
 
 )
 
-class TransactionFactory(){
-    fun createTransaction (transactionType : TransactionType,
-                           transactionData : TransactionData):ITransaction{
-        return when (transactionType){
-            TransactionType.BANKTRANSFER -> BankTransfer(transactionData.transactionAmount, transactionData.fromAccountHolder , transactionData.toAccountHolder)
-            TransactionType.BUILDSHOP-> BuildShop(transactionData.location, transactionData.shopType, transactionData.fromAccountHolder , transactionData.toAccountHolder)
+class Bank (): IAccountHolder {
+    override val name = "bank"
+}
 
+class Player(_name : String): IAccountHolder{
+    override val name = _name //should add some logic here to not allow any reserved names e.g bank
+}
+
+/*
+object TransactionFactory(){
+    companion object {
+        fun createTransaction(
+                    transactionType: TransactionType,
+                    fromAccountHolder: IAccountHolder,
+                    toAccountHolder: IAccountHolder
+            /*,
+                           //transactionData : TransactionData,
+                           location : Location,
+
+
+                           shopType: ShopType*/
+        ): ITransaction {
+            return when (transactionType) {
+                TransactionType.BANKTRANSFER -> BankTransferTxn(fromAccountHolder, toAccountHolder)
+                //TransactionType.BUILDSHOP-> BuildShopTxn (fromAccountHolder,toAccountHolder,location,shopType)
+            }
         }
     }
+
 }
+*/
 
-
-class BankTransfer (_transactionAmount : Money, _fromAccountHolder : IAccountHolder, _toAccountHolder: IAccountHolder): ITransaction{
-    override val transactionAmount : Money = _transactionAmount
+class BankTransferTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder): ITransaction{
+    override val transactionAmount : Money = GBP (STARTING_BALANCE)
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
-    override val toAccountHolder: IAccountHolder = _toAccountHolder
+    override val toAccountHolder: IAccountHolder =  _toAccountHolder
+
 }
 
-class BuildShop (_location : Location?,
-                 _shopType: ShopType,
-                 _fromAccountHolder : IAccountHolder,
-                 _toAccountHolder: IAccountHolder ): ITransaction{
-    override val transactionAmount : Money = if (_location is RetailSite) _location.getBuildCost(_shopType) else throw IllegalArgumentException("Retail Location Required")
+
+class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Location ): ITransaction{
+
+
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
-    override val toAccountHolder: IAccountHolder = _toAccountHolder
+    override val toAccountHolder: IAccountHolder =  _toAccountHolder
+    override val transactionAmount : Money
 
+    init{
+        when (_location){
+            is Industry -> transactionAmount = _location.getRent()
+            is RetailSite -> transactionAmount = _location.getRent()
+            else -> throw IllegalArgumentException ("Location cannot be rented")
+        }
+
+    }
+
+}
+
+
+class BuildShopTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _shopType: ShopType, _location : RetailSite): ITransaction{
+
+
+    override val fromAccountHolder : IAccountHolder = _fromAccountHolder
+    override val toAccountHolder: IAccountHolder =  _toAccountHolder
+    override val transactionAmount : Money =  _location.getBuildCost(_shopType)
+    val shopLocation : RetailSite = _location
+    val shopType : ShopType = _shopType
 
 
 }
 
+//class BankPaymentTxn (_fromAccountHolder : IAccountHolder,
+ //                     _toAccountHolder: IAccountHolder ): ITransaction)
 /*
 BankPayment
 from bank to player
