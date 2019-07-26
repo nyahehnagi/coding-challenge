@@ -4,8 +4,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
-
-//testCompile group: 'junit', name: 'junit', version: '4.12'
+import java.lang.IndexOutOfBoundsException
 
 class LocationTest {
     @Test
@@ -90,18 +89,19 @@ class LocationTest {
     }
 
     @Test
-    fun `Should test exception raised as we cannot create a rent transaction for Free Parking Location`() {
+    fun `Should test IllegalArgumentException raised as we cannot create a rent transaction for Free Parking Location`() {
         val ledger = Gameledger()
         val transactionType: TransactionType = TransactionType.RENTPAYMENT
         val playerFrom = Player("Bromley")
         val playerTo = Player("Kirsty")
         val location = FreeParking()
 
-
-        assertThrows<IllegalArgumentException>{
-            val rentPaymentTransaction: ITransaction =
-                ledger.addTransaction(transactionType, playerFrom, playerTo, location)
+        val exception = assertThrows<IllegalArgumentException>{
+            val rentPaymentTransaction: ITransaction = ledger.addTransaction(transactionType, playerFrom, playerTo, location)
         }
+        assertThat(exception.message, equalTo("Location cannot be rented"))
+
+
     }
 
 }

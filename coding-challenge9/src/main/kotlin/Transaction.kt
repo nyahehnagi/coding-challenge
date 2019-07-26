@@ -41,30 +41,6 @@ class Player(_name : String): IAccountHolder{
     override val name = _name //should add some logic here to not allow any reserved names e.g bank
 }
 
-/*
-object TransactionFactory(){
-    companion object {
-        fun createTransaction(
-                    transactionType: TransactionType,
-                    fromAccountHolder: IAccountHolder,
-                    toAccountHolder: IAccountHolder
-            /*,
-                           //transactionData : TransactionData,
-                           location : Location,
-
-
-                           shopType: ShopType*/
-        ): ITransaction {
-            return when (transactionType) {
-                TransactionType.BANKTRANSFER -> BankTransferTxn(fromAccountHolder, toAccountHolder)
-                //TransactionType.BUILDSHOP-> BuildShopTxn (fromAccountHolder,toAccountHolder,location,shopType)
-            }
-        }
-    }
-
-}
-*/
-
 class BankTransferTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder): ITransaction{
     override val transactionAmount : Money = GBP (STARTING_BALANCE)
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
@@ -136,4 +112,28 @@ A function that adds a transaction for when a Player has paid the Bank to purcha
 
 A function that adds a transaction for when a Player has paid the Bank for building a specific type of building on a Location. Types of building include ministore, supermarket or megastore.
  */
+
+/*
+object TransactionFactory(){
+    companion object {
+        fun createTransaction(
+                    transactionType: TransactionType,
+                    fromAccountHolder: IAccountHolder,
+                    toAccountHolder: IAccountHolder
+            /*,
+                           //transactionData : TransactionData,
+                           location : Location,
+
+
+                           shopType: ShopType*/
+        ): ITransaction {
+            return when (transactionType) {
+                TransactionType.BANKTRANSFER -> BankTransferTxn(fromAccountHolder, toAccountHolder)
+                //TransactionType.BUILDSHOP-> BuildShopTxn (fromAccountHolder,toAccountHolder,location,shopType)
+            }
+        }
+    }
+
+}
+*/
 
