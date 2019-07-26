@@ -91,7 +91,6 @@ class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAc
 
 }
 
-
 class BuildShopTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _shopType: ShopType, _location : RetailSite): ITransaction{
 
 

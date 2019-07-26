@@ -1,11 +1,11 @@
 import codingchallenge9.*
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
-import
-
-
-
 import org.junit.Test
+import org.junit.jupiter.api.assertThrows
+import java.lang.IllegalArgumentException
+
+//testCompile group: 'junit', name: 'junit', version: '4.12'
 
 class LocationTest {
     @Test
@@ -23,8 +23,8 @@ class LocationTest {
     fun `Should test that a bank transfer transaction has been created`() {
         val ledger = Gameledger()
         val transactionType: TransactionType = TransactionType.BANKTRANSFER
-        val player: Player = Player("Bromley")
-        val bank: Bank = Bank()
+        val player = Player("Bromley")
+        val bank = Bank()
 
 
         val bankTransferTransaction : ITransaction = ledger.addTransaction(transactionType,bank,player)
@@ -38,10 +38,10 @@ class LocationTest {
     fun `Should test that a Location transaction for building a ministore has been created`() {
         val ledger = Gameledger()
         val transactionType: TransactionType = TransactionType.BUILDSHOP
-        val fromPlayer: Player = Player ("Kirsty")
-        val bank: Bank = Bank()
+        val fromPlayer = Player ("Kirsty")
+        val bank = Bank()
         val shopType: ShopType = ShopType.MINISTORE
-        val location : RetailSite = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
+        val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
 
 
 
@@ -50,9 +50,6 @@ class LocationTest {
         assertThat(buildMinistoreTransaction.fromAccountHolder.name, equalTo("Kirsty"))
         assertThat(buildMinistoreTransaction.transactionAmount.value, equalTo(10))
         assertThat(buildMinistoreTransaction.toAccountHolder.name, equalTo("bank"))
-
-        //assertThat(buildMinistoreTransaction is BuildShopTxn), equalTo(true)
-        //assertThat(buildMinistoreTransaction is BuildShopTxn).isTrue()
 
         if (buildMinistoreTransaction is BuildShopTxn) {
             assertThat(buildMinistoreTransaction.shopLocation.name, equalTo("Oxford Street"))
@@ -64,9 +61,9 @@ class LocationTest {
     fun `Should test that a rent transaction has been created for an undeveloped retail site`() {
         val ledger = Gameledger()
         val transactionType: TransactionType = TransactionType.RENTPAYMENT
-        val playerFrom: Player = Player("Bromley")
-        val playerTo: Player = Player("Kirsty")
-        val location : RetailSite = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
+        val playerFrom = Player("Bromley")
+        val playerTo = Player("Kirsty")
+        val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
 
 
         val rentPaymentTransaction : ITransaction = ledger.addTransaction(transactionType,playerFrom,playerTo,location)
@@ -80,9 +77,9 @@ class LocationTest {
     fun `Should test that a rent transaction has been created for an industrial site`() {
         val ledger = Gameledger()
         val transactionType: TransactionType = TransactionType.RENTPAYMENT
-        val playerFrom: Player = Player("Bromley")
-        val playerTo: Player = Player("Kirsty")
-        val location : Industry = Industry("Magna Park")
+        val playerFrom = Player("Bromley")
+        val playerTo = Player("Kirsty")
+        val location = Industry("Magna Park")
 
 
         val rentPaymentTransaction : ITransaction = ledger.addTransaction(transactionType,playerFrom,playerTo,location)
@@ -93,21 +90,21 @@ class LocationTest {
     }
 
     @Test
-    fun `Should test that cannot create a rent transaction for Free Parking Location`() {
+    fun `Should test exception raised as we cannot create a rent transaction for Free Parking Location`() {
         val ledger = Gameledger()
         val transactionType: TransactionType = TransactionType.RENTPAYMENT
-        val playerFrom: Player = Player("Bromley")
-        val playerTo: Player = Player("Kirsty")
-        val location : FreeParking = FreeParking()
+        val playerFrom = Player("Bromley")
+        val playerTo = Player("Kirsty")
+        val location = FreeParking()
 
 
-        val rentPaymentTransaction : ITransaction = ledger.addTransaction(transactionType,playerFrom,playerTo,location)
-
-
-        //assertThat(Exception.val, equalTo("Location cannot be rented"))
-
+        assertThrows<IllegalArgumentException>{
+            val rentPaymentTransaction: ITransaction =
+                ledger.addTransaction(transactionType, playerFrom, playerTo, location)
+        }
     }
 
-
-
 }
+
+
+
