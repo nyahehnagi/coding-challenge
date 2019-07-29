@@ -4,10 +4,11 @@ I thought if a bit fiddly then it was not the right pattern. So I went with an i
 
 Within GameLedger, I have created an overloaded function called addTransaction which takes an enumerated type indicating the transaction type and then the various parameters needed to create a transaction. I've added some logic within gameledger to ensure transaction types are managed and within each of the various transaction classes there's additional logic to ensure that each transaction is created properly. If the client tries to create an invalid transaction of any type an exceptiion is raised. Tests have been created to check these exceptions along with succesful creations
 
-### Stuff I am not sure about
+### Stuff I am not sure about or needs some more work
 
 1. Whether a transaction should check if something can be purchased - should that be something a Location does?
 2. Should I be testing for transaction return types in my tests? Or more to the point should adding a transaction through the gameledger even return a transaction - perhaps it should just do it.. and that's that
+3. Building on a location - I'm still unsure whether a Location should track this or perhaps this is done via the ledger - currently I do it via Location
 
 ### Things I have learned from this exercise
 
