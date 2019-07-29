@@ -2,7 +2,7 @@
 Started out with this trying to use the factory pattern for the transactions. It didn't quite work and was starting to get fiddly.
 I thought if a bit fiddly then it was not the right pattern. So I went with an interface for a transaction and then implemented each of the transaction types from there
 
-Within GameLedger, I have created an overloaded function called addTransaction which takes an enumerated type indicating the transaction type and then the various parameters needed to create a transaction. I've added some logic within gameledger to ensure transaction types are managed and within each of the various transaction classes there's additional logic to ensure that each transaction is created properly. If the client tries to create an invalid transaction of any type an exceptiion is raised. Tests have been created to check these exceptions along with succesful transactions
+Within GameLedger, I have created various functions to generate transactions. There's some additional logic to ensure that each transaction is created properly. If the client tries to create an invalid transaction of any type an exception is raised. Tests have been created to check these exceptions along with succesful transactions
 
 ### Stuff I am not sure about or needs some more work
 
