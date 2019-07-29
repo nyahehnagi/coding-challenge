@@ -8,7 +8,8 @@ Within GameLedger, I have created an overloaded function called addTransaction w
 
 1. Whether a transaction should check if something can be purchased - should that be something a Location does?
 2. Should I be testing for transaction return types in my tests? Or more to the point should adding a transaction through the gameledger even return a transaction - perhaps it should just do it.. and that's that
-3. Building on a location - I'm still unsure whether a Location should track this or perhaps this is done via the ledger - currently I do it via Location
+3. Building on a location - I'm still in mixed minds whether a Location should track this or whether 
+this is done via the ledger or even elsewhere - currently I do it via Location.
 
 ### Things I have learned from this exercise
 
