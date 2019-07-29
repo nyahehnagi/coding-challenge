@@ -4,9 +4,10 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
-import java.lang.IndexOutOfBoundsException
+
 
 class LocationTest {
+    //TODO Should I test for the transaction return types?
     @Test
     fun `Should test that a retail site location that is undeveloped `(){
         val retailSiteLocation = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
@@ -50,7 +51,7 @@ class LocationTest {
         assertThat(buildMinistoreTransaction.transactionAmount.value, equalTo(10))
         assertThat(buildMinistoreTransaction.toAccountHolder.name, equalTo("bank"))
 
-        if (buildMinistoreTransaction is BuildShopTxn) {
+        if (buildMinistoreTransaction is BuildShopTxn) { //Could cast using 'as'
             assertThat(buildMinistoreTransaction.shopLocation.name, equalTo("Oxford Street"))
             assertThat(buildMinistoreTransaction.shopType.name, equalTo("MINISTORE"))
         }
@@ -97,7 +98,8 @@ class LocationTest {
         val location = FreeParking()
 
         val exception = assertThrows<IllegalArgumentException>{
-            val rentPaymentTransaction: ITransaction = ledger.addTransaction(transactionType, playerFrom, playerTo, location)
+            //val rentPaymentTransaction: ITransaction =
+            ledger.addTransaction(transactionType, playerFrom, playerTo, location)
         }
         assertThat(exception.message, equalTo("Location cannot be rented"))
 
@@ -113,7 +115,8 @@ class LocationTest {
         val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
 
         val exception = assertThrows<IllegalArgumentException>{
-            val incorrectBuildShopTransaction: ITransaction = ledger.addTransaction(transactionType,fromPlayer,bank,location,shopType)
+            //val incorrectBuildShopTransaction: ITransaction =
+            ledger.addTransaction(transactionType,fromPlayer,bank,location,shopType)
         }
         assertThat(exception.message, equalTo("Invalid Transaction Type for passed parameters"))
     }
@@ -143,7 +146,7 @@ class LocationTest {
         val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
 
         val exception = assertThrows<IllegalArgumentException>{
-            val incorrectFeeLocationTransaction: ITransaction = ledger.addTransaction(transactionType,bank,playerTo,location)
+            ledger.addTransaction(transactionType,bank,playerTo,location)
         }
         assertThat(exception.message, equalTo("Location has no fee"))
     }
@@ -157,13 +160,70 @@ class LocationTest {
         val location  = Go()
 
         val exception = assertThrows<IllegalArgumentException>{
-            val incorrectLocationTypeTransaction: ITransaction = ledger.addTransaction(transactionType,bank,playerTo,location)
+            ledger.addTransaction(transactionType,bank,playerTo,location)
         }
         assertThat(exception.message, equalTo("Invalid Transaction Type for passed parameters"))
     }
+    @Test
+    fun `Should test that a purchase transaction has been created for purchase of an industrial site`() {
+        val ledger = Gameledger()
+        val transactionType: TransactionType = TransactionType.LOCATIONPURCHASE
+        val playerFrom = Player("Bromley")
+        val playerTo = Bank()
+        val location = Industry("Magna Park")
+
+        val purchaseLocationTransaction : ITransaction = ledger.addTransaction(transactionType,playerFrom,playerTo,location)
+
+        assertThat(purchaseLocationTransaction.fromAccountHolder.name, equalTo("Bromley"))
+        assertThat(purchaseLocationTransaction.transactionAmount.value, equalTo(100))
+        assertThat(purchaseLocationTransaction.toAccountHolder.name, equalTo("bank"))
+    }
+
+    @Test
+    fun `Should test that a purchase transaction has been created for purchase of a retail site`() {
+        val ledger = Gameledger()
+        val transactionType: TransactionType = TransactionType.LOCATIONPURCHASE
+        val playerFrom = Player("Bromley")
+        val playerTo = Bank()
+        val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
 
 
+        val purchaseLocationTransaction : ITransaction = ledger.addTransaction(transactionType,playerFrom,playerTo,location)
 
+        assertThat(purchaseLocationTransaction.fromAccountHolder.name, equalTo("Bromley"))
+        assertThat(purchaseLocationTransaction.transactionAmount.value, equalTo(100))
+        assertThat(purchaseLocationTransaction.toAccountHolder.name, equalTo("bank"))
+
+        assertThat((purchaseLocationTransaction as PurchaseLocationTxn).locationPurchased.name, equalTo("Oxford Street"))
+    }
+
+    @Test
+    fun `Should test IllegalArgumentException raised for purchase of a non purchaseable location such as Free Parking`() {
+        val ledger = Gameledger()
+        val transactionType: TransactionType = TransactionType.LOCATIONPURCHASE
+        val playerFrom = Player("Bromley")
+        val playerTo = Bank()
+        val location = FreeParking()
+
+        val exception = assertThrows<IllegalArgumentException>{
+            ledger.addTransaction(transactionType, playerFrom, playerTo, location)
+        }
+        assertThat(exception.message, equalTo("Location cannot be purchased"))
+    }
+
+    @Test
+    fun `Should test IllegalArgumentException raised for purchase between 2 players`() {
+        val ledger = Gameledger()
+        val transactionType: TransactionType = TransactionType.LOCATIONPURCHASE
+        val playerFrom = Player("Bromley")
+        val playerTo = Player("Kirsty")
+        val location = Industry("Magna Park")
+
+        val exception = assertThrows<IllegalArgumentException>{
+            ledger.addTransaction(transactionType, playerFrom, playerTo, location)
+        }
+        assertThat(exception.message, equalTo("Cannot purchase from this account type"))
+    }
 
 }
 

@@ -9,7 +9,7 @@ enum class TransactionType{
         BANKTRANSFER,
         BANKPAYMENT,
         RENTPAYMENT ,
-        //LOCATIONPURCHASE,
+        LOCATIONPURCHASE,
         BUILDSHOP
 }
 
@@ -76,9 +76,29 @@ class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAc
             is RetailSite -> transactionAmount = _location.getRent()
             else -> throw IllegalArgumentException ("Location cannot be rented")
         }
-
     }
+}
 
+class PurchaseLocationTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Location ): ITransaction {
+    override val toAccountHolder: IAccountHolder =  _toAccountHolder
+    override val fromAccountHolder : IAccountHolder
+    override val transactionAmount : Money
+    val locationPurchased : Location
+
+    init{
+        //TODO Not to happy about this, I think the location should know whether it can be purchased, not the transaction. Revisit this
+        when (_location){
+            is Industry -> transactionAmount = _location.purchasePrice
+            is RetailSite -> transactionAmount = _location.purchasePrice
+            else -> throw IllegalArgumentException ("Location cannot be purchased")
+        }
+
+        when (_toAccountHolder){
+            is Bank -> fromAccountHolder = _fromAccountHolder // Can purchase from the bank only
+            else -> throw IllegalArgumentException ("Cannot purchase from this account type") //Although in the future the rules may allow Player to Player purchase
+        }
+        locationPurchased = _location
+    }
 }
 
 class BuildShopTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _shopType: ShopType, _location : RetailSite): ITransaction{
@@ -93,27 +113,6 @@ class BuildShopTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAcco
 
 }
 
-//class BankPaymentTxn (_fromAccountHolder : IAccountHolder,
- //                     _toAccountHolder: IAccountHolder ): ITransaction)
-/*
-BankPayment
-from bank to player
-Amount
-
-RentPayment
-from player to player
-Amount
-
-LocationPurchase
-from player to bank
-Amount
-
-BuildShop
-from player to bank
-amount
-location
-building type
-*/
 
 /*
 A function that adds a transaction for an amount being transferred from the Bank to a Player. This is the starting balance for each player in the game.

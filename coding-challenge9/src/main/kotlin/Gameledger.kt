@@ -14,7 +14,7 @@ class Gameledger {
 
         when (transactionType){
             TransactionType.BANKTRANSFER -> transactionHistory.add(BankTransferTxn(fromAccountHolder, toAccountHolder))
-
+            else -> throw IllegalArgumentException ("Invalid Transaction Type for passed parameters")
         }
 
         return transactionHistory.last()
@@ -35,7 +35,7 @@ class Gameledger {
             throw IllegalArgumentException ("Invalid Transaction Type for passed parameters")
     }
 
-    // Pay Rent or Fee
+    // Pay Rent, Fee or Purchase a location
     fun addTransaction (transactionType : TransactionType,
                         fromAccountHolder : IAccountHolder,
                         toAccountHolder : IAccountHolder,
@@ -44,6 +44,7 @@ class Gameledger {
         when (transactionType){
             TransactionType.RENTPAYMENT -> transactionHistory.add(RentPaymentTxn(fromAccountHolder,toAccountHolder,location))
             TransactionType.BANKPAYMENT -> transactionHistory.add(BankFeeTxn(fromAccountHolder,toAccountHolder,location))
+            TransactionType.LOCATIONPURCHASE -> transactionHistory.add(PurchaseLocationTxn(fromAccountHolder,toAccountHolder,location))
             else -> throw IllegalArgumentException ("Invalid Transaction Type for passed parameters")
         }
 
