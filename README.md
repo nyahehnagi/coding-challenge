@@ -17,3 +17,5 @@ Should I be testing for transaction return types in my tests? Or more to the poi
 4. I so wanted to use the factory pattern but it wasn't the right pattern, still I learned about that - although I think I will use this pattern for the creation of the gameboard and locations. I'll have a Location Factory I think
 5. How to throw an exception
 6. Smart casts, use of 'is' and 'as'
+7. using interfaces and the useful stuff you can do with 'when'
+8. assignments using when
