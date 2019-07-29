@@ -10,14 +10,6 @@ const val ERROR_INVALID_ACCOUNT = "Cannot purchase from this account type"
 
 const val STARTING_BALANCE = 200
 
-enum class TransactionType{
-        BANKTRANSFER,
-        BANKPAYMENT,
-        RENTPAYMENT ,
-        LOCATIONPURCHASE,
-        BUILDSHOP
-}
-
 interface IAccountHolder {
     val name : String
 }
