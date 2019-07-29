@@ -29,14 +29,6 @@ interface ITransaction
     val toAccountHolder: IAccountHolder
 }
 
-data class TransactionData (val toAccountHolder: IAccountHolder,
-                            val fromAccountHolder : IAccountHolder,
-                            val transactionAmount : Money,
-                            val location: Location? = null,
-                            val shopType: ShopType = ShopType.UNDEVELOPED
-
-)
-
 class Bank (): IAccountHolder {
     override val name = "bank"
 }
@@ -71,38 +63,28 @@ class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAc
 
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
-    override val transactionAmount : Money
-
-    init{
-        when (_location){
-            is Industry -> transactionAmount = _location.getRent()
-            is RetailSite -> transactionAmount = _location.getRent()
-            else -> throw IllegalArgumentException (ERROR_LOCATION_CANNOT_BE_RENTED)
-        }
+    override val transactionAmount : Money = when (_location) {
+        is Industry -> _location.getRent()
+        is RetailSite -> _location.getRent()
+        else -> throw IllegalArgumentException (ERROR_LOCATION_CANNOT_BE_RENTED)
     }
 }
 
 class PurchaseLocationTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Location ): ITransaction {
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
-    override val fromAccountHolder : IAccountHolder
-    override val transactionAmount : Money
-    val locationPurchased : Location
 
-    init{
-        //TODO Not to happy about this, I think the location should know whether it can be purchased, not the transaction. Revisit this
-
-        when (_location){
-            is Industry  -> transactionAmount = _location.purchasePrice
-            is RetailSite -> transactionAmount = _location.purchasePrice
-            else -> throw IllegalArgumentException (ERROR_LOCATION_CANNOT_BE_PURCHASED)
-        }
-
-        when (_toAccountHolder){
-            is Bank -> fromAccountHolder = _fromAccountHolder // Can purchase from the bank only
-            else -> throw IllegalArgumentException (ERROR_INVALID_ACCOUNT) //Although in the future the rules may allow Player to Player purchase
-        }
-        locationPurchased = _location
+    override val fromAccountHolder : IAccountHolder = when (_toAccountHolder){
+        is Bank -> _fromAccountHolder // Can purchase from the bank only
+        else -> throw IllegalArgumentException (ERROR_INVALID_ACCOUNT) //Although in the future the rules may allow Player to Player purchase
     }
+
+    override val transactionAmount : Money = when (_location){
+        is Industry  ->  _location.purchasePrice
+        is RetailSite -> _location.purchasePrice
+        else -> throw IllegalArgumentException (ERROR_LOCATION_CANNOT_BE_PURCHASED)
+    }
+
+    val locationPurchased : Location = _location
 }
 
 class BuildShopTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _shopType: ShopType, _location : RetailSite): ITransaction{
