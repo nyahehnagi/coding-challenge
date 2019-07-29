@@ -3,6 +3,11 @@ package codingchallenge9
 
 import java.lang.IllegalArgumentException
 
+const val ERROR_LOCATION_CANNOT_BE_RENTED = "Location cannot be rented"
+const val ERROR_LOCATION_HAS_NO_FEE = "Location has no fee"
+const val ERROR_LOCATION_CANNOT_BE_PURCHASED = "Location cannot be purchased"
+const val ERROR_INVALID_ACCOUNT = "Cannot purchase from this account type"
+
 const val STARTING_BALANCE = 200
 
 enum class TransactionType{
@@ -16,7 +21,6 @@ enum class TransactionType{
 interface IAccountHolder {
     val name : String
 }
-
 
 interface ITransaction
 {
@@ -57,14 +61,13 @@ class BankFeeTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : IAccou
     init{
         when (_location){
             is Go -> transactionAmount = _location.fee
-            else -> throw IllegalArgumentException ("Location has no fee")
+            else -> throw IllegalArgumentException (ERROR_LOCATION_HAS_NO_FEE)
         }
 
     }
 }
 
 class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Location ): ITransaction{
-
 
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
@@ -74,7 +77,7 @@ class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAc
         when (_location){
             is Industry -> transactionAmount = _location.getRent()
             is RetailSite -> transactionAmount = _location.getRent()
-            else -> throw IllegalArgumentException ("Location cannot be rented")
+            else -> throw IllegalArgumentException (ERROR_LOCATION_CANNOT_BE_RENTED)
         }
     }
 }
@@ -90,12 +93,12 @@ class PurchaseLocationTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder 
         when (_location){
             is Industry -> transactionAmount = _location.purchasePrice
             is RetailSite -> transactionAmount = _location.purchasePrice
-            else -> throw IllegalArgumentException ("Location cannot be purchased")
+            else -> throw IllegalArgumentException (ERROR_LOCATION_CANNOT_BE_PURCHASED)
         }
 
         when (_toAccountHolder){
             is Bank -> fromAccountHolder = _fromAccountHolder // Can purchase from the bank only
-            else -> throw IllegalArgumentException ("Cannot purchase from this account type") //Although in the future the rules may allow Player to Player purchase
+            else -> throw IllegalArgumentException (ERROR_INVALID_ACCOUNT) //Although in the future the rules may allow Player to Player purchase
         }
         locationPurchased = _location
     }
@@ -109,44 +112,5 @@ class BuildShopTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAcco
     override val transactionAmount : Money =  _location.getBuildCost(_shopType)
     val shopLocation : RetailSite = _location
     val shopType : ShopType = _shopType
-
-
 }
-
-
-/*
-A function that adds a transaction for an amount being transferred from the Bank to a Player. This is the starting balance for each player in the game.
-
-A function that adds a transaction for the Bank paying a fee to a Player, e.g. when the player passes through the Go location.
-
-A function that adds a transaction for rent being paid from one player to another, e.g. when a player lands on a RetailSite location owned by another player.
-
-A function that adds a transaction for when a Player has paid the Bank to purchase a Location.
-
-A function that adds a transaction for when a Player has paid the Bank for building a specific type of building on a Location. Types of building include ministore, supermarket or megastore.
- */
-
-/*
-object TransactionFactory(){
-    companion object {
-        fun createTransaction(
-                    transactionType: TransactionType,
-                    fromAccountHolder: IAccountHolder,
-                    toAccountHolder: IAccountHolder
-            /*,
-                           //transactionData : TransactionData,
-                           location : Location,
-
-
-                           shopType: ShopType*/
-        ): ITransaction {
-            return when (transactionType) {
-                TransactionType.BANKTRANSFER -> BankTransferTxn(fromAccountHolder, toAccountHolder)
-                //TransactionType.BUILDSHOP-> BuildShopTxn (fromAccountHolder,toAccountHolder,location,shopType)
-            }
-        }
-    }
-
-}
-*/
 

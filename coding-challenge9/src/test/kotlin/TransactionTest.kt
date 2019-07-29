@@ -11,13 +11,11 @@ class LocationTest {
     @Test
     fun `Should test that a retail site location that is undeveloped `(){
         val retailSiteLocation = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
-        //val retailSiteLocation = RetailSite("Oxford Street", 200)
         assertThat(retailSiteLocation.getRent().value, equalTo(40))
         assertThat(retailSiteLocation.name, equalTo("Oxford Street"))
         assertThat(retailSiteLocation.getRent().value, equalTo(40))
         assertThat(retailSiteLocation.isPurchaseable, equalTo(true))
     }
-
 
     @Test
     fun `Should test that a bank transfer transaction has been created`() {
@@ -43,8 +41,6 @@ class LocationTest {
         val shopType: ShopType = ShopType.MINISTORE
         val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
 
-
-
         val buildMinistoreTransaction : ITransaction = ledger.addTransaction(transactionType,fromPlayer,bank,location,shopType)
 
         assertThat(buildMinistoreTransaction.fromAccountHolder.name, equalTo("Kirsty"))
@@ -65,7 +61,6 @@ class LocationTest {
         val playerTo = Player("Kirsty")
         val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
 
-
         val rentPaymentTransaction : ITransaction = ledger.addTransaction(transactionType,playerFrom,playerTo,location)
 
         assertThat(rentPaymentTransaction.fromAccountHolder.name, equalTo("Bromley"))
@@ -80,7 +75,6 @@ class LocationTest {
         val playerFrom = Player("Bromley")
         val playerTo = Player("Kirsty")
         val location = Industry("Magna Park")
-
 
         val rentPaymentTransaction : ITransaction = ledger.addTransaction(transactionType,playerFrom,playerTo,location)
 
@@ -98,11 +92,9 @@ class LocationTest {
         val location = FreeParking()
 
         val exception = assertThrows<IllegalArgumentException>{
-            //val rentPaymentTransaction: ITransaction =
             ledger.addTransaction(transactionType, playerFrom, playerTo, location)
         }
         assertThat(exception.message, equalTo("Location cannot be rented"))
-
     }
 
     @Test
@@ -115,7 +107,6 @@ class LocationTest {
         val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
 
         val exception = assertThrows<IllegalArgumentException>{
-            //val incorrectBuildShopTransaction: ITransaction =
             ledger.addTransaction(transactionType,fromPlayer,bank,location,shopType)
         }
         assertThat(exception.message, equalTo("Invalid Transaction Type for passed parameters"))
@@ -164,6 +155,7 @@ class LocationTest {
         }
         assertThat(exception.message, equalTo("Invalid Transaction Type for passed parameters"))
     }
+
     @Test
     fun `Should test that a purchase transaction has been created for purchase of an industrial site`() {
         val ledger = Gameledger()
@@ -186,7 +178,6 @@ class LocationTest {
         val playerFrom = Player("Bromley")
         val playerTo = Bank()
         val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
-
 
         val purchaseLocationTransaction : ITransaction = ledger.addTransaction(transactionType,playerFrom,playerTo,location)
 
