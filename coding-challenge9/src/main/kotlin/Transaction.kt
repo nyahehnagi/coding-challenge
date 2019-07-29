@@ -47,14 +47,11 @@ class BankFeeTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : IAccou
 
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
-    override val transactionAmount : Money
-
-    init{
-        when (_location){
-            is Go -> transactionAmount = _location.fee
-            else -> throw IllegalArgumentException (ERROR_LOCATION_HAS_NO_FEE)
-        }
+    override val transactionAmount : Money = when (_location){
+        is Go -> _location.fee
+        else -> throw IllegalArgumentException (ERROR_LOCATION_HAS_NO_FEE)
     }
+
 }
 
 class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Location ): ITransaction{
