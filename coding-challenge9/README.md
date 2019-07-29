@@ -14,7 +14,7 @@ this is done via the ledger or even elsewhere - currently I do it via Location.
 ### Things I have learned from this exercise
 
 1. How to create a test for an exception
-2. How to add a dependancy to the the build.gradle file. I updated this file to include JUnit5 so I could use  assertThrows. 
+2. How to add a dependancy to the build.gradle file. I updated this file to include JUnit5 so I could use  assertThrows. 
 3. I needed to include an api and jupiter engine for JUnit5
 4. I so wanted to use the factory pattern but it wasn't the right pattern, still I learned about that - although I think I will use this pattern for the creation of the gameboard and locations. I'll have a Location Factory I think
 5. How to throw an exception
