@@ -67,6 +67,22 @@ class LocationTest {
     }
 
     @Test
+    fun `Should test that a rent transaction has been created for a retail site with a ministore built on it`() {
+        val ledger = Gameledger()
+        val transactionType: TransactionType = TransactionType.RENTPAYMENT
+        val playerFrom = Player("Bromley")
+        val playerTo = Player("Kirsty")
+        val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
+        location.buildMiniStore()
+
+        val rentPaymentTransaction : ITransaction = ledger.addTransaction(transactionType,playerFrom,playerTo,location)
+
+        assertThat(rentPaymentTransaction.fromAccountHolder.name, equalTo("Bromley"))
+        assertThat(rentPaymentTransaction.transactionAmount.value, equalTo(50))
+        assertThat(rentPaymentTransaction.toAccountHolder.name, equalTo("Kirsty"))
+    }
+
+    @Test
     fun `Should test that a rent transaction has been created for an industrial site`() {
         val ledger = Gameledger()
         val transactionType: TransactionType = TransactionType.RENTPAYMENT

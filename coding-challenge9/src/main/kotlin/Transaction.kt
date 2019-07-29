@@ -41,7 +41,6 @@ class BankTransferTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : I
     override val transactionAmount : Money = GBP (STARTING_BALANCE)
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
-
 }
 
 class BankFeeTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Location): ITransaction{
@@ -55,7 +54,6 @@ class BankFeeTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : IAccou
             is Go -> transactionAmount = _location.fee
             else -> throw IllegalArgumentException (ERROR_LOCATION_HAS_NO_FEE)
         }
-
     }
 }
 
