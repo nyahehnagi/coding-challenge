@@ -45,8 +45,6 @@ class Industry(name:String) : Rent, Purchaseable, Location(name){
     override val baseRent : Money = GBP(INDUSTRY_BASE_RENT)
     override val purchasePrice: Money = GBP (INDUSTRY_PURCHASE_PRICE)
     fun getRent() = baseRent
-
-
 }
 
 class RetailSite (  name: String,
