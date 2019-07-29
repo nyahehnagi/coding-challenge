@@ -7,7 +7,7 @@ const val STARTING_BALANCE = 200
 
 enum class TransactionType{
         BANKTRANSFER,
-        //BANKPAYMENT
+        BANKPAYMENT,
         RENTPAYMENT ,
         //LOCATIONPURCHASE,
         BUILDSHOP
@@ -48,6 +48,20 @@ class BankTransferTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : I
 
 }
 
+class BankFeeTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Location): ITransaction{
+
+    override val fromAccountHolder : IAccountHolder = _fromAccountHolder
+    override val toAccountHolder: IAccountHolder =  _toAccountHolder
+    override val transactionAmount : Money
+
+    init{
+        when (_location){
+            is Go -> transactionAmount = _location.fee
+            else -> throw IllegalArgumentException ("Location has no fee")
+        }
+
+    }
+}
 
 class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Location ): ITransaction{
 

@@ -89,7 +89,7 @@ class LocationTest {
     }
 
     @Test
-    fun `Should test IllegalArgumentException raised as we cannot create a rent transaction for Free Parking Location`() {
+    fun `Should test IllegalArgumentException raised as we cannot create a rent transaction for an invalid location`() {
         val ledger = Gameledger()
         val transactionType: TransactionType = TransactionType.RENTPAYMENT
         val playerFrom = Player("Bromley")
@@ -101,8 +101,69 @@ class LocationTest {
         }
         assertThat(exception.message, equalTo("Location cannot be rented"))
 
-
     }
+
+    @Test
+    fun `Should test IllegalArgumentException raised as we cannot create build shop transactions for any other transaction type bar BUILDSHOP`() {
+        val ledger = Gameledger()
+        val transactionType: TransactionType = TransactionType.RENTPAYMENT
+        val fromPlayer = Player ("Kirsty")
+        val bank = Bank()
+        val shopType: ShopType = ShopType.MINISTORE
+        val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
+
+        val exception = assertThrows<IllegalArgumentException>{
+            val incorrectBuildShopTransaction: ITransaction = ledger.addTransaction(transactionType,fromPlayer,bank,location,shopType)
+        }
+        assertThat(exception.message, equalTo("Invalid Transaction Type for passed parameters"))
+    }
+
+    @Test
+    fun `Should test that a fee transaction has been created`() {
+        val ledger = Gameledger()
+        val transactionType: TransactionType = TransactionType.BANKPAYMENT
+        val bank = Bank()
+        val playerTo = Player("Bromley")
+        val location  = Go()
+
+
+        val rentPaymentTransaction : ITransaction = ledger.addTransaction(transactionType,bank,playerTo,location)
+
+        assertThat(rentPaymentTransaction.fromAccountHolder.name, equalTo("bank"))
+        assertThat(rentPaymentTransaction.transactionAmount.value, equalTo(100))
+        assertThat(rentPaymentTransaction.toAccountHolder.name, equalTo("Bromley"))
+    }
+
+    @Test
+    fun `Should test IllegalArgumentException raised as we cannot create fee transactions for a location that does not support fees`() {
+        val ledger = Gameledger()
+        val transactionType: TransactionType = TransactionType.BANKPAYMENT
+        val bank = Bank()
+        val playerTo = Player("Bromley")
+        val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
+
+        val exception = assertThrows<IllegalArgumentException>{
+            val incorrectFeeLocationTransaction: ITransaction = ledger.addTransaction(transactionType,bank,playerTo,location)
+        }
+        assertThat(exception.message, equalTo("Location has no fee"))
+    }
+
+    @Test
+    fun `Should test IllegalArgumentException raised as we cannot create fee or rent style transactions `() {
+        val ledger = Gameledger()
+        val transactionType: TransactionType = TransactionType.BANKTRANSFER
+        val bank = Bank()
+        val playerTo = Player("Bromley")
+        val location  = Go()
+
+        val exception = assertThrows<IllegalArgumentException>{
+            val incorrectLocationTypeTransaction: ITransaction = ledger.addTransaction(transactionType,bank,playerTo,location)
+        }
+        assertThat(exception.message, equalTo("Invalid Transaction Type for passed parameters"))
+    }
+
+
+
 
 }
 

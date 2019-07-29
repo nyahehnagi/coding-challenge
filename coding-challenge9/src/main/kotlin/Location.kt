@@ -90,7 +90,7 @@ class RetailSite (  name: String,
         ShopType.SUPERMARKET -> storeBuildingCosts.costOfBuildingSupermarket
         ShopType.MEGASTORE ->  storeBuildingCosts.costOfBuildingMegastore
     }
-/*
+
     // Thinking of getting rid of these and taking the building of store outside of the location class
     fun buildMiniStore (){
         retailDevelopmentStatus = ShopType.MINISTORE
@@ -103,5 +103,5 @@ class RetailSite (  name: String,
     fun buildMegastore (){
         retailDevelopmentStatus = ShopType.MEGASTORE
     }
-    */
+
 }
