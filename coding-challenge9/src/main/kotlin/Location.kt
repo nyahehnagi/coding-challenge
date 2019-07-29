@@ -30,7 +30,7 @@ interface Rent {
 }
 
 interface Purchaseable{
-    val isPurchaseable : Boolean
+    val  purchasePrice: Money
 }
 
 class FreeParking : Location("Free Parking")
@@ -43,13 +43,11 @@ class Go : Location ("Go"){
 class Industry(name:String) : Rent, Purchaseable, Location(name){
 
     override val baseRent : Money = GBP(INDUSTRY_BASE_RENT)
-    override val isPurchaseable:Boolean = true
+    override val purchasePrice: Money = GBP (INDUSTRY_PURCHASE_PRICE)
     fun getRent() = baseRent
 
-    val purchasePrice: Money = GBP (INDUSTRY_PURCHASE_PRICE)
 
 }
-
 
 class RetailSite (  name: String,
                     _purchasePrice: Money,
@@ -58,15 +56,13 @@ class RetailSite (  name: String,
                     _groupID: Int) : Rent, Purchaseable, Location (name) {
 
     override val baseRent : Money
-    override val isPurchaseable:Boolean = true
+    override val purchasePrice: Money
 
     private val locationRentalValues: LocationRentalValues
     private var retailDevelopmentStatus: ShopType = ShopType.UNDEVELOPED
 
     val storeBuildingCosts: StoreBuildingCosts
     val retailGroup: Int
-    val purchasePrice: Money
-
 
     init {
         baseRent  = _locationRentalValues.undevelopedRent
@@ -75,7 +71,6 @@ class RetailSite (  name: String,
         retailGroup= _groupID
         purchasePrice = _purchasePrice
     }
-
 
     fun getRent(): Money = when (retailDevelopmentStatus) {
         ShopType.UNDEVELOPED -> baseRent

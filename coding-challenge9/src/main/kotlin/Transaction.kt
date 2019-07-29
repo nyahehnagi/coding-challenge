@@ -90,8 +90,9 @@ class PurchaseLocationTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder 
 
     init{
         //TODO Not to happy about this, I think the location should know whether it can be purchased, not the transaction. Revisit this
+
         when (_location){
-            is Industry -> transactionAmount = _location.purchasePrice
+            is Industry  -> transactionAmount = _location.purchasePrice
             is RetailSite -> transactionAmount = _location.purchasePrice
             else -> throw IllegalArgumentException (ERROR_LOCATION_CANNOT_BE_PURCHASED)
         }
@@ -105,7 +106,6 @@ class PurchaseLocationTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder 
 }
 
 class BuildShopTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _shopType: ShopType, _location : RetailSite): ITransaction{
-
 
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder

@@ -14,5 +14,4 @@ class GBP (_value:Int): Money(_value){
     override fun toString(): String {
         return "£$value"
     }
-
 }

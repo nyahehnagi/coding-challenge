@@ -7,14 +7,13 @@ import java.lang.IllegalArgumentException
 
 
 class LocationTest {
-    //TODO Should I test for the transaction return types?
     @Test
     fun `Should test that a retail site location that is undeveloped `(){
         val retailSiteLocation = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
         assertThat(retailSiteLocation.getRent().value, equalTo(40))
         assertThat(retailSiteLocation.name, equalTo("Oxford Street"))
         assertThat(retailSiteLocation.getRent().value, equalTo(40))
-        assertThat(retailSiteLocation.isPurchaseable, equalTo(true))
+        assertThat(retailSiteLocation.purchasePrice.value, equalTo(100))
     }
 
     @Test
@@ -23,7 +22,6 @@ class LocationTest {
         val transactionType: TransactionType = TransactionType.BANKTRANSFER
         val player = Player("Bromley")
         val bank = Bank()
-
 
         val bankTransferTransaction : ITransaction = ledger.addTransaction(transactionType,bank,player)
 
