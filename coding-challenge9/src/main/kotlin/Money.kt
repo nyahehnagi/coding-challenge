@@ -6,8 +6,9 @@ sealed class Money(_value: Int){
 
 class GBP (_value:Int): Money(_value){
     override val value:Int
+
     init{
-        // rules state that GBP cannot be negative
+        // rules state that amount cannot be negative
         value = if (_value >= 0) {_value} else 0
     }
 

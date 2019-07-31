@@ -1,65 +1,39 @@
 package codingchallenge9
 
 
-object Gameledger {
+class Gameledger {
 
     private val transactionHistory: MutableList<ITransaction> = mutableListOf()
 
     // Bank Transfer
-    fun addBankTransferTransaction(
-            fromAccountHolder: Bank,
-            toAccountHolder: Player
-        ): ITransaction {
-
+    fun addBankTransferTransaction( fromAccountHolder: Bank, toAccountHolder: Player) {
         transactionHistory.add(BankTransferTxn(fromAccountHolder, toAccountHolder))
-
-        return transactionHistory.last()
     }
 
     // Build Shop
-    fun addBuildShopTransaction(
-            fromAccountHolder: Player,
-            toAccountHolder: Bank,
-            location: IBuildable,
-            shopType: ShopType
-        ): ITransaction {
-
+    fun addBuildShopTransaction(fromAccountHolder: Player, toAccountHolder: Bank, location: IBuildable, shopType: ShopType) {
         transactionHistory.add(BuildShopTxn(fromAccountHolder, toAccountHolder, shopType, location))
-
-        return transactionHistory.last()
     }
 
-    fun addRentPaymentTransaction(
-            fromAccountHolder: Player,
-            toAccountHolder: Player,
-            location: IRentable
-        ): ITransaction {
-
+    fun addRentPaymentTransaction(fromAccountHolder: Player, toAccountHolder: Player, location: IRentable) {
             transactionHistory.add(RentPaymentTxn(fromAccountHolder, toAccountHolder, location))
-
-            return transactionHistory.last()
         }
 
-    fun addFeeTransaction(
-            fromAccountHolder: Bank,
-            toAccountHolder: Player,
-            location: IFeePayable
-        ): ITransaction {
-
+    fun addFeeTransaction(fromAccountHolder: Bank, toAccountHolder: Player, location: IFeePayable) {
             transactionHistory.add(BankFeeTxn(fromAccountHolder, toAccountHolder, location))
-
-            return transactionHistory.last()
         }
 
-    fun addPurchaseTransaction(
-            fromAccountHolder: Player,
-            toAccountHolder: Bank,
-            location: IPurchaseable
-        ): ITransaction {
-
+    fun addPurchaseTransaction(fromAccountHolder: Player, toAccountHolder: Bank, location: IPurchaseable) {
             transactionHistory.add(PurchaseLocationTxn(fromAccountHolder, toAccountHolder, location))
-
-            return transactionHistory.last()
         }
 
+    fun getPlayerBalance(player: Player):Money {
+        val balance : Int  = transactionHistory.filter { it.toAccountHolder.name == player.name }.sumBy { it.transactionAmount.value } -
+                transactionHistory.filter { it.fromAccountHolder.name == player.name }.sumBy { it.transactionAmount.value }
+        return GBP (balance)
+    }
+
+    fun getLatestTransaction () : ITransaction{
+        return transactionHistory.last()
+    }
 }
