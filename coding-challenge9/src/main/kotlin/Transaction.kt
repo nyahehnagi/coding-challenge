@@ -14,7 +14,7 @@ interface ITransaction
     val toAccountHolder: IAccountHolder
 }
 
-class Bank (): IAccountHolder {
+class Bank : IAccountHolder {
     override val name = "bank"
 }
 

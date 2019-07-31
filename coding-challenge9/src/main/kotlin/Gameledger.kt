@@ -17,7 +17,7 @@ class Gameledger {
     // Build Shop
     fun addBuildShopTransaction ( fromAccountHolder : Player,
                         toAccountHolder : Bank,
-                        location : RetailSite ,
+                        location : IBuildable ,
                         shopType: ShopType ) : ITransaction {
 
         transactionHistory.add(BuildShopTxn(fromAccountHolder,toAccountHolder,shopType,location))

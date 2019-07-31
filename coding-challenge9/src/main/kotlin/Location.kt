@@ -48,19 +48,18 @@ interface IBuildable : ILocation {
     fun getBuildCost (_shopType: ShopType): Money
 }
 
-
-class FreeParking(): ILocation {
+class FreeParking : ILocation {
     override val name: String = "Free Parking"
 }
 
-class Go (): ILocation, IFeePayable {
-    override val name: String = "Go"
+class Go : ILocation, IFeePayable {
     override val fee : Money = GBP(GO_FEE)
+    override val name : String = "Go"
 }
 
-class Industry(name:String) : IRentable, IPurchaseable, ILocation{
+class Industry(_name:String) : IRentable, IPurchaseable, ILocation{
 
-    override val name: String = name
+    override val name: String = _name
     override val purchasePrice: Money = GBP (INDUSTRY_PURCHASE_PRICE)
     override fun getRent() = GBP(INDUSTRY_BASE_RENT)
 }
@@ -96,13 +95,12 @@ class RetailSite (  _name: String,
     // Thinking of getting rid of these and taking the building of store outside of the location class
     fun buildMiniStore() {
         retailDevelopmentStatus = DevelopmentStatus.MINISTORE
-
-        fun buildSupermarket() {
+    }
+    fun buildSupermarket() {
             retailDevelopmentStatus = DevelopmentStatus.SUPERMARKET
         }
 
-        fun buildMegastore() {
+    fun buildMegastore() {
             retailDevelopmentStatus = DevelopmentStatus.MEGASTORE
         }
-    }
 }
