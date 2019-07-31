@@ -2,9 +2,6 @@ import codingchallenge9.*
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
-import org.junit.jupiter.api.assertThrows
-import java.lang.IllegalArgumentException
-
 
 class LocationTest {
     @Test
@@ -92,33 +89,17 @@ class LocationTest {
         assertThat(rentPaymentTransaction.toAccountHolder.name, equalTo("Jane"))
     }
 
-
     @Test
     fun `Should test that a fee transaction has been created`() {
         val ledger = Gameledger()
         val bank = Bank()
         val playerTo = Player("Bob")
         val location  = Go()
-
-
         val rentPaymentTransaction : ITransaction = ledger.addFeeTransaction(bank,playerTo,location)
 
         assertThat(rentPaymentTransaction.fromAccountHolder.name, equalTo("bank"))
         assertThat(rentPaymentTransaction.transactionAmount.value, equalTo(100))
         assertThat(rentPaymentTransaction.toAccountHolder.name, equalTo("Bob"))
-    }
-
-    @Test
-    fun `Should test IllegalArgumentException raised as we cannot create fee transactions for a location that does not support fees`() {
-        val ledger = Gameledger()
-        val bank = Bank()
-        val playerTo = Player("Bob")
-        val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
-
-        val exception = assertThrows<IllegalArgumentException>{
-            ledger.addFeeTransaction(bank,playerTo,location)
-        }
-        assertThat(exception.message, equalTo("Location has no fee"))
     }
 
     @Test
@@ -150,8 +131,6 @@ class LocationTest {
 
         assertThat((purchaseLocationTransaction as PurchaseLocationTxn).locationPurchased.name, equalTo("Oxford Street"))
     }
-
-
 }
 
 

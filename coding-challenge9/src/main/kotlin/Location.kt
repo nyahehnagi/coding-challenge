@@ -20,28 +20,31 @@ data class LocationRentalValues (val undevelopedRent: Money,
                                  val rentSupermarket: Money,
                                  val rentMegastore: Money)
 
-interface Location {
+interface ILocation {
     val name: String
 }
 
-interface Rentable {
+interface IRentable {
     fun getRent () : Money
 }
 
-interface Purchaseable : Location{
+interface IPurchaseable : ILocation{
     val  purchasePrice: Money
 }
 
-class FreeParking(): Location {
+interface IFeePayable : ILocation {
+    val fee : Money
+}
+class FreeParking(): ILocation {
     override val name: String = "Free Parking"
 }
 
-class Go (): Location {
+class Go (): ILocation, IFeePayable {
     override val name: String = "Go"
-    val fee : Money = GBP(GO_FEE)
+    override val fee : Money = GBP(GO_FEE)
 }
 
-class Industry(name:String) : Rentable, Purchaseable, Location{
+class Industry(name:String) : IRentable, IPurchaseable, ILocation{
 
     override val name: String = name
     override val purchasePrice: Money = GBP (INDUSTRY_PURCHASE_PRICE)
@@ -52,7 +55,7 @@ class RetailSite (  name: String,
                     _purchasePrice: Money,
                     _costOfBuildingStores: StoreBuildingCosts,
                     _locationRentalValues: LocationRentalValues,
-                    _groupID: Int) : Rentable, Purchaseable, Location {
+                    _groupID: Int) : IRentable, IPurchaseable, ILocation {
 
     override val purchasePrice: Money
     override val name: String = name

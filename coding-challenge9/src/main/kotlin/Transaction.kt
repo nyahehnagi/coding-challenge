@@ -1,13 +1,6 @@
 
 package codingchallenge9
 
-import java.lang.IllegalArgumentException
-
-const val ERROR_LOCATION_CANNOT_BE_RENTED = "Location cannot be rented"
-const val ERROR_LOCATION_HAS_NO_FEE = "Location has no fee"
-const val ERROR_LOCATION_CANNOT_BE_PURCHASED = "Location cannot be purchased"
-const val ERROR_INVALID_ACCOUNT = "Cannot purchase from this account type"
-
 const val STARTING_BALANCE = 200
 
 interface IAccountHolder {
@@ -29,24 +22,20 @@ class Player(_name : String): IAccountHolder{
     override val name = _name //should add some logic here to not allow any reserved names e.g bank
 }
 
-class BankTransferTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder): ITransaction{
+class BankTransferTxn ( _fromAccountHolder: Bank, _toAccountHolder : Player): ITransaction{
     override val transactionAmount : Money = GBP (STARTING_BALANCE)
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
 }
 
-class BankFeeTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Location): ITransaction{
+class BankFeeTxn ( _fromAccountHolder: Bank, _toAccountHolder : Player, location:IFeePayable): ITransaction{
 
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
-    override val transactionAmount : Money = when (_location){
-        is Go -> _location.fee
-        else -> throw IllegalArgumentException (ERROR_LOCATION_HAS_NO_FEE)
-    }
-
+    override val transactionAmount : Money = location.fee
 }
 
-class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Rentable ): ITransaction{
+class RentPaymentTxn (_fromAccountHolder: Player, _toAccountHolder : Player, _location:IRentable ): ITransaction{
 
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
@@ -54,20 +43,14 @@ class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAc
 
     }
 
-class PurchaseLocationTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Purchaseable ): ITransaction {
+class PurchaseLocationTxn (_fromAccountHolder: Player, _toAccountHolder : Bank, _location:IPurchaseable ): ITransaction {
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
-
-    override val fromAccountHolder : IAccountHolder = when (_toAccountHolder){
-        is Bank -> _fromAccountHolder // Can purchase from the bank only
-        else -> throw IllegalArgumentException (ERROR_INVALID_ACCOUNT) //Although in the future the rules may allow Player to Player purchase
-    }
-
+    override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val transactionAmount : Money = _location.purchasePrice
-
     val locationPurchased =  _location
 }
 
-class BuildShopTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _shopType: ShopType, _location : RetailSite): ITransaction{
+class BuildShopTxn (_fromAccountHolder: Player, _toAccountHolder : Bank, _shopType: ShopType, _location : RetailSite): ITransaction{
 
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder

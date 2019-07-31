@@ -1,11 +1,13 @@
 package codingchallenge9
 
+
 class Gameledger {
     private val transactionHistory: MutableList<ITransaction> = mutableListOf()
 
+
     // Bank Transfer
-    fun addBankTransferTransaction (    fromAccountHolder : IAccountHolder,
-                                        toAccountHolder : IAccountHolder) : ITransaction {
+    fun addBankTransferTransaction (    fromAccountHolder : Bank,
+                                        toAccountHolder : Player) : ITransaction {
 
         transactionHistory.add(BankTransferTxn(fromAccountHolder, toAccountHolder))
 
@@ -13,8 +15,8 @@ class Gameledger {
     }
 
     // Build Shop
-    fun addBuildShopTransaction ( fromAccountHolder : IAccountHolder,
-                        toAccountHolder : IAccountHolder,
+    fun addBuildShopTransaction ( fromAccountHolder : Player,
+                        toAccountHolder : Bank,
                         location : RetailSite ,
                         shopType: ShopType ) : ITransaction {
 
@@ -23,27 +25,27 @@ class Gameledger {
         return transactionHistory.last()
     }
 
-    fun addRentPaymentTransaction ( fromAccountHolder : IAccountHolder,
-                        toAccountHolder : IAccountHolder,
-                        location : Rentable ) : ITransaction {
+    fun addRentPaymentTransaction ( fromAccountHolder : Player,
+                        toAccountHolder : Player,
+                        location : IRentable ) : ITransaction {
 
         transactionHistory.add(RentPaymentTxn(fromAccountHolder,toAccountHolder,location))
 
         return transactionHistory.last()
     }
 
-    fun addFeeTransaction (fromAccountHolder : IAccountHolder,
-                                   toAccountHolder : IAccountHolder,
-                                   location : Location ) : ITransaction {
+    fun addFeeTransaction (fromAccountHolder : Bank,
+                                   toAccountHolder : Player,
+                                   location : IFeePayable ) : ITransaction {
 
         transactionHistory.add(BankFeeTxn(fromAccountHolder,toAccountHolder,location))
 
         return transactionHistory.last()
     }
 
-    fun addPurchaseTransaction (fromAccountHolder : IAccountHolder,
-                           toAccountHolder : IAccountHolder,
-                           location : Purchaseable ) : ITransaction {
+    fun addPurchaseTransaction (fromAccountHolder : Player,
+                           toAccountHolder : Bank,
+                           location : IPurchaseable ) : ITransaction {
 
         transactionHistory.add(PurchaseLocationTxn(fromAccountHolder,toAccountHolder,location))
 
