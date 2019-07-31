@@ -2,15 +2,14 @@
 Started out with this trying to use the factory pattern for the transactions. It didn't quite work and was starting to get fiddly.
 I thought if a bit fiddly then it was not the right pattern. So I went with an interface for a transaction and then implemented each of the transaction types from there
 
-Within GameLedger, I have created various functions to generate transactions. There's some additional logic to ensure that each transaction is created properly. If the client tries to create an invalid transaction of any type an exception is raised. Tests have been created to check these exceptions along with succesful transactions
 
 ### Stuff I am not sure about or needs some more work
 
-1. Whether a transaction should check if something can be purchased - should that be something a Location does?
+1. Whether a transaction should check if something can be purchased - should that be something a Location does? - I have since changed this and used an interface named IPurchasable - no need to check now, as you have to pass a Location that can be purchased
 2. Should I be testing for transaction return types in my tests? Or more to the point should adding a transaction through the gameledger even return a transaction - perhaps it should just do it.. and that's that
 3. Building on a location - I'm still in mixed minds whether a Location should track this or whether 
 this is done via the ledger or even elsewhere - currently I do it via Location.
-4. Is it OK to raise exceptions when instantiating an object with imcompatible constructor parameters?
+4. Is it OK to raise exceptions when instantiating an object with imcompatible constructor parameters? I have since changed the design and no longer need exceptions due to changes in how I've designed the interfaces. 
 
 ### Things I have learned from this exercise
 
@@ -22,3 +21,4 @@ this is done via the ledger or even elsewhere - currently I do it via Location.
 6. Smart casts, use of 'is' and 'as'
 7. using interfaces and the useful stuff you can do with 'when'
 8. assignments using when
+9. even more about in interfaces and how they can be used
