@@ -3,6 +3,11 @@ package codingchallenge9
 const val INDUSTRY_PURCHASE_PRICE = 100
 const val INDUSTRY_BASE_RENT = 20
 const val GO_FEE = 100
+const val MAX_NUMBER_OF_INDUSTRY = 4
+const val MAX_NUMBER_OF_GO = 1
+const val MAX_NUMBER_OF_RETAIL = 20
+const val MAX_NUMBER_OF_FREEPARKING = 1
+
 
 enum class ShopType {
     MINISTORE ,
@@ -17,7 +22,6 @@ enum class DevelopmentStatus {
     MEGASTORE;
 }
 
-
 data class StoreBuildingCosts ( val costOfBuildingMinistore: Money,
                                 val costOfBuildingSupermarket: Money,
                                 val costOfBuildingMegastore: Money)
@@ -29,6 +33,7 @@ data class LocationRentalValues (val undevelopedRent: Money,
 
 interface ILocation {
     val name: String
+    val maxNumberOfLocation : Int
 }
 
 interface IRentable {
@@ -50,11 +55,13 @@ interface IBuildable : ILocation {
 
 class FreeParking : ILocation {
     override val name: String = "Free Parking"
+    override val maxNumberOfLocation : Int = MAX_NUMBER_OF_FREEPARKING
 }
 
 class Go : ILocation, IFeePayable {
     override val fee : Money = GBP(GO_FEE)
     override val name : String = "Go"
+    override val maxNumberOfLocation : Int = MAX_NUMBER_OF_GO
 }
 
 class Industry(_name:String) : IRentable, IPurchaseable, ILocation{
@@ -62,6 +69,7 @@ class Industry(_name:String) : IRentable, IPurchaseable, ILocation{
     override val name: String = _name
     override val purchasePrice: Money = GBP (INDUSTRY_PURCHASE_PRICE)
     override fun getRent() = GBP(INDUSTRY_BASE_RENT)
+    override val maxNumberOfLocation : Int = MAX_NUMBER_OF_INDUSTRY
 }
 
 class RetailSite (  _name: String,
@@ -73,6 +81,7 @@ class RetailSite (  _name: String,
     override val purchasePrice: Money = _purchasePrice
     override val name: String = _name
     override val storeBuildingCosts: StoreBuildingCosts = _costOfBuildingStores
+    override val maxNumberOfLocation : Int = MAX_NUMBER_OF_RETAIL
     val retailGroup: Int = _groupID
 
     private val locationRentalValues: LocationRentalValues = _locationRentalValues

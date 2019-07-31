@@ -1,4 +1,3 @@
-
 package codingchallenge9
 
 const val STARTING_BALANCE = 200
@@ -22,7 +21,7 @@ class Player(_name : String): IAccountHolder{
     override val name = _name //should add some logic here to not allow any reserved names e.g bank
 }
 
-class BankTransferTxn ( _fromAccountHolder: Bank, _toAccountHolder : Player): ITransaction{
+class StartingBalanceBankTransferTxn ( _fromAccountHolder: Bank, _toAccountHolder : Player): ITransaction{
     override val transactionAmount : Money = GBP (STARTING_BALANCE)
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder

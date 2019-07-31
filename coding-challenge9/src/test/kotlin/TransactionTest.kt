@@ -20,7 +20,7 @@ class TransactionTest {
         val ledger = Gameledger()
         val player = Player("Bob")
         val bank = Bank()
-        ledger.addBankTransferTransaction(bank,player)
+        ledger.addStartBalanceBankTransferTransaction(bank,player)
 
         assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("bank"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(200))
@@ -153,11 +153,12 @@ class TransactionTest {
         retailLocation.buildMiniStore()
 
         ledger.addFeeTransaction(bank, player1, goLocation) //add 200
-        ledger.addBankTransferTransaction(bank, player1) // add 100
-        ledger.addRentPaymentTransaction(player1, player2, retailLocation) // reduce 50
+        ledger.addStartBalanceBankTransferTransaction(bank, player1) // add 100
+        ledger.addPurchaseTransaction(player1,bank,industryLocation) // deduct 100
+        ledger.addRentPaymentTransaction(player1, player2, retailLocation) // deduct 50
         ledger.addRentPaymentTransaction(player2,player1,industryLocation) //add 20
 
-        assertThat(ledger.getPlayerBalance(player1).value, equalTo(270))
+        assertThat(ledger.getPlayerBalance(player1).value, equalTo(170))
     }
 
 }
