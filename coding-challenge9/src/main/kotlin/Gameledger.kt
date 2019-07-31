@@ -25,7 +25,7 @@ class Gameledger {
 
     fun addRentPaymentTransaction ( fromAccountHolder : IAccountHolder,
                         toAccountHolder : IAccountHolder,
-                        location : Location ) : ITransaction {
+                        location : Rentable ) : ITransaction {
 
         transactionHistory.add(RentPaymentTxn(fromAccountHolder,toAccountHolder,location))
 
@@ -43,7 +43,7 @@ class Gameledger {
 
     fun addPurchaseTransaction (fromAccountHolder : IAccountHolder,
                            toAccountHolder : IAccountHolder,
-                           location : Location ) : ITransaction {
+                           location : Purchaseable ) : ITransaction {
 
         transactionHistory.add(PurchaseLocationTxn(fromAccountHolder,toAccountHolder,location))
 

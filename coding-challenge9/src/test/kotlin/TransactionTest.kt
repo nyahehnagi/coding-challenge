@@ -121,7 +121,6 @@ class LocationTest {
         assertThat(exception.message, equalTo("Location has no fee"))
     }
 
-
     @Test
     fun `Should test that a purchase transaction has been created for purchase of an industrial site`() {
         val ledger = Gameledger()
@@ -152,31 +151,6 @@ class LocationTest {
         assertThat((purchaseLocationTransaction as PurchaseLocationTxn).locationPurchased.name, equalTo("Oxford Street"))
     }
 
-    @Test
-    fun `Should test IllegalArgumentException raised for purchase of a non purchaseable location such as Free Parking`() {
-        val ledger = Gameledger()
-        val playerFrom = Player("Bob")
-        val playerTo = Bank()
-        val location = FreeParking()
-
-        val exception = assertThrows<IllegalArgumentException>{
-            ledger.addPurchaseTransaction(playerFrom, playerTo, location)
-        }
-        assertThat(exception.message, equalTo("Location cannot be purchased"))
-    }
-
-    @Test
-    fun `Should test IllegalArgumentException raised for purchase between 2 players`() {
-        val ledger = Gameledger()
-        val playerFrom = Player("Bob")
-        val playerTo = Player("Jane")
-        val location = Industry("Magna Park")
-
-        val exception = assertThrows<IllegalArgumentException>{
-            ledger.addPurchaseTransaction(playerFrom, playerTo, location)
-        }
-        assertThat(exception.message, equalTo("Cannot purchase from this account type"))
-    }
 
 }
 

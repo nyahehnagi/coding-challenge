@@ -46,18 +46,15 @@ class BankFeeTxn ( _fromAccountHolder: IAccountHolder, _toAccountHolder : IAccou
 
 }
 
-class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Location ): ITransaction{
+class RentPaymentTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Rentable ): ITransaction{
 
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
-    override val transactionAmount : Money = when (_location) {
-        is Industry -> _location.getRent()
-        is RetailSite -> _location.getRent()
-        else -> throw IllegalArgumentException (ERROR_LOCATION_CANNOT_BE_RENTED)
-    }
-}
+    override val transactionAmount : Money = _location.getRent()
 
-class PurchaseLocationTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Location ): ITransaction {
+    }
+
+class PurchaseLocationTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _location:Purchaseable ): ITransaction {
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
 
     override val fromAccountHolder : IAccountHolder = when (_toAccountHolder){
@@ -65,13 +62,9 @@ class PurchaseLocationTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder 
         else -> throw IllegalArgumentException (ERROR_INVALID_ACCOUNT) //Although in the future the rules may allow Player to Player purchase
     }
 
-    override val transactionAmount : Money = when (_location){
-        is Industry  ->  _location.purchasePrice
-        is RetailSite -> _location.purchasePrice
-        else -> throw IllegalArgumentException (ERROR_LOCATION_CANNOT_BE_PURCHASED)
-    }
+    override val transactionAmount : Money = _location.purchasePrice
 
-    val locationPurchased : Location = _location
+    val locationPurchased =  _location
 }
 
 class BuildShopTxn (_fromAccountHolder: IAccountHolder, _toAccountHolder : IAccountHolder, _shopType: ShopType, _location : RetailSite): ITransaction{

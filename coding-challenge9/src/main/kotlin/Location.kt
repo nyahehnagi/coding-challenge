@@ -20,42 +20,42 @@ data class LocationRentalValues (val undevelopedRent: Money,
                                  val rentSupermarket: Money,
                                  val rentMegastore: Money)
 
-sealed class Location (_name: String){
-
-    val name: String = _name
+interface Location {
+    val name: String
 }
 
-interface Rent {
-    val baseRent : Money
+interface Rentable {
+    fun getRent () : Money
 }
 
-interface Purchaseable{
+interface Purchaseable : Location{
     val  purchasePrice: Money
 }
 
-class FreeParking : Location("Free Parking")
+class FreeParking(): Location {
+    override val name: String = "Free Parking"
+}
 
-class Go : Location ("Go"){
-
+class Go (): Location {
+    override val name: String = "Go"
     val fee : Money = GBP(GO_FEE)
 }
 
-class Industry(name:String) : Rent, Purchaseable, Location(name){
+class Industry(name:String) : Rentable, Purchaseable, Location{
 
-    override val baseRent : Money = GBP(INDUSTRY_BASE_RENT)
+    override val name: String = name
     override val purchasePrice: Money = GBP (INDUSTRY_PURCHASE_PRICE)
-    fun getRent() = baseRent
+    override fun getRent() = GBP(INDUSTRY_BASE_RENT)
 }
 
 class RetailSite (  name: String,
                     _purchasePrice: Money,
                     _costOfBuildingStores: StoreBuildingCosts,
                     _locationRentalValues: LocationRentalValues,
-                    _groupID: Int) : Rent, Purchaseable, Location (name) {
+                    _groupID: Int) : Rentable, Purchaseable, Location {
 
-    override val baseRent : Money
     override val purchasePrice: Money
-
+    override val name: String = name
     private val locationRentalValues: LocationRentalValues
     private var retailDevelopmentStatus: ShopType = ShopType.UNDEVELOPED
 
@@ -63,15 +63,14 @@ class RetailSite (  name: String,
     val retailGroup: Int
 
     init {
-        baseRent  = _locationRentalValues.undevelopedRent
         locationRentalValues = _locationRentalValues
         storeBuildingCosts = _costOfBuildingStores
         retailGroup= _groupID
         purchasePrice = _purchasePrice
     }
 
-    fun getRent(): Money = when (retailDevelopmentStatus) {
-        ShopType.UNDEVELOPED -> baseRent
+    override fun getRent(): Money = when (retailDevelopmentStatus) {
+        ShopType.UNDEVELOPED -> locationRentalValues.undevelopedRent
         ShopType.MINISTORE -> locationRentalValues.rentMinistore
         ShopType.SUPERMARKET -> locationRentalValues.rentSupermarket
         ShopType.MEGASTORE ->  locationRentalValues.rentMegastore
