@@ -5,11 +5,18 @@ const val INDUSTRY_BASE_RENT = 20
 const val GO_FEE = 100
 
 enum class ShopType {
+    MINISTORE ,
+    SUPERMARKET,
+    MEGASTORE;
+}
+
+enum class DevelopmentStatus {
     UNDEVELOPED,
     MINISTORE ,
     SUPERMARKET,
     MEGASTORE;
 }
+
 
 data class StoreBuildingCosts ( val costOfBuildingMinistore: Money,
                                 val costOfBuildingSupermarket: Money,
@@ -35,6 +42,13 @@ interface IPurchaseable : ILocation{
 interface IFeePayable : ILocation {
     val fee : Money
 }
+
+interface IBuildable : ILocation {
+    val storeBuildingCosts: StoreBuildingCosts
+    fun getBuildCost (_shopType: ShopType): Money
+}
+
+
 class FreeParking(): ILocation {
     override val name: String = "Free Parking"
 }
@@ -51,52 +65,44 @@ class Industry(name:String) : IRentable, IPurchaseable, ILocation{
     override fun getRent() = GBP(INDUSTRY_BASE_RENT)
 }
 
-class RetailSite (  name: String,
+class RetailSite (  _name: String,
                     _purchasePrice: Money,
                     _costOfBuildingStores: StoreBuildingCosts,
                     _locationRentalValues: LocationRentalValues,
-                    _groupID: Int) : IRentable, IPurchaseable, ILocation {
+                    _groupID: Int) : IRentable, IPurchaseable, IBuildable, ILocation {
 
-    override val purchasePrice: Money
-    override val name: String = name
-    private val locationRentalValues: LocationRentalValues
-    private var retailDevelopmentStatus: ShopType = ShopType.UNDEVELOPED
+    override val purchasePrice: Money = _purchasePrice
+    override val name: String = _name
+    override val storeBuildingCosts: StoreBuildingCosts = _costOfBuildingStores
+    val retailGroup: Int = _groupID
 
-    val storeBuildingCosts: StoreBuildingCosts
-    val retailGroup: Int
+    private val locationRentalValues: LocationRentalValues = _locationRentalValues
+    private var retailDevelopmentStatus: DevelopmentStatus = DevelopmentStatus.UNDEVELOPED
 
-    init {
-        locationRentalValues = _locationRentalValues
-        storeBuildingCosts = _costOfBuildingStores
-        retailGroup= _groupID
-        purchasePrice = _purchasePrice
-    }
 
     override fun getRent(): Money = when (retailDevelopmentStatus) {
-        ShopType.UNDEVELOPED -> locationRentalValues.undevelopedRent
-        ShopType.MINISTORE -> locationRentalValues.rentMinistore
-        ShopType.SUPERMARKET -> locationRentalValues.rentSupermarket
-        ShopType.MEGASTORE ->  locationRentalValues.rentMegastore
+        DevelopmentStatus.UNDEVELOPED -> locationRentalValues.undevelopedRent
+        DevelopmentStatus.MINISTORE -> locationRentalValues.rentMinistore
+        DevelopmentStatus.SUPERMARKET -> locationRentalValues.rentSupermarket
+        DevelopmentStatus.MEGASTORE -> locationRentalValues.rentMegastore
     }
 
-    fun getBuildCost(_shoptype: ShopType) : Money = when (_shoptype){
-        ShopType.UNDEVELOPED -> GBP(0)
+    override fun getBuildCost(_shopType: ShopType): Money = when (_shopType) {
         ShopType.MINISTORE -> storeBuildingCosts.costOfBuildingMinistore
         ShopType.SUPERMARKET -> storeBuildingCosts.costOfBuildingSupermarket
-        ShopType.MEGASTORE ->  storeBuildingCosts.costOfBuildingMegastore
+        ShopType.MEGASTORE -> storeBuildingCosts.costOfBuildingMegastore
     }
 
     // Thinking of getting rid of these and taking the building of store outside of the location class
-    fun buildMiniStore (){
-        retailDevelopmentStatus = ShopType.MINISTORE
-    }
+    fun buildMiniStore() {
+        retailDevelopmentStatus = DevelopmentStatus.MINISTORE
 
-    fun buildSupermarket (){
-        retailDevelopmentStatus = ShopType.SUPERMARKET
-    }
+        fun buildSupermarket() {
+            retailDevelopmentStatus = DevelopmentStatus.SUPERMARKET
+        }
 
-    fun buildMegastore (){
-        retailDevelopmentStatus = ShopType.MEGASTORE
+        fun buildMegastore() {
+            retailDevelopmentStatus = DevelopmentStatus.MEGASTORE
+        }
     }
-
 }

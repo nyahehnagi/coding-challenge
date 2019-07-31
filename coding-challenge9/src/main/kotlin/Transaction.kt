@@ -50,12 +50,12 @@ class PurchaseLocationTxn (_fromAccountHolder: Player, _toAccountHolder : Bank, 
     val locationPurchased =  _location
 }
 
-class BuildShopTxn (_fromAccountHolder: Player, _toAccountHolder : Bank, _shopType: ShopType, _location : RetailSite): ITransaction{
+class BuildShopTxn (_fromAccountHolder: Player, _toAccountHolder : Bank, _shopType: ShopType, _location : IBuildable): ITransaction{
 
     override val fromAccountHolder : IAccountHolder = _fromAccountHolder
     override val toAccountHolder: IAccountHolder =  _toAccountHolder
     override val transactionAmount : Money =  _location.getBuildCost(_shopType)
-    val shopLocation : RetailSite = _location
+    val shopLocation : IBuildable = _location
     val shopType : ShopType = _shopType
 }
 
