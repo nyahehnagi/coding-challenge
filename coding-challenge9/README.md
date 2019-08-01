@@ -1,6 +1,11 @@
 # coding-challenge9
 Started out with this trying to use the factory pattern for the transactions. It didn't quite work and was starting to get fiddly.
-I thought if a bit fiddly then it was not the right pattern. So I went with an interface for a transaction and then implemented each of the transaction types from there
+I thought if a bit fiddly then it was not the right pattern. So I went with an interface for a transaction and then implemented each of the transaction types from there. The gameledger is simply a list of ITransactions. I've added a function in gameledger to bring back the balance of player
+
+I needed to change how my locations were initially designed. I now use locations which inherit various interfaces e.g IRentable, IPurchaseable, IBuildable
+
+I have also started building a gameboard... its not part of the challenge but I wanted to faff around with some file I/O. It's all a work in a progress and certainly should not be looked at as it's all very noddy with no error handling etc
+
 
 
 ### Stuff I am not sure about or needs some more work
@@ -10,6 +15,7 @@ I thought if a bit fiddly then it was not the right pattern. So I went with an i
 3. Building on a location - I'm still in mixed minds whether a Location should track this or whether 
 this is done via the ledger or even elsewhere - currently I do it via Location.
 4. Is it OK to raise exceptions when instantiating an object with imcompatible constructor parameters? I have since changed the design and no longer need exceptions due to changes in how I've designed the interfaces. 
+5. Whether I should have a bank class, I have treated the bank as a special kind of player. I have been mulling over whether to have a bank at all and then change my transaction design to credit/debit set up against a player. I think this all depends on what the rules are for the bank e.g does it have unlimited funds? do we care how much money the bank has etc
 
 ### Things I have learned from this exercise
 
