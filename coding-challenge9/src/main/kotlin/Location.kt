@@ -3,11 +3,6 @@ package codingchallenge9
 const val INDUSTRY_PURCHASE_PRICE = 100
 const val INDUSTRY_BASE_RENT = 20
 const val GO_FEE = 100
-const val MAX_NUMBER_OF_INDUSTRY = 4
-const val MAX_NUMBER_OF_GO = 1
-const val MAX_NUMBER_OF_RETAIL = 20
-const val MAX_NUMBER_OF_FREEPARKING = 1
-
 
 enum class ShopType {
     MINISTORE,
@@ -37,7 +32,6 @@ data class LocationRentalValues(
 
 interface ILocation {
     val name: String
-    val maxNumberOfLocation: Int
 }
 
 interface IRentable {
@@ -59,13 +53,11 @@ interface IBuildable : ILocation {
 
 class FreeParking : ILocation {
     override val name: String = "Free Parking"
-    override val maxNumberOfLocation: Int = MAX_NUMBER_OF_FREEPARKING
 }
 
 class Go : ILocation, IFeePayable {
     override val fee: Money = GBP(GO_FEE)
     override val name: String = "Go"
-    override val maxNumberOfLocation: Int = MAX_NUMBER_OF_GO
 }
 
 class Industry(name: String) : IRentable, IPurchaseable, ILocation {
@@ -73,7 +65,6 @@ class Industry(name: String) : IRentable, IPurchaseable, ILocation {
     override val name: String = name
     override val purchasePrice: Money = GBP(INDUSTRY_PURCHASE_PRICE)
     override fun getRent() = GBP(INDUSTRY_BASE_RENT)
-    override val maxNumberOfLocation: Int = MAX_NUMBER_OF_INDUSTRY
 }
 
 class RetailSite(
@@ -87,7 +78,6 @@ class RetailSite(
     override val purchasePrice: Money = purchasePrice
     override val name: String = name
     override val storeBuildingCosts: StoreBuildingCosts = costOfBuildingStores
-    override val maxNumberOfLocation: Int = MAX_NUMBER_OF_RETAIL
     val retailGroup: Int = groupID
 
     private val locationRentalValues: LocationRentalValues = locationRentalValues
@@ -119,8 +109,4 @@ class RetailSite(
     fun buildMegastore() {
         retailDevelopmentStatus = DevelopmentStatus.MEGASTORE
     }
-}
-
-class LocationFactory{
-
 }
