@@ -10,78 +10,84 @@ const val MAX_NUMBER_OF_FREEPARKING = 1
 
 
 enum class ShopType {
-    MINISTORE ,
+    MINISTORE,
     SUPERMARKET,
     MEGASTORE;
 }
 
 enum class DevelopmentStatus {
     UNDEVELOPED,
-    MINISTORE ,
+    MINISTORE,
     SUPERMARKET,
     MEGASTORE;
 }
 
-data class StoreBuildingCosts ( val costOfBuildingMinistore: Money,
-                                val costOfBuildingSupermarket: Money,
-                                val costOfBuildingMegastore: Money)
+data class StoreBuildingCosts(
+    val costOfBuildingMinistore: Money,
+    val costOfBuildingSupermarket: Money,
+    val costOfBuildingMegastore: Money
+)
 
-data class LocationRentalValues (val undevelopedRent: Money,
-                                 val rentMinistore: Money,
-                                 val rentSupermarket: Money,
-                                 val rentMegastore: Money)
+data class LocationRentalValues(
+    val undevelopedRent: Money,
+    val rentMinistore: Money,
+    val rentSupermarket: Money,
+    val rentMegastore: Money
+)
 
 interface ILocation {
     val name: String
-    val maxNumberOfLocation : Int
+    val maxNumberOfLocation: Int
 }
 
 interface IRentable {
-    fun getRent () : Money
+    fun getRent(): Money
 }
 
-interface IPurchaseable : ILocation{
-    val  purchasePrice: Money
+interface IPurchaseable : ILocation {
+    val purchasePrice: Money
 }
 
 interface IFeePayable : ILocation {
-    val fee : Money
+    val fee: Money
 }
 
 interface IBuildable : ILocation {
     val storeBuildingCosts: StoreBuildingCosts
-    fun getBuildCost (_shopType: ShopType): Money
+    fun getBuildCost(_shopType: ShopType): Money
 }
 
 class FreeParking : ILocation {
     override val name: String = "Free Parking"
-    override val maxNumberOfLocation : Int = MAX_NUMBER_OF_FREEPARKING
+    override val maxNumberOfLocation: Int = MAX_NUMBER_OF_FREEPARKING
 }
 
 class Go : ILocation, IFeePayable {
-    override val fee : Money = GBP(GO_FEE)
-    override val name : String = "Go"
-    override val maxNumberOfLocation : Int = MAX_NUMBER_OF_GO
+    override val fee: Money = GBP(GO_FEE)
+    override val name: String = "Go"
+    override val maxNumberOfLocation: Int = MAX_NUMBER_OF_GO
 }
 
-class Industry(_name:String) : IRentable, IPurchaseable, ILocation{
+class Industry(_name: String) : IRentable, IPurchaseable, ILocation {
 
     override val name: String = _name
-    override val purchasePrice: Money = GBP (INDUSTRY_PURCHASE_PRICE)
+    override val purchasePrice: Money = GBP(INDUSTRY_PURCHASE_PRICE)
     override fun getRent() = GBP(INDUSTRY_BASE_RENT)
-    override val maxNumberOfLocation : Int = MAX_NUMBER_OF_INDUSTRY
+    override val maxNumberOfLocation: Int = MAX_NUMBER_OF_INDUSTRY
 }
 
-class RetailSite (  _name: String,
-                    _purchasePrice: Money,
-                    _costOfBuildingStores: StoreBuildingCosts,
-                    _locationRentalValues: LocationRentalValues,
-                    _groupID: Int) : IRentable, IPurchaseable, IBuildable, ILocation {
+class RetailSite(
+    _name: String,
+    _purchasePrice: Money,
+    _costOfBuildingStores: StoreBuildingCosts,
+    _locationRentalValues: LocationRentalValues,
+    _groupID: Int
+) : IRentable, IPurchaseable, IBuildable, ILocation {
 
     override val purchasePrice: Money = _purchasePrice
     override val name: String = _name
     override val storeBuildingCosts: StoreBuildingCosts = _costOfBuildingStores
-    override val maxNumberOfLocation : Int = MAX_NUMBER_OF_RETAIL
+    override val maxNumberOfLocation: Int = MAX_NUMBER_OF_RETAIL
     val retailGroup: Int = _groupID
 
     private val locationRentalValues: LocationRentalValues = _locationRentalValues
@@ -105,11 +111,12 @@ class RetailSite (  _name: String,
     fun buildMiniStore() {
         retailDevelopmentStatus = DevelopmentStatus.MINISTORE
     }
+
     fun buildSupermarket() {
-            retailDevelopmentStatus = DevelopmentStatus.SUPERMARKET
-        }
+        retailDevelopmentStatus = DevelopmentStatus.SUPERMARKET
+    }
 
     fun buildMegastore() {
-            retailDevelopmentStatus = DevelopmentStatus.MEGASTORE
-        }
+        retailDevelopmentStatus = DevelopmentStatus.MEGASTORE
+    }
 }

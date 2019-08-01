@@ -1,15 +1,17 @@
 package codingchallenge9
 
-sealed class Money(_value: Int){
+sealed class Money(_value: Int) {
     abstract val value: Int
 }
 
-class GBP (_value:Int): Money(_value){
-    override val value:Int
+class GBP(_value: Int) : Money(_value) {
+    override val value: Int
 
-    init{
+    init {
         // rules state that amount cannot be negative
-        value = if (_value >= 0) {_value} else 0
+        value = if (_value >= 0) {
+            _value
+        } else 0
     }
 
     override fun toString(): String {

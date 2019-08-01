@@ -6,8 +6,14 @@ import org.junit.Test
 class TransactionTest {
 
     @Test
-    fun `Should test that a retail site location that is undeveloped `(){
-        val retailSiteLocation = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
+    fun `Should test that a retail site location that is undeveloped `() {
+        val retailSiteLocation = RetailSite(
+            "Oxford Street",
+            GBP(100),
+            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
+            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            1
+        )
         assertThat(retailSiteLocation.getRent().value, equalTo(40))
         assertThat(retailSiteLocation.name, equalTo("Oxford Street"))
         assertThat(retailSiteLocation.getRent().value, equalTo(40))
@@ -20,7 +26,7 @@ class TransactionTest {
         val ledger = Gameledger()
         val player = Player("Bob")
         val bank = Bank()
-        ledger.addStartBalanceBankTransferTransaction(bank,player)
+        ledger.addStartBalanceBankTransferTransaction(bank, player)
 
         assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("bank"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(200))
@@ -30,12 +36,18 @@ class TransactionTest {
     @Test
     fun `Should test that a Location transaction for building a ministore has been created`() {
         val ledger = Gameledger()
-        val fromPlayer = Player ("Jane")
+        val fromPlayer = Player("Jane")
         val bank = Bank()
         val shopType: ShopType = ShopType.MINISTORE
-        val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
+        val location = RetailSite(
+            "Oxford Street",
+            GBP(100),
+            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
+            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            1
+        )
 
-        ledger.addBuildShopTransaction(fromPlayer,bank,location,shopType)
+        ledger.addBuildShopTransaction(fromPlayer, bank, location, shopType)
 
         val latestTransaction = ledger.getLatestTransaction()
         assertThat(latestTransaction.fromAccountHolder.name, equalTo("Jane"))
@@ -53,9 +65,15 @@ class TransactionTest {
         val ledger = Gameledger()
         val playerFrom = Player("Bob")
         val playerTo = Player("Jane")
-        val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
+        val location = RetailSite(
+            "Oxford Street",
+            GBP(100),
+            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
+            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            1
+        )
 
-        ledger.addRentPaymentTransaction(playerFrom,playerTo,location)
+        ledger.addRentPaymentTransaction(playerFrom, playerTo, location)
 
         assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("Bob"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(40))
@@ -67,10 +85,16 @@ class TransactionTest {
         val ledger = Gameledger()
         val playerFrom = Player("Bob")
         val playerTo = Player("Jane")
-        val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
+        val location = RetailSite(
+            "Oxford Street",
+            GBP(100),
+            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
+            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            1
+        )
         location.buildMiniStore()
 
-        ledger.addRentPaymentTransaction(playerFrom,playerTo,location)
+        ledger.addRentPaymentTransaction(playerFrom, playerTo, location)
 
         assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("Bob"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(50))
@@ -84,7 +108,7 @@ class TransactionTest {
         val playerTo = Player("Jane")
         val location = Industry("Magna Park")
 
-        ledger.addRentPaymentTransaction(playerFrom,playerTo,location)
+        ledger.addRentPaymentTransaction(playerFrom, playerTo, location)
 
         assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("Bob"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(20))
@@ -96,8 +120,8 @@ class TransactionTest {
         val ledger = Gameledger()
         val bank = Bank()
         val playerTo = Player("Bob")
-        val location  = Go()
-        ledger.addFeeTransaction(bank,playerTo,location)
+        val location = Go()
+        ledger.addFeeTransaction(bank, playerTo, location)
 
         assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("bank"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(100))
@@ -111,7 +135,7 @@ class TransactionTest {
         val playerTo = Bank()
         val location = Industry("Magna Park")
 
-        ledger.addPurchaseTransaction(playerFrom,playerTo,location)
+        ledger.addPurchaseTransaction(playerFrom, playerTo, location)
 
         assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("Bob"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(100))
@@ -123,9 +147,15 @@ class TransactionTest {
         val ledger = Gameledger()
         val playerFrom = Player("Bob")
         val playerTo = Bank()
-        val location  = RetailSite("Oxford Street", GBP(100),StoreBuildingCosts(GBP(10),GBP(20),GBP(30)), LocationRentalValues(GBP(40),GBP(50),GBP(60),GBP(70)), 1)
+        val location = RetailSite(
+            "Oxford Street",
+            GBP(100),
+            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
+            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            1
+        )
 
-        ledger.addPurchaseTransaction(playerFrom,playerTo,location)
+        ledger.addPurchaseTransaction(playerFrom, playerTo, location)
 
         val latestTransaction = ledger.getLatestTransaction()
         assertThat(latestTransaction.fromAccountHolder.name, equalTo("Bob"))
@@ -154,11 +184,19 @@ class TransactionTest {
 
         ledger.addFeeTransaction(bank, player1, goLocation) //add 200
         ledger.addStartBalanceBankTransferTransaction(bank, player1) // add 100
-        ledger.addPurchaseTransaction(player1,bank,industryLocation) // deduct 100
+        ledger.addPurchaseTransaction(player1, bank, industryLocation) // deduct 100
         ledger.addRentPaymentTransaction(player1, player2, retailLocation) // deduct 50
-        ledger.addRentPaymentTransaction(player2,player1,industryLocation) //add 20
+        ledger.addRentPaymentTransaction(player2, player1, industryLocation) //add 20
 
         assertThat(ledger.getPlayerBalance(player1).value, equalTo(170))
+    }
+
+    @Test
+    fun `Should test the balance of player1 is zero if no transactions have been created`() {
+        val ledger = Gameledger()
+        val player1 = Player("Bob")
+
+        assertThat(ledger.getPlayerBalance(player1).value, equalTo(0))
     }
 
 }
