@@ -28,9 +28,9 @@ class TransactionTest {
         val bank = Bank()
         ledger.addStartBalanceBankTransferTransaction(bank, player)
 
-        assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("bank"))
+        assertThat(ledger.getLatestTransaction().debitAccountHolder.name, equalTo("bank"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(200))
-        assertThat(ledger.getLatestTransaction().toAccountHolder.name, equalTo("Bob"))
+        assertThat(ledger.getLatestTransaction().creditAccountHolder.name, equalTo("Bob"))
     }
 
     @Test
@@ -50,9 +50,9 @@ class TransactionTest {
         ledger.addBuildShopTransaction(fromPlayer, bank, location, shopType)
 
         val latestTransaction = ledger.getLatestTransaction()
-        assertThat(latestTransaction.fromAccountHolder.name, equalTo("Jane"))
+        assertThat(latestTransaction.debitAccountHolder.name, equalTo("Jane"))
         assertThat(latestTransaction.transactionAmount.value, equalTo(10))
-        assertThat(latestTransaction.toAccountHolder.name, equalTo("bank"))
+        assertThat(latestTransaction.creditAccountHolder.name, equalTo("bank"))
 
         if (latestTransaction is BuildShopTxn) { //Could cast using 'as'
             assertThat(latestTransaction.shopLocation.name, equalTo("Oxford Street"))
@@ -75,9 +75,9 @@ class TransactionTest {
 
         ledger.addRentPaymentTransaction(playerFrom, playerTo, location)
 
-        assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("Bob"))
+        assertThat(ledger.getLatestTransaction().debitAccountHolder.name, equalTo("Bob"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(40))
-        assertThat(ledger.getLatestTransaction().toAccountHolder.name, equalTo("Jane"))
+        assertThat(ledger.getLatestTransaction().creditAccountHolder.name, equalTo("Jane"))
     }
 
     @Test
@@ -96,9 +96,9 @@ class TransactionTest {
 
         ledger.addRentPaymentTransaction(playerFrom, playerTo, location)
 
-        assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("Bob"))
+        assertThat(ledger.getLatestTransaction().debitAccountHolder.name, equalTo("Bob"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(50))
-        assertThat(ledger.getLatestTransaction().toAccountHolder.name, equalTo("Jane"))
+        assertThat(ledger.getLatestTransaction().creditAccountHolder.name, equalTo("Jane"))
     }
 
     @Test
@@ -110,9 +110,9 @@ class TransactionTest {
 
         ledger.addRentPaymentTransaction(playerFrom, playerTo, location)
 
-        assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("Bob"))
+        assertThat(ledger.getLatestTransaction().debitAccountHolder.name, equalTo("Bob"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(20))
-        assertThat(ledger.getLatestTransaction().toAccountHolder.name, equalTo("Jane"))
+        assertThat(ledger.getLatestTransaction().creditAccountHolder.name, equalTo("Jane"))
     }
 
     @Test
@@ -123,9 +123,9 @@ class TransactionTest {
         val location = Go()
         ledger.addFeeTransaction(bank, playerTo, location)
 
-        assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("bank"))
+        assertThat(ledger.getLatestTransaction().debitAccountHolder.name, equalTo("bank"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(100))
-        assertThat(ledger.getLatestTransaction().toAccountHolder.name, equalTo("Bob"))
+        assertThat(ledger.getLatestTransaction().creditAccountHolder.name, equalTo("Bob"))
     }
 
     @Test
@@ -137,9 +137,9 @@ class TransactionTest {
 
         ledger.addPurchaseTransaction(playerFrom, playerTo, location)
 
-        assertThat(ledger.getLatestTransaction().fromAccountHolder.name, equalTo("Bob"))
+        assertThat(ledger.getLatestTransaction().debitAccountHolder.name, equalTo("Bob"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(100))
-        assertThat(ledger.getLatestTransaction().toAccountHolder.name, equalTo("bank"))
+        assertThat(ledger.getLatestTransaction().creditAccountHolder.name, equalTo("bank"))
     }
 
     @Test
@@ -158,9 +158,9 @@ class TransactionTest {
         ledger.addPurchaseTransaction(playerFrom, playerTo, location)
 
         val latestTransaction = ledger.getLatestTransaction()
-        assertThat(latestTransaction.fromAccountHolder.name, equalTo("Bob"))
+        assertThat(latestTransaction.debitAccountHolder.name, equalTo("Bob"))
         assertThat(latestTransaction.transactionAmount.value, equalTo(100))
-        assertThat(latestTransaction.toAccountHolder.name, equalTo("bank"))
+        assertThat(latestTransaction.creditAccountHolder.name, equalTo("bank"))
 
         assertThat((latestTransaction as PurchaseLocationTxn).locationPurchased.name, equalTo("Oxford Street"))
     }

@@ -8,8 +8,8 @@ interface IAccountHolder {
 
 interface ITransaction {
     val transactionAmount: Money
-    val fromAccountHolder: IAccountHolder
-    val toAccountHolder: IAccountHolder
+    val debitAccountHolder: IAccountHolder
+    val creditAccountHolder: IAccountHolder
 }
 
 class Bank : IAccountHolder {
@@ -20,39 +20,39 @@ class Player(_name: String) : IAccountHolder {
     override val name = _name //should add some logic here to not allow any reserved names e.g bank
 }
 
-class StartingBalanceBankTransferTxn(_fromAccountHolder: Bank, _toAccountHolder: Player) : ITransaction {
+class StartingBalanceBankTransferTxn(_debitAccountHolder: Bank, _creditAccountHolder: Player) : ITransaction {
     override val transactionAmount: Money = GBP(STARTING_BALANCE)
-    override val fromAccountHolder: IAccountHolder = _fromAccountHolder
-    override val toAccountHolder: IAccountHolder = _toAccountHolder
+    override val debitAccountHolder: IAccountHolder = _debitAccountHolder
+    override val creditAccountHolder: IAccountHolder = _creditAccountHolder
 }
 
-class BankFeeTxn(_fromAccountHolder: Bank, _toAccountHolder: Player, location: IFeePayable) : ITransaction {
+class BankFeeTxn(_debitAccountHolder: Bank, _creditAccountHolder: Player, location: IFeePayable) : ITransaction {
 
-    override val fromAccountHolder: IAccountHolder = _fromAccountHolder
-    override val toAccountHolder: IAccountHolder = _toAccountHolder
+    override val debitAccountHolder: IAccountHolder = _debitAccountHolder
+    override val creditAccountHolder: IAccountHolder = _creditAccountHolder
     override val transactionAmount: Money = location.fee
 }
 
-class RentPaymentTxn(_fromAccountHolder: Player, _toAccountHolder: Player, _location: IRentable) : ITransaction {
+class RentPaymentTxn(_debitAccountHolder: Player, _creditAccountHolder: Player, _location: IRentable) : ITransaction {
 
-    override val fromAccountHolder: IAccountHolder = _fromAccountHolder
-    override val toAccountHolder: IAccountHolder = _toAccountHolder
+    override val debitAccountHolder: IAccountHolder = _debitAccountHolder
+    override val creditAccountHolder: IAccountHolder = _creditAccountHolder
     override val transactionAmount: Money = _location.getRent()
 
 }
 
-class PurchaseLocationTxn(_fromAccountHolder: Player, _toAccountHolder: Bank, _location: IPurchaseable) : ITransaction {
-    override val toAccountHolder: IAccountHolder = _toAccountHolder
-    override val fromAccountHolder: IAccountHolder = _fromAccountHolder
+class PurchaseLocationTxn(_debitAccountHolder: Player, _creditAccountHolder: Bank, _location: IPurchaseable) : ITransaction {
+    override val creditAccountHolder: IAccountHolder = _creditAccountHolder
+    override val debitAccountHolder: IAccountHolder = _debitAccountHolder
     override val transactionAmount: Money = _location.purchasePrice
     val locationPurchased = _location
 }
 
-class BuildShopTxn(_fromAccountHolder: Player, _toAccountHolder: Bank, _shopType: ShopType, _location: IBuildable) :
+class BuildShopTxn(_debitAccountHolder: Player, _creditAccountHolder: Bank, _shopType: ShopType, _location: IBuildable) :
     ITransaction {
 
-    override val fromAccountHolder: IAccountHolder = _fromAccountHolder
-    override val toAccountHolder: IAccountHolder = _toAccountHolder
+    override val debitAccountHolder: IAccountHolder = _debitAccountHolder
+    override val creditAccountHolder: IAccountHolder = _creditAccountHolder
     override val transactionAmount: Money = _location.getBuildCost(_shopType)
     val shopLocation: IBuildable = _location
     val shopType: ShopType = _shopType

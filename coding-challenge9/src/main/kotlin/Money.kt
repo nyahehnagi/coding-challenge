@@ -1,10 +1,10 @@
 package codingchallenge9
 
-sealed class Money(_value: Int) {
+sealed class Money() {
     abstract val value: Int
 }
 
-class GBP(_value: Int) : Money(_value) {
+class GBP(_value: Int) : Money() {
     override val value: Int
 
     init {

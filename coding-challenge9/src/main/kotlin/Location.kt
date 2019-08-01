@@ -68,29 +68,29 @@ class Go : ILocation, IFeePayable {
     override val maxNumberOfLocation: Int = MAX_NUMBER_OF_GO
 }
 
-class Industry(_name: String) : IRentable, IPurchaseable, ILocation {
+class Industry(name: String) : IRentable, IPurchaseable, ILocation {
 
-    override val name: String = _name
+    override val name: String = name
     override val purchasePrice: Money = GBP(INDUSTRY_PURCHASE_PRICE)
     override fun getRent() = GBP(INDUSTRY_BASE_RENT)
     override val maxNumberOfLocation: Int = MAX_NUMBER_OF_INDUSTRY
 }
 
 class RetailSite(
-    _name: String,
-    _purchasePrice: Money,
-    _costOfBuildingStores: StoreBuildingCosts,
-    _locationRentalValues: LocationRentalValues,
-    _groupID: Int
+    name: String,
+    purchasePrice: Money,
+    costOfBuildingStores: StoreBuildingCosts,
+    locationRentalValues: LocationRentalValues,
+    groupID: Int
 ) : IRentable, IPurchaseable, IBuildable, ILocation {
 
-    override val purchasePrice: Money = _purchasePrice
-    override val name: String = _name
-    override val storeBuildingCosts: StoreBuildingCosts = _costOfBuildingStores
+    override val purchasePrice: Money = purchasePrice
+    override val name: String = name
+    override val storeBuildingCosts: StoreBuildingCosts = costOfBuildingStores
     override val maxNumberOfLocation: Int = MAX_NUMBER_OF_RETAIL
-    val retailGroup: Int = _groupID
+    val retailGroup: Int = groupID
 
-    private val locationRentalValues: LocationRentalValues = _locationRentalValues
+    private val locationRentalValues: LocationRentalValues = locationRentalValues
     private var retailDevelopmentStatus: DevelopmentStatus = DevelopmentStatus.UNDEVELOPED
 
 
@@ -119,4 +119,8 @@ class RetailSite(
     fun buildMegastore() {
         retailDevelopmentStatus = DevelopmentStatus.MEGASTORE
     }
+}
+
+class LocationFactory{
+
 }

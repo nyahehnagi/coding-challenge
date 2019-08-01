@@ -1,8 +1,7 @@
-package codingchallenge8
-
-import codingchallenge9.Gameledger
+package codingchallenge9
 
 fun main(args: Array<String>){
 
+    val gameBoard = GameBoard()
 
 }
