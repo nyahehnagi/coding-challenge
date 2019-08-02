@@ -1,9 +1,6 @@
 //TODO ensure unique names
-//TODO ensure that only the max/min number of instances are created (for all locations and retail groupings)
-//TODO try and do this through the use of a factory pattern - maybe
 package codingchallenge9
 
-import java.io.File
 import java.lang.IllegalArgumentException
 
 const val MAX_NUMBER_OF_INDUSTRY = 4
@@ -15,6 +12,7 @@ const val MAX_RETAIL_GROUP_SIZE = 3
 
 class GameBoard(boardData: List<String>) {
 
+    //TODO make this private and add functions to support gameboard as we don't want anyone fiddling with this once initialised
     val gameBoardLocations: MutableList<ILocation> = mutableListOf()
 
     init {
