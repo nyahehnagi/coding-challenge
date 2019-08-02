@@ -1,5 +1,5 @@
 //TODO ensure unique names
-//TODO ensure that only the max number of instances are created (for all locations and retail groupings)
+//TODO ensure that only the max/min number of instances are created (for all locations and retail groupings)
 //TODO try and do this through the use of a factory pattern - maybe
 package codingchallenge9
 
@@ -13,68 +13,82 @@ const val MAX_NUMBER_OF_FREEPARKING = 1
 const val MIN_RETAIL_GROUP_SIZE = 2
 const val MAX_RETAIL_GROUP_SIZE = 3
 
-class GameBoard() {
+class GameBoard(boardData: List<String>) {
 
     val gameBoardLocations: MutableList<ILocation> = mutableListOf()
 
     init {
-        InitialiseBoard()
+        initialiseBoard(boardData)
     }
 
-    private fun InitialiseBoard() {
-        //TODO Learn how to do this with JSON rather than CSV
-        val boardConfigFile = File("src/resources/gameboard.txt")
+    private fun initialiseBoard(boardData: List<String>) {
 
-        boardConfigFile.readLines().map { it.split(",") }.map {
+        boardData.map { it.split(",") }.map {
             when (it[0]) {
                 "GO" -> gameBoardLocations.add(Go())
                 "RETAIL SITE" -> gameBoardLocations.add(createRetailSite(it))
-                "INDUSTRY" -> gameBoardLocations.add(Industry(name = it[1]))
+                "INDUSTRY" -> gameBoardLocations.add(createIndustry(it))
                 "FREE PARKING" -> gameBoardLocations.add(FreeParking())
-                else -> throw IllegalArgumentException("crappy file") //Is there a better way rather than throwing an exception?
+                else -> throw IllegalArgumentException("Invalid input data") //Is there a better way rather than throwing an exception?
             }
         }
+
+        //check what's been created conforms to board rules
+        verifyBoard()
     }
 
-    private fun createRetailSite(retailStoreData: List<String>): RetailSite {
-        // TODO this checks needs to go elsewhere... I am still working on it
-        if (gameBoardLocations.filter { it is RetailSite }.count() == MAX_NUMBER_OF_RETAIL) {
-            throw IllegalArgumentException("to many retail locations")
+    //Checks that the board conforms to the rules of this board
+    //Pondering if I should build a list of everything that has gone wrong with the load file
+    //TODO Think of a better way to do this. Perhaps verify file contents before building the board?
+    private fun verifyBoard() {
+        if (gameBoardLocations.filterIsInstance<RetailSite>().count() > MAX_NUMBER_OF_RETAIL) {
+            throw IllegalArgumentException("Too many retail locations - Max is $MAX_NUMBER_OF_RETAIL")
         }
 
+
+        val numberOfOccurrences =
+            gameBoardLocations.filterIsInstance<RetailSite>().groupingBy { (it.retailGroup) }.eachCount()
+        numberOfOccurrences.forEach {
+            if (it.value > MAX_RETAIL_GROUP_SIZE || it.value < MIN_RETAIL_GROUP_SIZE) {
+                throw IllegalArgumentException("Invalid number of locations per group. min is $MIN_RETAIL_GROUP_SIZE, max is $MAX_RETAIL_GROUP_SIZE")
+            }
+        }
+
+        if (gameBoardLocations.filterIsInstance<FreeParking>().count() > MAX_NUMBER_OF_FREEPARKING) {
+            throw IllegalArgumentException("Too many Free Parking - Max is $MAX_NUMBER_OF_FREEPARKING")
+        }
+        if (gameBoardLocations.filterIsInstance<Go>().count() > MAX_NUMBER_OF_GO) {
+            throw IllegalArgumentException("Too many Go - Max is $MAX_NUMBER_OF_GO")
+        }
+        if (gameBoardLocations.filterIsInstance<Industry>().count() > MAX_NUMBER_OF_INDUSTRY) {
+            throw IllegalArgumentException("Too many industry locations - Max is $MAX_NUMBER_OF_INDUSTRY")
+        }
+
+    }
+
+    private fun createRetailSite(retailLocationData: List<String>): RetailSite {
         return RetailSite(
-            name = retailStoreData[1],
-            purchasePrice = GBP(retailStoreData[2].toInt()),
+            name = retailLocationData[1],
+            purchasePrice = GBP(retailLocationData[2].toInt()),
             costOfBuildingStores = StoreBuildingCosts(
-                GBP(retailStoreData[3].toInt()),
-                GBP(retailStoreData[4].toInt()),
-                GBP(retailStoreData[5].toInt())
+                GBP(retailLocationData[3].toInt()),
+                GBP(retailLocationData[4].toInt()),
+                GBP(retailLocationData[5].toInt())
             ),
             locationRentalValues = LocationRentalValues(
-                GBP(retailStoreData[6].toInt()),
-                GBP(retailStoreData[7].toInt()),
-                GBP(retailStoreData[8].toInt()),
-                GBP(retailStoreData[9].toInt())
+                GBP(retailLocationData[6].toInt()),
+                GBP(retailLocationData[7].toInt()),
+                GBP(retailLocationData[8].toInt()),
+                GBP(retailLocationData[9].toInt())
             ),
-            groupID = retailStoreData[10].toInt()
+            groupID = retailLocationData[10].toInt()
+        )
+    }
+
+    private fun createIndustry(industryLocationData: List<String>): Industry {
+        return Industry(
+            name = industryLocationData[1]
         )
     }
 }
 
-
-//RetailSite(
-//name = it[1],
-//purchasePrice = GBP(it[2].toInt()),
-//costOfBuildingStores = StoreBuildingCosts(
-//GBP(it[3].toInt()),
-//GBP(it[4].toInt()),
-//GBP(it[5].toInt())
-//),
-//locationRentalValues = LocationRentalValues(
-//GBP(it[6].toInt()),
-//GBP(it[7].toInt()),
-//GBP(it[8].toInt()),
-//GBP(it[9].toInt())
-//),
-//groupID = it[10].toInt()
-//)

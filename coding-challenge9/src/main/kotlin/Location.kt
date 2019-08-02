@@ -60,27 +60,23 @@ class Go : ILocation, IFeePayable {
     override val name: String = "Go"
 }
 
-class Industry(name: String) : IRentable, IPurchaseable, ILocation {
+class Industry(override val name: String) : IRentable, IPurchaseable, ILocation {
 
-    override val name: String = name
     override val purchasePrice: Money = GBP(INDUSTRY_PURCHASE_PRICE)
     override fun getRent() = GBP(INDUSTRY_BASE_RENT)
 }
 
 class RetailSite(
-    name: String,
-    purchasePrice: Money,
+    override val name: String,
+    override val purchasePrice: Money,
     costOfBuildingStores: StoreBuildingCosts,
-    locationRentalValues: LocationRentalValues,
+    private val locationRentalValues: LocationRentalValues,
     groupID: Int
 ) : IRentable, IPurchaseable, IBuildable, ILocation {
 
-    override val purchasePrice: Money = purchasePrice
-    override val name: String = name
     override val storeBuildingCosts: StoreBuildingCosts = costOfBuildingStores
     val retailGroup: Int = groupID
 
-    private val locationRentalValues: LocationRentalValues = locationRentalValues
     private var retailDevelopmentStatus: DevelopmentStatus = DevelopmentStatus.UNDEVELOPED
 
 
