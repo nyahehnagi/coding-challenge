@@ -35,7 +35,7 @@ class Gameledger {
     }
 
     fun getPlayerBalance(player: Player): Money {
-        //credits to player minus debits from the same player
+        //total credits to player minus total debits from the same player
         val balance: Int =
             transactionHistory.filter { it.creditAccountHolder.name == player.name }.sumBy { it.transactionAmount.value } -
                     transactionHistory.filter { it.debitAccountHolder.name == player.name }.sumBy { it.transactionAmount.value }

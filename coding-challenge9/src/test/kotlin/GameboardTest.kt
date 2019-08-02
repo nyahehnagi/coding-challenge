@@ -55,6 +55,19 @@ class GameboardTest {
     }
 
     @Test
+    fun `Should test that the gameboard file is invalid because of too many industry locations `() {
+        val configData: MutableList<String> = mutableListOf()
+        configData.add("INDUSTRY,Magna Park,,,,,,,,,")
+        configData.add("INDUSTRY,Magna Park,,,,,,,,,")
+        configData.add("INDUSTRY,Magna Park,,,,,,,,,")
+        configData.add("INDUSTRY,Magna Park,,,,,,,,,")
+        configData.add("INDUSTRY,Magna Park,,,,,,,,,")
+
+        val exception = assertThrows<IllegalArgumentException> {GameBoard(configData) }
+        assertThat(exception.message, equalTo("Too many industry locations - Max is 4"))
+    }
+
+    @Test
     fun `Should test that the gameboard file is invalid because of too many retail locations of the same type`() {
         val configData: MutableList<String> = mutableListOf()
         configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")

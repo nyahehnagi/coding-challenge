@@ -37,13 +37,11 @@ class GameBoard(boardData: List<String>) {
 
     //Checks that the board conforms to the rules of this board
     //Pondering if I should build a list of everything that has gone wrong with the load file
-    //TODO Think of a better way to do this. Perhaps verify file contents before building the board?
+    //TODO Think of a better way to do this. Perhaps verify the data list contents before building the board?
     private fun verifyBoard() {
         if (gameBoardLocations.filterIsInstance<RetailSite>().count() > MAX_NUMBER_OF_RETAIL) {
             throw IllegalArgumentException("Too many retail locations - Max is $MAX_NUMBER_OF_RETAIL")
         }
-
-
         val numberOfOccurrences =
             gameBoardLocations.filterIsInstance<RetailSite>().groupingBy { (it.retailGroup) }.eachCount()
         numberOfOccurrences.forEach {
@@ -51,7 +49,6 @@ class GameBoard(boardData: List<String>) {
                 throw IllegalArgumentException("Invalid number of locations per group. min is $MIN_RETAIL_GROUP_SIZE, max is $MAX_RETAIL_GROUP_SIZE")
             }
         }
-
         if (gameBoardLocations.filterIsInstance<FreeParking>().count() > MAX_NUMBER_OF_FREEPARKING) {
             throw IllegalArgumentException("Too many Free Parking - Max is $MAX_NUMBER_OF_FREEPARKING")
         }
@@ -61,7 +58,6 @@ class GameBoard(boardData: List<String>) {
         if (gameBoardLocations.filterIsInstance<Industry>().count() > MAX_NUMBER_OF_INDUSTRY) {
             throw IllegalArgumentException("Too many industry locations - Max is $MAX_NUMBER_OF_INDUSTRY")
         }
-
     }
 
     private fun createRetailSite(retailLocationData: List<String>): RetailSite {
