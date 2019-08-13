@@ -2,22 +2,10 @@ package codingchallenge9
 
 const val STARTING_BALANCE = 200
 
-interface IAccountHolder {
-    val name: String
-}
-
 interface ITransaction {
     val transactionAmount: Money
     val debitAccountHolder: IAccountHolder
     val creditAccountHolder: IAccountHolder
-}
-
-class Bank : IAccountHolder {
-    override val name = "bank"
-}
-
-class Player(_name: String) : IAccountHolder {
-    override val name = _name //should add some logic here to not allow any reserved names e.g bank
 }
 
 class StartingBalanceBankTransferTxn(_debitAccountHolder: Bank, _creditAccountHolder: Player) : ITransaction {
