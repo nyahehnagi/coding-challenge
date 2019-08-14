@@ -17,15 +17,3 @@ class Player(_name: String) : IAccountHolder {
 
 
 }
-
-
-class Dice () {
-    val dieRoll : Int
-
-    init {
-        rollDice()
-    }
-    fun rollDice() :Int {
-        dieRoll = (1..6).shuffled().first()
-    }
-}

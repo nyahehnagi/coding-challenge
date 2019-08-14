@@ -2,6 +2,7 @@ import codingchallenge9.*
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Test
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.assertThrows
 import java.lang.IllegalArgumentException
 
@@ -31,7 +32,7 @@ class GameboardTest {
         configData.add("FREE PARKING,,,,,,,,,,")
         configData.add("FREE PARKING,,,,,,,,,,")
 
-        val exception = assertThrows<IllegalArgumentException> {GameBoard(configData) }
+        val exception = assertThrows<IllegalArgumentException> { GameBoard(configData) }
         assertThat(exception.message, equalTo("Too many Free Parking - Max is 1"))
     }
 
@@ -41,16 +42,26 @@ class GameboardTest {
         configData.add("GO,,,,,,,,,,")
         configData.add("GO,,,,,,,,,,")
 
-        val exception = assertThrows<IllegalArgumentException> {GameBoard(configData) }
+        val exception = assertThrows<IllegalArgumentException> { GameBoard(configData) }
         assertThat(exception.message, equalTo("Too many Go - Max is 1"))
     }
+
+    @Test
+    fun `Should test that first location is always GO`() {
+        val configData: MutableList<String> = mutableListOf()
+        configData.add("FREE PARKING,,,,,,,,,,")
+
+        val exception = assertThrows<IllegalArgumentException> { GameBoard(configData) }
+        assertThat(exception.message, equalTo("First location is not GO"))
+    }
+
 
     @Test
     fun `Should test that the gameboard file is invalid because of too few retail locations of the same type`() {
         val configData: MutableList<String> = mutableListOf()
         configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
 
-        val exception = assertThrows<IllegalArgumentException> {GameBoard(configData) }
+        val exception = assertThrows<IllegalArgumentException> { GameBoard(configData) }
         assertThat(exception.message, equalTo("Invalid number of locations per group. min is 2, max is 3"))
     }
 
@@ -63,7 +74,7 @@ class GameboardTest {
         configData.add("INDUSTRY,Magna Park,,,,,,,,,")
         configData.add("INDUSTRY,Magna Park,,,,,,,,,")
 
-        val exception = assertThrows<IllegalArgumentException> {GameBoard(configData) }
+        val exception = assertThrows<IllegalArgumentException> { GameBoard(configData) }
         assertThat(exception.message, equalTo("Too many industry locations - Max is 4"))
     }
 
@@ -75,7 +86,7 @@ class GameboardTest {
         configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
         configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
 
-        val exception = assertThrows<IllegalArgumentException> {GameBoard(configData) }
+        val exception = assertThrows<IllegalArgumentException> { GameBoard(configData) }
         assertThat(exception.message, equalTo("Invalid number of locations per group. min is 2, max is 3"))
     }
 
@@ -104,7 +115,7 @@ class GameboardTest {
         configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
         configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
 
-        val exception = assertThrows<IllegalArgumentException> {GameBoard(configData) }
+        val exception = assertThrows<IllegalArgumentException> { GameBoard(configData) }
         assertThat(exception.message, equalTo("Too many retail locations - Max is 20"))
     }
 
@@ -113,7 +124,7 @@ class GameboardTest {
         val configData: MutableList<String> = mutableListOf()
         configData.add("RUBBISH,Oxford Street,100,10,20,20,40,50,60,70,1")
 
-        val exception = assertThrows<IllegalArgumentException> {GameBoard(configData) }
+        val exception = assertThrows<IllegalArgumentException> { GameBoard(configData) }
         assertThat(exception.message, equalTo("Invalid input data"))
     }
 
@@ -123,9 +134,83 @@ class GameboardTest {
         configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70") // missing last param
         configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
 
-        val exception = assertThrows<IndexOutOfBoundsException> {GameBoard(configData) }
+        val exception = assertThrows<IndexOutOfBoundsException> { GameBoard(configData) }
         assertThat(exception.message, equalTo("Index 10 out of bounds for length 10"))
     }
+
+    @Test
+    fun `Should test an initial move of 2 spaces on the gameboard`() {
+        val configData: MutableList<String> = mutableListOf()
+        configData.add("GO,,,,,,,,,,")
+        configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
+        configData.add("RETAIL SITE,White City,130,10,20,20,40,50,60,70,1")
+
+        val gameBoard = GameBoard(configData)
+        //roll a 2
+        var dice = Dice(6)
+        while (dice.totalDiceRoll() != 2){
+            dice = Dice(6)
+        }
+        val nextLocation :ILocation = gameBoard.getNextLocation(dice)
+
+        assertThat(nextLocation.name, equalTo("Oxford Street"))
+    }
+
+    @Test
+    fun `Should test a move of 5 spaces from position 2 to position 7 `() {
+        val configData: MutableList<String> = mutableListOf()
+        configData.add("GO,,,,,,,,,,")
+        configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
+        configData.add("RETAIL SITE,White City,130,10,20,20,40,50,60,70,1")
+        configData.add("INDUSTRY,Magna Park,,,,,,,,,")
+        configData.add("RETAIL SITE,Peter Jones,150,10,20,20,40,60,70,80,2")
+        configData.add("RETAIL SITE,High Wycombe,150,10,20,20,40,60,70,80,2")
+        configData.add("FREE PARKING,,,,,,,,,,")
+
+        val gameBoard = GameBoard(configData)
+        val currentLocation :ILocation = gameBoard.gameBoardLocations[1]
+        var dice = Dice(6)
+        while (dice.totalDiceRoll() != 5){
+            dice = Dice(6)
+        }
+        val nextLocation :ILocation = gameBoard.getNextLocation(dice,currentLocation)
+
+        assertThat(nextLocation.name, equalTo("Free Parking"))
+    }
+
+    @Test
+    fun `Should test a move of 5 spaces from position 4 to position 2 `() {
+        val configData: MutableList<String> = mutableListOf()
+        configData.add("GO,,,,,,,,,,")
+        configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
+        configData.add("RETAIL SITE,White City,130,10,20,20,40,50,60,70,1")
+        configData.add("INDUSTRY,Magna Park,,,,,,,,,")
+        configData.add("RETAIL SITE,Peter Jones,150,10,20,20,40,60,70,80,2")
+        configData.add("RETAIL SITE,High Wycombe,150,10,20,20,40,60,70,80,2")
+        configData.add("FREE PARKING,,,,,,,,,,")
+
+        val gameBoard = GameBoard(configData)
+        val currentLocation :ILocation = gameBoard.gameBoardLocations[3]
+        var dice = Dice(6)
+        while (dice.totalDiceRoll() != 5){
+            dice = Dice(6)
+        }
+        val nextLocation :ILocation = gameBoard.getNextLocation(dice,currentLocation)
+
+        assertThat(nextLocation.name, equalTo("Oxford Street"))
+    }
+
+    // Not an ideal test this. Need to look into the concept of Property Based Testing
+    @Test
+    fun `Should test that a dice roll is not less than 2 or greater than 12 over 1000 rolls `() {
+
+        for (i in 1..1000) {
+            val dice  = Dice (6)
+            assertThat (dice.totalDiceRoll(), greaterThan(1) )
+            assertThat (dice.totalDiceRoll(), lessThan(13))
+        }
+    }
+
 }
 
 
