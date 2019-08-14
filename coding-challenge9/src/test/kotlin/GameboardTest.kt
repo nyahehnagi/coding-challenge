@@ -211,6 +211,43 @@ class GameboardTest {
         }
     }
 
+    @Test
+    fun `Should test that Go has not been passed `() {
+        val configData: MutableList<String> = mutableListOf()
+        configData.add("GO,,,,,,,,,,")
+        configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
+        configData.add("RETAIL SITE,White City,130,10,20,20,40,50,60,70,1")
+        configData.add("INDUSTRY,Magna Park,,,,,,,,,")
+        configData.add("RETAIL SITE,Peter Jones,150,10,20,20,40,60,70,80,2")
+        configData.add("RETAIL SITE,High Wycombe,150,10,20,20,40,60,70,80,2")
+        configData.add("FREE PARKING,,,,,,,,,,")
+
+        val gameBoard = GameBoard(configData)
+        val currentLocation = gameBoard.gameBoardLocations[2]
+        val nextLocation = gameBoard.gameBoardLocations[5]
+
+        val hasPassedGo  = gameBoard.hasPassedGo(currentLocation, nextLocation)
+        assertThat(hasPassedGo, equalTo(false))
+    }
+
+    @Test
+    fun `Should test that Go has  been passed `() {
+        val configData: MutableList<String> = mutableListOf()
+        configData.add("GO,,,,,,,,,,")
+        configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
+        configData.add("RETAIL SITE,White City,130,10,20,20,40,50,60,70,1")
+        configData.add("INDUSTRY,Magna Park,,,,,,,,,")
+        configData.add("RETAIL SITE,Peter Jones,150,10,20,20,40,60,70,80,2")
+        configData.add("RETAIL SITE,High Wycombe,150,10,20,20,40,60,70,80,2")
+        configData.add("FREE PARKING,,,,,,,,,,")
+
+        val gameBoard = GameBoard(configData)
+        val currentLocation = gameBoard.gameBoardLocations[2]
+        val nextLocation = gameBoard.gameBoardLocations[1]
+
+        val hasPassedGo  = gameBoard.hasPassedGo(currentLocation, nextLocation)
+        assertThat(hasPassedGo, equalTo(true))
+    }
 }
 
 

@@ -15,5 +15,8 @@ class Player(_name: String) : IAccountHolder {
 
     var boardLocation : ILocation? = null //null when not on the board
 
+    fun move (gameBoard: GameBoard, dice: Dice){
+        gameBoard.getNextLocation(dice)
+    }
 
 }

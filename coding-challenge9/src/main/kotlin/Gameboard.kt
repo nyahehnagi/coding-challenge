@@ -110,8 +110,8 @@ class GameBoard(boardData: List<String>) {
         return nextLocation
     }
 
-    fun hasPassedGo (currentLocation : ILocation, nextLocation : ILocation) : Boolean {
-        return true
+    fun hasPassedGo(currentLocation: ILocation, nextLocation: ILocation): Boolean {
+        return (gameBoardLocations.indexOf(nextLocation) - gameBoardLocations.indexOf(currentLocation) < 0)
     }
 
 }
