@@ -15,7 +15,7 @@ class Boardlocation(currentLocation: Int = -1) {
 
         //Test for no location - starting move
         if (currentLocationIndex == -1) {
-            currentLocationIndex = dice.totalDiceRoll() - 1 //We do not count first location as this is GO
+            currentLocationIndex = dice.totalDiceRoll() //We do not count first location as this is GO
         } else {
             nextLocationIndex = currentLocationIndex + dice.totalDiceRoll()
             previousLocationIndex = currentLocationIndex

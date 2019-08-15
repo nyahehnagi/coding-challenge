@@ -36,7 +36,7 @@ class GameBoard(boardData: List<String>) {
     }
 
     //Checks that the board conforms to the rules of this board
-    //Pondering if I should build a list of everything that has gone wrong with the load file
+    //TODO Pondering if I should build a list of everything that has gone wrong with the load file
     //TODO Think of a better way to do this. Perhaps verify the data list contents before building the board?
     private fun verifyBoard() {
         if (gameBoardLocations.filterIsInstance<RetailSite>().count() > MAX_NUMBER_OF_RETAIL) {

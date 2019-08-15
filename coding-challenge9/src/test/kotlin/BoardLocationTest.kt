@@ -24,7 +24,7 @@ class BoardLocationTest {
 
         boardLocation.updateLocation(gameBoard, dice)
 
-        assertThat(gameBoard.gameBoardLocations[boardLocation.getCurrentLocationIndex()].name, equalTo("Oxford Street"))
+        assertThat(gameBoard.gameBoardLocations[boardLocation.getCurrentLocationIndex()].name, equalTo("White City"))
     }
 
     @Test
