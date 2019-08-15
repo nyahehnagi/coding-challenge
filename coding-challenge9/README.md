@@ -1,3 +1,15 @@
+# coding-challenge10
+ Created new classes Boardlocation, Gameboard and Dice and added code to Player
+
+ BoardLocation keeps track of itself when given a dice roll and a gameboard
+
+ Gameboard is a list of locations - this is initialised by passing in a list of strings which in my code is sourced by a text file as I wanted to dabble with file handling
+
+ Player has been updated to now contain a private property for it's location and a new move function.
+
+ Tests for the new classes have been created in GameboardTest and BoardLocationTest
+
+
 # coding-challenge9
 Started out with this trying to use the factory pattern for the transactions. It didn't quite work and was starting to get fiddly.
 I thought if a bit fiddly then it was not the right pattern. So I went with an interface for a transaction and then implemented each of the transaction types from there. The gameledger is simply a list of ITransactions. I've added a function in gameledger to bring back the balance of player
