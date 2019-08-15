@@ -75,6 +75,38 @@ class BoardLocationTest {
         assertThat(boardLocation.hasPassedGo(), equalTo(true))
     }
 
+    @Test
+    fun `Should test a move of 5 spaces from position 4 to position 2 and then move another 2 spaces - hasPassed go should be true after first roll and false after second roll `() {
+        val configData: MutableList<String> = mutableListOf()
+        configData.add("GO,,,,,,,,,,")
+        configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
+        configData.add("RETAIL SITE,White City,130,10,20,20,40,50,60,70,1")
+        configData.add("INDUSTRY,Magna Park,,,,,,,,,")
+        configData.add("RETAIL SITE,Peter Jones,150,10,20,20,40,60,70,80,2")
+        configData.add("RETAIL SITE,High Wycombe,150,10,20,20,40,60,70,80,2")
+        configData.add("FREE PARKING,,,,,,,,,,")
+
+        val gameBoard = GameBoard(configData)
+        //roll a 5
+        var dice = Dice(6)
+        while (dice.totalDiceRoll() != 5) {
+            dice = Dice(6)
+        }
+
+        val boardLocation = Boardlocation(3)
+        boardLocation.updateLocation(gameBoard, dice)
+        assertThat(gameBoard.gameBoardLocations[boardLocation.getCurrentLocationIndex()].name, equalTo("Oxford Street"))
+        assertThat(boardLocation.hasPassedGo(), equalTo(true))
+
+        //roll a 2
+        while (dice.totalDiceRoll() != 2) {
+            dice = Dice(6)
+        }
+        boardLocation.updateLocation(gameBoard, dice)
+        assertThat(gameBoard.gameBoardLocations[boardLocation.getCurrentLocationIndex()].name, equalTo("Magna Park"))
+        assertThat(boardLocation.hasPassedGo(), equalTo(false))
+    }
+
     // Not an ideal test this. Need to look into the concept of Property Based Testing
     @Test
     fun `Should test that a dice roll is not less than 2 or greater than 12 over 1000 rolls `() {
@@ -87,9 +119,27 @@ class BoardLocationTest {
     }
 
     @Test
-    fun `Should test that only the first 30 characters of a name are taken when creating a player`(){
+    fun `Should test that only the first 30 characters of a name are taken when creating a player`() {
         val newPlayer = Player("ABCDEFGHIJKLMNOPQRSTUVWXYZ12345")
         assertThat(newPlayer.name, equalTo("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234"))
+    }
+
+    @Test
+    fun `Should test that a player has moved from Go to position 2`() {
+        val configData: MutableList<String> = mutableListOf()
+        configData.add("GO,,,,,,,,,,")
+        configData.add("RETAIL SITE,Oxford Street,100,10,20,20,40,50,60,70,1")
+        configData.add("RETAIL SITE,White City,130,10,20,20,40,50,60,70,1")
+
+        val gameBoard = GameBoard(configData)
+        val newPlayer = Player("John Lewis")
+        var dice = Dice(6)
+        while (dice.totalDiceRoll() != 2) {
+            dice = Dice(6)
+        }
+
+        newPlayer.move(gameBoard, dice)
+        assertThat(newPlayer.currentBoardLocation.getCurrentLocationIndex(), equalTo(2))
     }
 
 

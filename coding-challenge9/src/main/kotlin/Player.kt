@@ -13,7 +13,7 @@ class Bank : IAccountHolder {
 class Player(_name: String) : IAccountHolder {
     override val name = _name.take(MAX_NAME_LENGTH)
 
-    private var currentBoardLocation : Boardlocation = Boardlocation()
+    val currentBoardLocation : Boardlocation = Boardlocation()
 
 
     fun move (gameBoard: GameBoard, dice: Dice){

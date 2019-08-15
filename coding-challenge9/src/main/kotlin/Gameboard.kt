@@ -12,7 +12,7 @@ const val MAX_RETAIL_GROUP_SIZE = 3
 
 class GameBoard(boardData: List<String>) {
 
-    //TODO make this private and add functions to support gameboard as we don't want anyone fiddling with this once initialised
+    //TODO I'd rather make this private and add functions to support gameboard as we don't want anything changing this once initialised
     val gameBoardLocations: MutableList<ILocation> = mutableListOf()
 
     init {
@@ -87,4 +87,7 @@ class GameBoard(boardData: List<String>) {
             name = industryLocationData[1]
         )
     }
+
+    //fun getLocation(index : Int) : ILocation = gameBoardLocations[index]
+    //fun getNumberOfLocations () : Int = gameBoardLocations.size
 }

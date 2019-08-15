@@ -1,7 +1,7 @@
 package codingchallenge9
 
-class Boardlocation(currentLocation: Int = -1) {
-    private var previousLocationIndex: Int = -1
+class Boardlocation(currentLocation: Int = 0) {
+    private var previousLocationIndex: Int = 0 //Default to Go
     private var currentLocationIndex: Int
     private var hasPassedGo: Boolean = false
 
@@ -11,19 +11,15 @@ class Boardlocation(currentLocation: Int = -1) {
 
     fun updateLocation(gameBoard: GameBoard, dice: Dice) {
 
-        val nextLocationIndex: Int
+        val nextLocationIndex: Int = currentLocationIndex + dice.totalDiceRoll()
+        previousLocationIndex = currentLocationIndex
 
-        //Test for no location - starting move
-        if (currentLocationIndex == -1) {
-            currentLocationIndex = dice.totalDiceRoll() //We do not count first location as this is GO
+        if (nextLocationIndex > gameBoard.gameBoardLocations.lastIndex) {
+            currentLocationIndex = nextLocationIndex - gameBoard.gameBoardLocations.lastIndex - 1
+            hasPassedGo = true
         } else {
-            nextLocationIndex = currentLocationIndex + dice.totalDiceRoll()
-            previousLocationIndex = currentLocationIndex
-            if (nextLocationIndex > gameBoard.gameBoardLocations.lastIndex) {
-                currentLocationIndex = nextLocationIndex - gameBoard.gameBoardLocations.lastIndex - 1
-                hasPassedGo = true
-            } else
-                currentLocationIndex = nextLocationIndex
+            currentLocationIndex = nextLocationIndex
+            hasPassedGo = false
         }
 
     }
