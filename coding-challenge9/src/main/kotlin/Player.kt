@@ -13,12 +13,9 @@ class Bank : IAccountHolder {
 class Player(_name: String) : IAccountHolder {
     override val name = _name.take(MAX_NAME_LENGTH)
 
-    val currentBoardLocation : Boardlocation = Boardlocation()
+    val currentBoardLocation: Boardlocation = Boardlocation()
 
-
-    fun move (gameBoard: GameBoard, dice: Dice){
+    fun move(gameBoard: GameBoard, dice: Dice) {
         currentBoardLocation.updateLocation(gameBoard, dice)
     }
-
-
 }

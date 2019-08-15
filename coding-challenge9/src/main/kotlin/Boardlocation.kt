@@ -1,7 +1,7 @@
 package codingchallenge9
 
 class Boardlocation(currentLocation: Int = 0) {
-    private var previousLocationIndex: Int = 0 //Default to Go
+    private var previousLocationIndex: Int = 0
     private var currentLocationIndex: Int
     private var hasPassedGo: Boolean = false
 
