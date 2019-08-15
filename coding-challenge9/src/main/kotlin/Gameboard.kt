@@ -87,31 +87,4 @@ class GameBoard(boardData: List<String>) {
             name = industryLocationData[1]
         )
     }
-
-    fun getNextLocation(dice: Dice, currentLocation: ILocation? = null): ILocation {
-
-        val nextLocation: ILocation
-        val currentLocationIndex: Int
-        val nextLocationIndex: Int
-
-        //Test for no position on the board
-        if (currentLocation is Nothing) {
-            nextLocation =
-                gameBoardLocations[dice.totalDiceRoll()] //We do not count first location as this is GO
-        } else {
-            currentLocationIndex = gameBoardLocations.indexOf(currentLocation)
-            nextLocationIndex = currentLocationIndex + dice.totalDiceRoll()
-            if (nextLocationIndex > gameBoardLocations.lastIndex) {
-                nextLocation = gameBoardLocations[nextLocationIndex - gameBoardLocations.lastIndex - 1]
-            } else
-                nextLocation = gameBoardLocations[nextLocationIndex]
-        }
-
-        return nextLocation
-    }
-
-    fun hasPassedGo(currentLocation: ILocation, nextLocation: ILocation): Boolean {
-        return (gameBoardLocations.indexOf(nextLocation) - gameBoardLocations.indexOf(currentLocation) < 0)
-    }
-
 }

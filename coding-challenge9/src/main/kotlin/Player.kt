@@ -11,12 +11,14 @@ class Bank : IAccountHolder {
 }
 
 class Player(_name: String) : IAccountHolder {
-    override val name = _name.take(MAX_NAME_LENGTH) //maybe add some logic to not allow any reserved names e.g bank
+    override val name = _name.take(MAX_NAME_LENGTH)
 
-    var boardLocation : ILocation? = null //null when not on the board
+    private var currentBoardLocation : Boardlocation = Boardlocation()
+
 
     fun move (gameBoard: GameBoard, dice: Dice){
-        gameBoard.getNextLocation(dice)
+        currentBoardLocation.updateLocation(gameBoard, dice)
     }
+
 
 }
