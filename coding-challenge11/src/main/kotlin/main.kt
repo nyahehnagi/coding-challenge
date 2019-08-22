@@ -54,7 +54,6 @@ private fun obtainListOfBeers(pubList: List<Pub>): List<Beer> {
 private fun deserialisePubsJSON(jsonFile: File): List<Pub> {
 
     val mapper = jacksonObjectMapper()
-    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     val jsonNode: JsonNode = mapper.readTree(jsonFile)
     val pubsNode: JsonNode = jsonNode.path("Pubs")
