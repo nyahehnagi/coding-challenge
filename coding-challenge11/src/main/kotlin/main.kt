@@ -1,54 +1,88 @@
 package cc11
 
-import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.*
-import java.awt.List
 import java.io.File
 
-fun main(args: Array<String>){
 
-    val jsonFile  = File( "src/main/resources/pubjson.json")
-    convert( jsonFile )
+fun main(args: Array<String>) {
 
+    val jsonFile = File("src/main/resources/pubjson.json")
+    val pubList: List<Pub> = deserialisePubsJSON(jsonFile)
+    val beerList: List<Beer> = obtainListOfBeers(pubList)
 
 }
 
-private fun convert( jsonFile: File ) {
-    val pubList :MutableList<Pub> = mutableListOf()
+private fun obtainListOfBeers(pubList: List<Pub>): List<Beer> {
+    val beerList = mutableListOf<Beer>()
+
+    pubList.forEach {
+        val pubName = it.name
+        val pubService = it.pubService
+
+        if (!it.regularBeers.isNullOrEmpty()) {
+
+            it.regularBeers.forEach {
+                val newBeer = Beer(
+                    beerName = it,
+                    pubName = pubName,
+                    pubService = pubService,
+                    beerType = BeerType.REGULARBEER
+                )
+                beerList.add(newBeer)
+            }
+        }
+        if (!it.guestBeers.isNullOrEmpty()) {
+            it.guestBeers.forEach {
+                val newBeer = Beer(
+                    beerName = it,
+                    pubName = pubName,
+                    pubService = pubService,
+                    beerType = BeerType.GUESTBEER
+                )
+                beerList.add(newBeer)
+            }
+        }
+    }
+    beerList.sortBy { it.beerName }
+
+    return beerList
+}
+
+
+private fun deserialisePubsJSON(jsonFile: File): List<Pub> {
 
     val mapper = jacksonObjectMapper()
 
-    val jsonNode : JsonNode = mapper.readTree(jsonFile)
+    val jsonNode: JsonNode = mapper.readTree(jsonFile)
+    val pubsNode: JsonNode = jsonNode.path("Pubs")
 
-    val pubsNode : JsonNode = jsonNode.path("Pubs")
-    pubsNode.forEach(){
-        val pub  = Pub(
-            Name = it.get("Name").textValue(),
-            PostCode = it.get("PostCode").textValue(),
-            RegularBeers = getRegularBeersFromJSON(pubsNode),
-            GuestBeers = mutableListOf("beertest2"),//jsonNode.get("GuestBeers").textValue(),
-            PubService = it.get("PubService").textValue(),
-            Id = it.get("Id").textValue(),
-            Branch = it.get("Branch").textValue(),
-            CreateTS = it.get("CreateTS").textValue()
+    val pubList: MutableList<Pub> = mutableListOf()
+    pubsNode.forEach() {
+        val pub = Pub(
+            name = it.get("Name").textValue(),
+            postCode = it.get("PostCode").textValue(),
+            regularBeers = getBeersFromJSON(it.path("RegularBeers")),
+            guestBeers = getBeersFromJSON(it.path("GuestBeers")),
+            pubService = it.get("PubService").textValue(),
+            id = it.get("Id").textValue(),
+            branch = it.get("Branch").textValue(),
+            createTS = it.get("CreateTS").textValue()
         )
         pubList.add(pub)
-
     }
-    println("Conversion finished !")
+
+    // sort and removed duplicates
+    return pubList.sortedWith(compareBy<Pub> { it.id }.thenBy { it.branch }.thenByDescending { it.createTS })
+        .distinctBy { Pair(it.id, it.branch) }
+
 }
 
-fun getRegularBeersFromJSON( pubsNode : JsonNode): MutableList<String> {
-    val regularBeersNode : JsonNode = pubsNode.path("RegularBeers")
-    val regularBeersList : MutableList<String> = mutableListOf()
+fun getBeersFromJSON(node: JsonNode): List<String>? {
 
-    if (regularBeersNode.isArray){
-        regularBeersNode.forEach(){
-            regularBeersList.add(it.textValue())
-        }
+    val beerList: MutableList<String> = mutableListOf()
+    node.forEach {
+        beerList.add(it.textValue())
     }
-
-    return regularBeersList
+    return beerList
 }
