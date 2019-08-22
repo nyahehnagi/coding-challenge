@@ -1,11 +1,12 @@
 package cc11
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.*
 import java.io.File
 
 
-fun main(args: Array<String>) {
+fun main() {
 
     val jsonFile = File("src/main/resources/pubjson.json")
     val pubList: List<Pub> = deserialisePubsJSON(jsonFile)
@@ -53,36 +54,50 @@ private fun obtainListOfBeers(pubList: List<Pub>): List<Beer> {
 private fun deserialisePubsJSON(jsonFile: File): List<Pub> {
 
     val mapper = jacksonObjectMapper()
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     val jsonNode: JsonNode = mapper.readTree(jsonFile)
     val pubsNode: JsonNode = jsonNode.path("Pubs")
 
+
     val pubList: MutableList<Pub> = mutableListOf()
-    pubsNode.forEach() {
+    pubsNode.forEach {
         val pub = Pub(
-            name = it.get("Name").textValue(),
-            postCode = it.get("PostCode").textValue(),
-            regularBeers = getBeersFromJSON(it.path("RegularBeers")),
-            guestBeers = getBeersFromJSON(it.path("GuestBeers")),
-            pubService = it.get("PubService").textValue(),
-            id = it.get("Id").textValue(),
-            branch = it.get("Branch").textValue(),
-            createTS = it.get("CreateTS").textValue()
+            name = getStringFromJSON(it, "Name"),
+            postCode = getStringFromJSON(it, "PostCode"),
+            regularBeers = getListFromJSON(it, "RegularBeers"),
+            guestBeers = getListFromJSON(it, "GuestBeers"),
+            pubService = getStringFromJSON(it, "PubService"),
+            id = getStringFromJSON(it, "Id"),
+            branch = getStringFromJSON(it, "Branch"),
+            createTS = getStringFromJSON(it, "CreateTS")
         )
         pubList.add(pub)
     }
 
-    // sort and removed duplicates
+    // sort and remove duplicates
     return pubList.sortedWith(compareBy<Pub> { it.id }.thenBy { it.branch }.thenByDescending { it.createTS })
         .distinctBy { Pair(it.id, it.branch) }
 
 }
 
-fun getBeersFromJSON(node: JsonNode): List<String>? {
+fun getStringFromJSON(node: JsonNode, propertyString: String): String {
+    return if (node.get(propertyString) != null) {
+        node.get(propertyString).textValue().toString()
+    } else ""
 
-    val beerList: MutableList<String> = mutableListOf()
-    node.forEach {
-        beerList.add(it.textValue())
+}
+
+fun getListFromJSON(node: JsonNode, propertyString: String): List<String> {
+
+    val jsonList: MutableList<String> = mutableListOf()
+
+    if (node.path(propertyString) == null) {
+        return jsonList
     }
-    return beerList
+
+    node.path(propertyString).forEach {
+        jsonList.add(it.textValue().toString())
+    }
+    return jsonList
 }

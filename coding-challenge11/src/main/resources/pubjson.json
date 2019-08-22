@@ -71,15 +71,9 @@
     },
     {
       "Name":"The Little Horn",
-      "PostCode":"SW1E 5HN",
       "RegularBeers":[
         "Booze 1",
         "Booze 2"
-      ],
-      "GuestBeers":[
-        "Booze 3",
-        "Booze 4",
-        "Booze 5"
       ],
       "PubService":"https://pubcrawlapi.appspot.com/pub/?v=1&id=15938&branch=WLD&uId=mike&pubs=no&realAle=yes&memberDiscount=no&town=London",
       "Id":"10001",

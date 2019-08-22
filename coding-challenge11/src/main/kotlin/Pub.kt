@@ -5,12 +5,11 @@ enum class BeerType{
     GUESTBEER
 }
 
-
 data class Pub(
     val name: String,
-    val postCode: String?,
-    val regularBeers: List<String>?,
-    val guestBeers: List<String>?,
+    val postCode: String,
+    val regularBeers: List<String>,
+    val guestBeers: List<String>,
     val pubService: String,
     val id: String,
     val branch: String,
