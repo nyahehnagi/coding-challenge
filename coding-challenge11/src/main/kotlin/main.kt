@@ -14,7 +14,7 @@ fun main() {
 
 }
 
-private fun obtainListOfBeers(pubList: List<Pub>): List<Beer> {
+fun obtainListOfBeers(pubList: List<Pub>): List<Beer> {
     val beerList = mutableListOf<Beer>()
 
     pubList.forEach {
@@ -51,15 +51,15 @@ private fun obtainListOfBeers(pubList: List<Pub>): List<Beer> {
 }
 
 
-private fun deserialisePubsJSON(jsonFile: File): List<Pub> {
+fun deserialisePubsJSON(jsonFile: File): List<Pub> {
 
     val mapper = jacksonObjectMapper()
 
-    val jsonNode: JsonNode = mapper.readTree(jsonFile)
-    val pubsNode: JsonNode = jsonNode.path("Pubs")
-
+    val pubsNode: JsonNode = mapper.readTree(jsonFile).path("Pubs")
+   // val pubsNode: JsonNode = jsonNode.path("Pubs")
 
     val pubList: MutableList<Pub> = mutableListOf()
+
     pubsNode.forEach {
         val pub = Pub(
             name = getStringFromJSON(it, "Name"),
