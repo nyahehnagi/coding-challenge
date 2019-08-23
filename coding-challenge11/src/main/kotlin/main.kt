@@ -8,7 +8,7 @@ import java.io.File
 
 fun main() {
 
-    val jsonFile = File("src/main/resources/pubjson.json")
+    val jsonFile = File("src/main/resources/megalistofpubs.json")
     val pubList: List<Pub> = deserialisePubsJSON(jsonFile)
     val beerList: List<Beer> = obtainListOfBeers(pubList)
 
@@ -54,10 +54,7 @@ fun obtainListOfBeers(pubList: List<Pub>): List<Beer> {
 fun deserialisePubsJSON(jsonFile: File): List<Pub> {
 
     val mapper = jacksonObjectMapper()
-
     val pubsNode: JsonNode = mapper.readTree(jsonFile).path("Pubs")
-   // val pubsNode: JsonNode = jsonNode.path("Pubs")
-
     val pubList: MutableList<Pub> = mutableListOf()
 
     pubsNode.forEach {

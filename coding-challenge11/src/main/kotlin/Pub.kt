@@ -21,5 +21,4 @@ data class Beer(
     val pubName: String,
     val pubService:String,
     val beerType: BeerType
-
 )
