@@ -189,6 +189,31 @@ class TransactionTest {
         ledger.addRentPaymentTransaction(player2, player1, industryLocation) //add 20
 
         assertThat(ledger.getPlayerBalance(player1).value, equalTo(170))
+        assertThat(ledger.getPlayerBalance(player1).isCredit, equalTo(true))
+    }
+
+    @Test
+    fun `Should test the balance of player1 after a number of transactions is a debit`() {
+        val ledger = Gameledger()
+        val player1 = Player("Bob")
+        val player2 = Player("Jane")
+        val bank = Bank()
+        val goLocation = Go()
+        val industryLocation = Industry("Magna Park")
+        val retailLocation = RetailSite(
+            "Oxford Street",
+            GBP(100),
+            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
+            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            1
+        )
+        retailLocation.buildMiniStore()
+
+        ledger.addPurchaseTransaction(player1, bank, industryLocation) // deduct 100
+        ledger.addRentPaymentTransaction(player1, player2, retailLocation) // deduct 50
+
+        assertThat(ledger.getPlayerBalance(player1).value, equalTo(150))
+        assertThat(ledger.getPlayerBalance(player1).isCredit, equalTo(false))
     }
 
     @Test
@@ -197,6 +222,8 @@ class TransactionTest {
         val player1 = Player("Bob")
 
         assertThat(ledger.getPlayerBalance(player1).value, equalTo(0))
+        assertThat(ledger.getPlayerBalance(player1).isCredit, equalTo(true))
+
     }
 
 }
