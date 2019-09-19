@@ -1,5 +1,7 @@
 package codingchallenge9
 
+import java.lang.IllegalArgumentException
+
 const val INDUSTRY_PURCHASE_PRICE = 100
 const val INDUSTRY_BASE_RENT = 20
 const val GO_FEE = 100
@@ -30,6 +32,10 @@ data class LocationRentalValues(
     val rentMegastore: Money
 )
 
+data class LocationList(
+    val locations: List<ILocation>
+)
+
 interface ILocation {
     val name: String
 }
@@ -56,14 +62,14 @@ class FreeParking : ILocation {
 }
 
 class Go : ILocation, IFeePayable {
-    override val fee: Money = GBP(GO_FEE)
+    override val fee: Money = Money(GO_FEE)
     override val name: String = "Go"
 }
 
 class Industry(override val name: String) : IRentable, IPurchaseable, ILocation {
 
-    override val purchasePrice: Money = GBP(INDUSTRY_PURCHASE_PRICE)
-    override fun getRent() = GBP(INDUSTRY_BASE_RENT)
+    override val purchasePrice: Money = Money(INDUSTRY_PURCHASE_PRICE)
+    override fun getRent() = Money(INDUSTRY_BASE_RENT)
 }
 
 class RetailSite(
@@ -95,14 +101,24 @@ class RetailSite(
 
     // Thinking of getting rid of these and taking the building of store outside of the location class
     fun buildMiniStore() {
-        retailDevelopmentStatus = DevelopmentStatus.MINISTORE
+        if (retailDevelopmentStatus == DevelopmentStatus.UNDEVELOPED)
+            retailDevelopmentStatus = DevelopmentStatus.MINISTORE
+        else
+            throw IllegalArgumentException("Cannot Build Ministore, something is already built that needs to be sold first!")
+
     }
 
     fun buildSupermarket() {
-        retailDevelopmentStatus = DevelopmentStatus.SUPERMARKET
+        if (retailDevelopmentStatus == DevelopmentStatus.MINISTORE)
+            retailDevelopmentStatus = DevelopmentStatus.SUPERMARKET
+        else
+            throw IllegalArgumentException("Cannot Build Supermarket")
     }
 
     fun buildMegastore() {
-        retailDevelopmentStatus = DevelopmentStatus.MEGASTORE
+        if (retailDevelopmentStatus == DevelopmentStatus.SUPERMARKET)
+            retailDevelopmentStatus = DevelopmentStatus.MEGASTORE
+        else
+            throw IllegalArgumentException("Cannot Build Megastore")
     }
 }

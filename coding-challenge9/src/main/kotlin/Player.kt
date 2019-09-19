@@ -18,4 +18,5 @@ class Player(_name: String) : IAccountHolder {
     fun move(gameBoard: GameBoard, dice: Dice) {
         currentBoardLocation.updateLocation(gameBoard, dice)
     }
+
 }

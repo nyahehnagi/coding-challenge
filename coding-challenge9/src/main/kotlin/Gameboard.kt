@@ -66,17 +66,17 @@ class GameBoard(boardData: List<String>) {
     private fun createRetailSite(retailLocationData: List<String>): RetailSite {
         return RetailSite(
             name = retailLocationData[1],
-            purchasePrice = GBP(retailLocationData[2].toInt()),
+            purchasePrice = Money(retailLocationData[2].toInt()),
             costOfBuildingStores = StoreBuildingCosts(
-                GBP(retailLocationData[3].toInt()),
-                GBP(retailLocationData[4].toInt()),
-                GBP(retailLocationData[5].toInt())
+                Money(retailLocationData[3].toInt()),
+                Money(retailLocationData[4].toInt()),
+                Money(retailLocationData[5].toInt())
             ),
             locationRentalValues = LocationRentalValues(
-                GBP(retailLocationData[6].toInt()),
-                GBP(retailLocationData[7].toInt()),
-                GBP(retailLocationData[8].toInt()),
-                GBP(retailLocationData[9].toInt())
+                Money(retailLocationData[6].toInt()),
+                Money(retailLocationData[7].toInt()),
+                Money(retailLocationData[8].toInt()),
+                Money(retailLocationData[9].toInt())
             ),
             groupID = retailLocationData[10].toInt()
         )

@@ -1,7 +1,8 @@
 import codingchallenge9.*
-import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
+import org.junit.Assert.assertNull
 
 class TransactionTest {
 
@@ -9,9 +10,9 @@ class TransactionTest {
     fun `Should test that a retail site location that is undeveloped `() {
         val retailSiteLocation = RetailSite(
             "Oxford Street",
-            GBP(100),
-            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
-            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            Money(100),
+            StoreBuildingCosts(Money(10), Money(20), Money(30)),
+            LocationRentalValues(Money(40), Money(50), Money(60), Money(70)),
             1
         )
         assertThat(retailSiteLocation.getRent().value, equalTo(40))
@@ -41,9 +42,9 @@ class TransactionTest {
         val shopType: ShopType = ShopType.MINISTORE
         val location = RetailSite(
             "Oxford Street",
-            GBP(100),
-            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
-            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            Money(100),
+            StoreBuildingCosts(Money(10), Money(20), Money(30)),
+            LocationRentalValues(Money(40), Money(50), Money(60), Money(70)),
             1
         )
 
@@ -67,9 +68,9 @@ class TransactionTest {
         val playerTo = Player("Jane")
         val location = RetailSite(
             "Oxford Street",
-            GBP(100),
-            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
-            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            Money(100),
+            StoreBuildingCosts(Money(10), Money(20), Money(30)),
+            LocationRentalValues(Money(40), Money(50), Money(60), Money(70)),
             1
         )
 
@@ -87,9 +88,9 @@ class TransactionTest {
         val playerTo = Player("Jane")
         val location = RetailSite(
             "Oxford Street",
-            GBP(100),
-            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
-            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            Money(100),
+            StoreBuildingCosts(Money(10), Money(20), Money(30)),
+            LocationRentalValues(Money(40), Money(50), Money(60), Money(70)),
             1
         )
         location.buildMiniStore()
@@ -135,7 +136,7 @@ class TransactionTest {
         val playerTo = Bank()
         val location = Industry("Magna Park")
 
-        ledger.addPurchaseTransaction(playerFrom, playerTo, location)
+        ledger.addLocationPurchaseTransaction(playerFrom, playerTo, location, location.purchasePrice)
 
         assertThat(ledger.getLatestTransaction().debitAccountHolder.name, equalTo("Bob"))
         assertThat(ledger.getLatestTransaction().transactionAmount.value, equalTo(100))
@@ -149,13 +150,13 @@ class TransactionTest {
         val playerTo = Bank()
         val location = RetailSite(
             "Oxford Street",
-            GBP(100),
-            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
-            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            Money(100),
+            StoreBuildingCosts(Money(10), Money(20), Money(30)),
+            LocationRentalValues(Money(40), Money(50), Money(60), Money(70)),
             1
         )
 
-        ledger.addPurchaseTransaction(playerFrom, playerTo, location)
+        ledger.addLocationPurchaseTransaction(playerFrom, playerTo, location, location.purchasePrice)
 
         val latestTransaction = ledger.getLatestTransaction()
         assertThat(latestTransaction.debitAccountHolder.name, equalTo("Bob"))
@@ -175,20 +176,20 @@ class TransactionTest {
         val industryLocation = Industry("Magna Park")
         val retailLocation = RetailSite(
             "Oxford Street",
-            GBP(100),
-            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
-            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            Money(100),
+            StoreBuildingCosts(Money(10), Money(20), Money(30)),
+            LocationRentalValues(Money(40), Money(50), Money(60), Money(70)),
             1
         )
         retailLocation.buildMiniStore()
 
         ledger.addFeeTransaction(bank, player1, goLocation) //add 200
         ledger.addStartBalanceBankTransferTransaction(bank, player1) // add 100
-        ledger.addPurchaseTransaction(player1, bank, industryLocation) // deduct 100
+        ledger.addLocationPurchaseTransaction(player1, bank, industryLocation, industryLocation.purchasePrice) // deduct 100
         ledger.addRentPaymentTransaction(player1, player2, retailLocation) // deduct 50
         ledger.addRentPaymentTransaction(player2, player1, industryLocation) //add 20
 
-        assertThat(ledger.getPlayerBalance(player1).value, equalTo(170))
+        assertThat(ledger.getPlayerBalance(player1).amount.value, equalTo(170))
         assertThat(ledger.getPlayerBalance(player1).isCredit, equalTo(true))
     }
 
@@ -198,21 +199,20 @@ class TransactionTest {
         val player1 = Player("Bob")
         val player2 = Player("Jane")
         val bank = Bank()
-        val goLocation = Go()
         val industryLocation = Industry("Magna Park")
         val retailLocation = RetailSite(
             "Oxford Street",
-            GBP(100),
-            StoreBuildingCosts(GBP(10), GBP(20), GBP(30)),
-            LocationRentalValues(GBP(40), GBP(50), GBP(60), GBP(70)),
+            Money(100),
+            StoreBuildingCosts(Money(10), Money(20), Money(30)),
+            LocationRentalValues(Money(40), Money(50), Money(60), Money(70)),
             1
         )
         retailLocation.buildMiniStore()
 
-        ledger.addPurchaseTransaction(player1, bank, industryLocation) // deduct 100
+        ledger.addLocationPurchaseTransaction(player1, bank, industryLocation, industryLocation.purchasePrice) // deduct 100
         ledger.addRentPaymentTransaction(player1, player2, retailLocation) // deduct 50
 
-        assertThat(ledger.getPlayerBalance(player1).value, equalTo(150))
+        assertThat(ledger.getPlayerBalance(player1).amount.value, equalTo(150))
         assertThat(ledger.getPlayerBalance(player1).isCredit, equalTo(false))
     }
 
@@ -221,8 +221,87 @@ class TransactionTest {
         val ledger = Gameledger()
         val player1 = Player("Bob")
 
-        assertThat(ledger.getPlayerBalance(player1).value, equalTo(0))
+        assertThat(ledger.getPlayerBalance(player1).amount.value, equalTo(0))
         assertThat(ledger.getPlayerBalance(player1).isCredit, equalTo(true))
+
+    }
+
+    @Test
+    fun `Should test a list of owned locations are returned`() {
+        val ledger = Gameledger()
+        val player1 = Player("Bob")
+        val bank = Bank()
+        val industryLocation = Industry("Magna Park")
+        val retailLocation = RetailSite(
+            "Oxford Street",
+            Money(100),
+            StoreBuildingCosts(Money(10), Money(20), Money(30)),
+            LocationRentalValues(Money(40), Money(50), Money(60), Money(70)),
+            1
+        )
+        retailLocation.buildMiniStore()
+
+        ledger.addLocationPurchaseTransaction(player1, bank, industryLocation, industryLocation.purchasePrice) // deduct 100
+        ledger.addLocationPurchaseTransaction(player1,bank,retailLocation, retailLocation.purchasePrice)
+
+        val player1Locations = ledger.getLocationsOwnedByPlayer(player1)
+
+        assertThat(player1Locations.locations.size, equalTo(2))
+        assertThat(player1Locations.locations[0].name, equalTo("Magna Park"))
+        assertThat(player1Locations.locations[1].name, equalTo("Oxford Street"))
+    }
+
+    @Test
+    fun `Should test a list of owned locations are returned after a location has been sold on`() {
+        val ledger = Gameledger()
+        val player1 = Player("Bob")
+        val player2 = Player("Jane")
+        val bank = Bank()
+        val industryLocation = Industry("Magna Park")
+        val retailLocation = RetailSite(
+            "Oxford Street",
+            Money(100),
+            StoreBuildingCosts(Money(10), Money(20), Money(30)),
+            LocationRentalValues(Money(40), Money(50), Money(60), Money(70)),
+            1
+        )
+        retailLocation.buildMiniStore()
+
+        ledger.addLocationPurchaseTransaction(player1, bank, industryLocation, industryLocation.purchasePrice)
+        ledger.addLocationPurchaseTransaction(player1,bank,retailLocation, retailLocation.purchasePrice)
+        ledger.addLocationPurchaseTransaction(player2, player1, industryLocation, industryLocation.purchasePrice)
+
+        val player1Locations = ledger.getLocationsOwnedByPlayer(player1)
+
+        assertThat(player1Locations.locations.size, equalTo(1))
+        assertThat(player1Locations.locations[0].name, equalTo("Oxford Street"))
+    }
+
+    @Test
+    fun `Should test who the correct owner of a location is`() {
+        val ledger = Gameledger()
+        val player1 = Player("Bob")
+        val player2 = Player("Jane")
+        val bank = Bank()
+        val industryLocation = Industry("Magna Park")
+        val retailLocation = RetailSite(
+            "Oxford Street",
+            Money(100),
+            StoreBuildingCosts(Money(10), Money(20), Money(30)),
+            LocationRentalValues(Money(40), Money(50), Money(60), Money(70)),
+            1
+        )
+        retailLocation.buildMiniStore()
+
+        ledger.addLocationPurchaseTransaction(player1, bank, industryLocation, industryLocation.purchasePrice)
+        ledger.addLocationPurchaseTransaction(player2, player1, industryLocation, industryLocation.purchasePrice)
+
+        val playerIndustry = ledger.getOwnerOfLocation(industryLocation)
+        val playerRetail = ledger.getOwnerOfLocation(retailLocation)
+
+
+        assertThat(playerIndustry?.name, equalTo("Jane"))
+        assertNull("Verify object is null",playerRetail)
 
     }
 
