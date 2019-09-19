@@ -56,36 +56,28 @@ class Gameledger {
 
     fun getLocationsOwnedByPlayer(player: Player): LocationList {
 
-        val purchaseTransactions = transactionHistory.filterIsInstance<PurchaseLocationTxn>()
-        var match = false
-        val ownedLocations: MutableList<ILocation> = mutableListOf()
+        val result = getLatestLocationTransactionsForEachLocation().filter { it.debitAccountHolder.name == player.name }
 
-        //this is hideous.. I need to work out how to do this more elegantly
-        purchaseTransactions.forEachIndexed { playerIndex, playerElement ->
-            if (playerElement.debitAccountHolder.name == player.name) {
-                match = true
-                purchaseTransactions.forEachIndexed { locationIndex, locationElement ->
-                    if (locationElement.locationPurchased == playerElement.locationPurchased) {
-                        if (locationIndex > playerIndex) {
-                            // This location has since been purchased by someone else - therefore not interested in this transaction
-                            match = false
-                        }
-                    }
-                }
-            }
-            if (match) {
-                ownedLocations.add(playerElement.locationPurchased)
-                match = false
-            }
-        }
-
-        return LocationList(ownedLocations.toList())
+        return LocationList(result.map { it.locationPurchased }.toList())
     }
 
-    fun getOwnerOfLocation(location: ILocation) : IAccountHolder? {
+    private fun getLatestLocationTransactionsForEachLocation() : List<PurchaseLocationTxn>{
+        val purchaseTransactions = transactionHistory.filterIsInstance<PurchaseLocationTxn>()
 
-        val indexOfLatest = transactionHistory.filterIsInstance<PurchaseLocationTxn>().indexOfLast { it.locationPurchased == location }
-        return if(indexOfLatest == -1)
+        return purchaseTransactions.foldRight(emptyList()) { element, lastestPurchaseTxns ->
+            when {
+                lastestPurchaseTxns == emptyList<PurchaseLocationTxn>() -> listOf(element)
+                lastestPurchaseTxns.any { it.locationPurchased.name == element.locationPurchased.name } -> lastestPurchaseTxns
+                else -> lastestPurchaseTxns + listOf(element)
+            }
+        }
+    }
+
+    fun getOwnerOfLocation(location: ILocation): IAccountHolder? {
+
+        val indexOfLatest =
+            transactionHistory.filterIsInstance<PurchaseLocationTxn>().indexOfLast { it.locationPurchased == location }
+        return if (indexOfLatest == -1)
             null
         else
             transactionHistory[indexOfLatest].debitAccountHolder

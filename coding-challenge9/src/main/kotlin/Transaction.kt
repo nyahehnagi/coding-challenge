@@ -56,3 +56,13 @@ class BuildShopTxn(
     val shopType: ShopType = _shopType
 }
 
+class MortgageLocationTxn(
+    _debitAccountHolder: IAccountHolder,
+    _creditAccountHolder: IAccountHolder,
+    _location: IPurchaseable
+) : ITransaction {
+    override val creditAccountHolder: IAccountHolder = _creditAccountHolder
+    override val debitAccountHolder: IAccountHolder = _debitAccountHolder
+    override val transactionAmount: Money = _location.purchasePrice //(need to divide by 2)
+    val locationMortgaged = _location
+}

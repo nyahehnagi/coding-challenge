@@ -247,8 +247,8 @@ class TransactionTest {
         val player1Locations = ledger.getLocationsOwnedByPlayer(player1)
 
         assertThat(player1Locations.locations.size, equalTo(2))
-        assertThat(player1Locations.locations[0].name, equalTo("Magna Park"))
-        assertThat(player1Locations.locations[1].name, equalTo("Oxford Street"))
+        assertThat(player1Locations.locations[0].name, equalTo(retailLocation.name))
+        assertThat(player1Locations.locations[1].name, equalTo(industryLocation.name))
     }
 
     @Test
