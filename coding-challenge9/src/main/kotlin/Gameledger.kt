@@ -5,39 +5,55 @@ class Gameledger {
 
     private val transactionHistory: MutableList<ITransaction> = mutableListOf()
     // Bank Transfer
-    fun addStartBalanceBankTransferTransaction(debitAccountHolder: Bank, creditAccountHolder: Player) {
-        transactionHistory.add(StartingBalanceBankTransferTxn(debitAccountHolder, creditAccountHolder))
+    fun addStartBalanceBankTransferTransaction(bank: Bank, creditPlayer: Player) {
+        transactionHistory.add(StartingBalanceBankTransferTxn(bank, creditPlayer))
     }
 
     // Build Shop
     fun addBuildShopTransaction(
-        debitAccountHolder: Player,
-        creditAccountHolder: Bank,
+        debitPlayer: Player,
+        bank: Bank,
         location: IBuildable,
         shopType: ShopType
     ) {
-        transactionHistory.add(BuildShopTxn(debitAccountHolder, creditAccountHolder, shopType, location))
+        transactionHistory.add(BuildShopTxn(debitPlayer, bank, shopType, location))
     }
 
     // Pay Rent
-    fun addRentPaymentTransaction(debitAccountHolder: Player, creditAccountHolder: Player, location: IRentable) {
-        transactionHistory.add(RentPaymentTxn(debitAccountHolder, creditAccountHolder, location))
+    fun addRentPaymentTransaction(debitPlayer: Player, creditPlayer: Player, location: IRentable) {
+        transactionHistory.add(RentPaymentTxn(debitPlayer, creditPlayer, location))
     }
 
     // Pay Fee
-    fun addFeeTransaction(debitAccountHolder: Bank, creditAccountHolder: Player, location: IFeePayable) {
-        transactionHistory.add(BankFeeTxn(debitAccountHolder, creditAccountHolder, location))
+    fun addFeeTransaction(bank: Bank, creditPlayer: Player, location: IFeePayable) {
+        transactionHistory.add(BankFeeTxn(bank, creditPlayer, location))
     }
 
-    // Purchase location
-    fun addLocationPurchaseTransaction(
-        debitAccountHolder: IAccountHolder,
-        creditAccountHolder: IAccountHolder,
-        location: IPurchaseable,
-        purchasePrice: Money
+    // Purchase location from Bank
+    fun addLocationBankPurchaseTransaction(
+        debitPlayer: Player,
+        bank: Bank,
+        location: IPurchaseable
     ) {
-        transactionHistory.add(PurchaseLocationTxn(debitAccountHolder, creditAccountHolder, location, purchasePrice))
+
+        transactionHistory.add(PurchaseLocationTxn(debitPlayer, bank, location, location.purchasePrice))
     }
+
+    // Player to Player location Purchase
+    fun addLocationPlayerToPlayerPurchaseTransaction(
+        debitPlayer: Player,
+        creditPlayer: Player,
+        location: IPurchaseable,
+        purchasePrice : Money
+    ) {
+
+        transactionHistory.add(PurchaseLocationTxn(debitPlayer, creditPlayer, location, purchasePrice))
+    }
+
+    fun addSellBuildingTransaction (){
+
+    }
+
 
 
     fun getPlayerBalance(player: Player): Balance {
@@ -66,7 +82,7 @@ class Gameledger {
 
         return purchaseTransactions.foldRight(emptyList()) { element, lastestPurchaseTxns ->
             when {
-                lastestPurchaseTxns == emptyList<PurchaseLocationTxn>() -> listOf(element)
+                lastestPurchaseTxns.isEmpty()  -> listOf(element)
                 lastestPurchaseTxns.any { it.locationPurchased.name == element.locationPurchased.name } -> lastestPurchaseTxns
                 else -> lastestPurchaseTxns + listOf(element)
             }
