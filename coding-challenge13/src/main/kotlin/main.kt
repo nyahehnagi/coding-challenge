@@ -7,11 +7,23 @@ fun main (args: Array<String>){
     val storeList =  deserialiseStoreString (listOfStoresString)
 }
 
-class StoreList (){
-
-
+data class GeoLocation(val lon : Double, val lat : Double){
+    val longitude : Double = lon
+    val latitide : Double = lat
 }
 
-data class Store(){
+
+data class Store(val _town : String, val _postCode: String, val _geoLocation : GeoLocation){
+
+    val town : String = _town
+    val postCode : String = _postCode
+    val geoLocation : GeoLocation = _geoLocation
+}
+
+fun deserialiseStoreString (storesString: String) : List<Store>  {
+
+    val listOfData : List<List<String>> = storesString.split(",").windowed(4,4).filter { it[2] != "" || it[3] != ""}
+
+    return  listOfData.map { Store(it[0] , it[1], GeoLocation(it[2].toDouble(), it[3].toDouble())) }
 
 }
