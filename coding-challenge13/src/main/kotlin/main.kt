@@ -9,9 +9,38 @@ fun main(args: Array<String>) {
     val startingStore = Store ("171","SW1E 5NN", GeoLocation( 51.496466,-0.141499) )
 
     val route = CalculateRoute(startingStore,storeList).reverse()
-    println (route)
+    val time = CalculateTime (route)
 }
 
+fun CalculateTime(route : List<Store>) : Int{
+    val speedMetersPerSecond : Double = 13.4112
+
+    val timeAtEachShop : Double = 1200.0
+    val timeInDay : Double = 36000.0
+    val timeInNight :Double = 50400.0
+
+    var accumulatedTime : Double = 0.0
+    var currentLogicalTimeOfDay : Double = 0
+
+    route.forEachIndexed(){index, element ->
+        if (index < route.size ) {
+            val distance = element.geoLocation.haversine(route[index + 1].geoLocation)
+            val timeToTravel = distance * speedMetersPerSecond
+
+            if (currentLogicalTimeOfDay + timeToTravel <= timeInDay ) {// I will arrive before 6PM
+                accumulatedTime += timeToTravel
+                accumulatedTime += timeAtEachShop
+                currentLogicalTimeOfDay += timeToTravel + timeAtEachShop
+            }else{
+                // we will arrive after 6PM
+
+
+            }
+
+        }
+    }
+
+}
 
 fun CalculateRoute (startingStore : Store,  storeList : List<Store>) : MutableList<Store> {
 
