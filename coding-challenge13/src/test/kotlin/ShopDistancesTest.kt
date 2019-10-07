@@ -5,7 +5,6 @@ import codingchallenge13.deserialiseStoreString
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Test
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.*
 import kotlin.math.roundToInt
 
 class ShopDistancesTest {
@@ -16,7 +15,7 @@ class ShopDistancesTest {
         val latitude: Double = 2.3456
         val geoLocation: GeoLocation = GeoLocation(latitude, longitude)
 
-        assertThat(geoLocation.latitide, equalTo(latitude))
+        assertThat(geoLocation.latitude, equalTo(latitude))
         assertThat(geoLocation.longitude, equalTo(longitude))
     }
 

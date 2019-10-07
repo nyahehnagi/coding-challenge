@@ -2,6 +2,7 @@ package codingchallenge13
 
 import java.time.Duration
 import java.time.LocalDateTime
+import kotlin.math.roundToInt
 
 
 fun main(args: Array<String>) {
@@ -20,6 +21,7 @@ fun main(args: Array<String>) {
     val arrivalDateTime = startingDateTime.plusSeconds(timeElapsedInSeconds.toLong())
 
     println(Duration.between(startingDateTime, arrivalDateTime).toDaysPart())
+    println(Duration.between(startingDateTime, arrivalDateTime).toHoursPart())
     println(Duration.between(startingDateTime, arrivalDateTime).toMinutesPart())
     println(Duration.between(startingDateTime, arrivalDateTime).toSecondsPart())
 }
@@ -31,32 +33,37 @@ fun CalculateTime(route: List<Store>): Double {
     val timeInDay: Double = 36000.0
     val timeInNight: Double = 50400.0
 
-    var accumulatedTime: Double = 0.0
+    var accumulatedTime: Double = timeAtEachShop //we start at a shop, so spend 20 mins there
     var currentLogicalTimeOfDay: Double = 0.0
+    //val startingDateTime: LocalDateTime = LocalDateTime.of(2019, 10, 7, 8, 0, 0)
 
     route.forEachIndexed() { index, element ->
         if (index < route.size - 1) {
             val distance = element.geoLocation.haversine(route[index + 1].geoLocation)
             val timeToTravel = distance / speedMetersPerSecond
-            println(index)
-            println(element.name)
-            println(route[index + 1].name)
+            //var loggingString : String = "Stage " + (index + 1) + " " +  element.name + " to " + route[index + 1].name + " :Distance (m): " + distance.roundToInt() + "m : Travel time (secs): " + timeToTravel.roundToInt() + "sec"
 
             when {
                 timeToTravel > timeInDay -> {
                     return accumulatedTime
                 }
                 (currentLogicalTimeOfDay + timeToTravel) <= timeInDay -> {
+                    //loggingString = loggingString + " Start Datetime:" + startingDateTime.plusSeconds(accumulatedTime.toLong())
                     accumulatedTime += timeToTravel + timeAtEachShop
                     currentLogicalTimeOfDay += timeToTravel + timeAtEachShop
+                    //loggingString = loggingString + " Arrive/Wait Datetime:" + startingDateTime.plusSeconds(accumulatedTime.toLong())
+                    //println (loggingString)
                 }
                 else -> {
+                    //loggingString = loggingString + " Start Datetime:" + startingDateTime.plusSeconds(accumulatedTime.toLong())
                     accumulatedTime += (timeInDay - currentLogicalTimeOfDay) + timeInNight
                     currentLogicalTimeOfDay = 0.0 //reset day
                     //Check we can reach destination in the day
                     if (timeToTravel <= timeInDay) {
                         accumulatedTime += timeToTravel + timeAtEachShop
                         currentLogicalTimeOfDay += timeToTravel + timeAtEachShop
+                        //loggingString = loggingString + " Arrive/Wait Datetime:" + startingDateTime.plusSeconds(accumulatedTime.toLong())
+                        //println (loggingString)
                     }
                 }
             }
@@ -69,12 +76,13 @@ fun CalculateRoute(startingStore: Store, storeList: List<Store>): MutableList<St
     if (storeList.count() == 1)
         return mutableListOf(storeList[0])
     else {
-        val closestStore: Store = startingStore.findClosestShop(storeList)
+        val closestStore: Store = startingStore.findClosestStore(storeList)
         val rtnVal = CalculateRoute(closestStore, storeList.filter { it.name != closestStore.name })
         rtnVal.add(closestStore)
         return rtnVal
     }
 }
+
 
 fun deserialiseStoreString(storesString: String): List<Store> {
     val listOfData: List<List<String>> =

@@ -6,7 +6,7 @@ data class Store(val name: String, val postCode: String, val geoLocation: GeoLoc
     val storePostCode: String = postCode
     val storeGeoLocation: GeoLocation = geoLocation
 
-    fun findClosestShop(storeList: List<Store>): Store {
+    fun findClosestStore(storeList: List<Store>): Store {
         return storeList.fold(storeList[0], { closestStore: Store, element: Store ->
             when {
                 this.geoLocation.haversine(element.geoLocation) < this.geoLocation.haversine(closestStore.geoLocation) -> element
