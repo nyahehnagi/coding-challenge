@@ -14,14 +14,14 @@ fun main(args: Array<String>) {
 
     val route = CalculateRoute(startingStore, storeList).reversed()
 
-    val timeElapsedinSeconds = CalculateTime(route)
+    val timeElapsedInSeconds = CalculateTime(route)
 
     val startingDateTime: LocalDateTime = LocalDateTime.of(2019, 10, 7, 8, 0, 0)
-    val arrivalDateTime = startingDateTime.plusSeconds(timeElapsedinSeconds.toLong())
+    val arrivalDateTime = startingDateTime.plusSeconds(timeElapsedInSeconds.toLong())
 
-    println( Duration.between(startingDateTime,arrivalDateTime).toDaysPart())
-    println( Duration.between(startingDateTime,arrivalDateTime).toMinutesPart())
-    println(Duration.between(startingDateTime,arrivalDateTime).toSecondsPart())
+    println(Duration.between(startingDateTime, arrivalDateTime).toDaysPart())
+    println(Duration.between(startingDateTime, arrivalDateTime).toMinutesPart())
+    println(Duration.between(startingDateTime, arrivalDateTime).toSecondsPart())
 }
 
 fun CalculateTime(route: List<Store>): Double {
@@ -35,7 +35,7 @@ fun CalculateTime(route: List<Store>): Double {
     var currentLogicalTimeOfDay: Double = 0.0
 
     route.forEachIndexed() { index, element ->
-        if (index < route.size -1) {
+        if (index < route.size - 1) {
             val distance = element.geoLocation.haversine(route[index + 1].geoLocation)
             val timeToTravel = distance / speedMetersPerSecond
             println(index)
