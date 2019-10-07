@@ -2,11 +2,6 @@ package codingchallenge13
 
 import java.time.Duration
 import java.time.LocalDateTime
-import java.time.Period
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.util.*
-import java.util.Calendar
 
 
 fun main(args: Array<String>) {
