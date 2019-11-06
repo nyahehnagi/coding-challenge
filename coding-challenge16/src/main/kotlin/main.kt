@@ -17,23 +17,17 @@ fun sumRomanNumerals(romanNumeral1: String, romanNumeral2: String): String {
 
 }
 
-fun addSubtractives(romanNumeral: String): String {
-    return romanNumeral.replace("CCCC","CD").replace("LXXXX", "XC").replace("XXXX","XL").replace("VIIII","IX")
-        .replace("IIII","IV")
-}
+fun addSubtractives(romanNumeral: String): String =
+    romanNumeral.replace("CCCC", "CD").replace("LXXXX", "XC").replace("XXXX", "XL").replace("VIIII", "IX")
+        .replace("IIII", "IV")
 
-fun compressRomanNumeral(romanNumeral: String): String {
-
-    return romanNumeral.replace("IIIII", "V").replace("VV", "X").replace("XXXXX", "L").replace("LL", "C")
+fun compressRomanNumeral(romanNumeral: String): String =
+    romanNumeral.replace("IIIII", "V").replace("VV", "X").replace("XXXXX", "L").replace("LL", "C")
         .replace("CCCCC", "D").replace("DD", "M")
-}
 
-fun substituteSubtractives(romanNumeral: String): String {
-    //"I" can be subtracted from "V" and "X" only. "X" can be subtracted from "L" and "C" only.
-    // "C" can be subtracted from "D" and "M" only. "V", "L", and "D" can never be subtracted.
-    return romanNumeral.replace("IV", "IIII").replace("IX", "VIIII").replace("XC", "LXXXX").replace("XL", "XXXX")
+fun substituteSubtractives(romanNumeral: String): String =
+    romanNumeral.replace("IV", "IIII").replace("IX", "VIIII").replace("XC", "LXXXX").replace("XL", "XXXX")
         .replace("CD", "CCCC").replace("CM", "DCCCC")
-}
 
 fun sortRomanNumeral(romanNumeral: String): String {
     val romanNumeralComparator = RomanNumeralComparator()
