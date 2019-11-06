@@ -16,6 +16,24 @@ class RomanNumeralTest {
     }
 
     @Test
+    fun `Should test that 2 Roman numeral strings are summed together - bit more complicated`() {
+        val romanString1 = "DCCCXLV"
+        val romanString2 = "DCCCXLV"
+        val sumOfRomanNumerals = sumRomanNumerals(romanString1, romanString2)
+
+        assertThat(sumOfRomanNumerals, equalTo("MDCXC"))
+    }
+
+    @Test
+    fun `Should test that 2 Roman numeral strings are summed together - bit more complicated 2 `() {
+        val romanString1 = "MMXXII"
+        val romanString2 = "MMXXII"
+        val sumOfRomanNumerals = sumRomanNumerals(romanString1, romanString2)
+
+        assertThat(sumOfRomanNumerals, equalTo("MMMMXLIV"))
+    }
+
+    @Test
     fun `Should test that a roman numeral subtractives are substituted - one subtractive substitution`() {
         val romanString1 = "IX"
         val substitutedSubtractives = removeSubtractives(romanString1)
