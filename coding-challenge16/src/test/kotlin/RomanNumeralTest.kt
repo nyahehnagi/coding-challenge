@@ -18,7 +18,7 @@ class RomanNumeralTest {
     @Test
     fun `Should test that a roman numeral subtractives are substituted - one subtractive substitution`() {
         val romanString1 = "IX"
-        val substitutedSubtractives = substituteSubtractives(romanString1)
+        val substitutedSubtractives = removeSubtractives(romanString1)
 
         assertThat(substitutedSubtractives, equalTo("VIIII"))
     }
@@ -26,7 +26,7 @@ class RomanNumeralTest {
     @Test
     fun `Should test that a roman numeral subtractives are substituted - 3 subtractive substitutions `() {
         val romanString1 = "MCMXCIV"
-        val substitutedSubtractives = substituteSubtractives(romanString1)
+        val substitutedSubtractives = removeSubtractives(romanString1)
 
         assertThat(substitutedSubtractives, equalTo("MDCCCCLXXXXIIII"))
     }

@@ -4,18 +4,14 @@ fun main() {
 
 }
 
-fun sumRomanNumerals(romanNumeral1: String, romanNumeral2: String): String {
-
-    val substitutedNumeral1 = substituteSubtractives(romanNumeral1)
-    val substitutedNumeral2 = substituteSubtractives(romanNumeral2)
-
-    val catenatedNumeral = substitutedNumeral1 + substitutedNumeral2
-
-    val sortedNumeral = sortRomanNumeral(catenatedNumeral)
-    val compressedNumeral = compressRomanNumeral(sortedNumeral)
-    return addSubtractives(compressedNumeral)
-
-}
+fun sumRomanNumerals(romanNumeral1: String, romanNumeral2: String): String =
+    addSubtractives(
+        compressRomanNumeral(
+            sortRomanNumeral(
+                removeSubtractives(romanNumeral1) + removeSubtractives(romanNumeral2)
+            )
+        )
+    )
 
 fun addSubtractives(romanNumeral: String): String =
     romanNumeral.replace("CCCC", "CD").replace("LXXXX", "XC").replace("XXXX", "XL").replace("VIIII", "IX")
@@ -25,7 +21,7 @@ fun compressRomanNumeral(romanNumeral: String): String =
     romanNumeral.replace("IIIII", "V").replace("VV", "X").replace("XXXXX", "L").replace("LL", "C")
         .replace("CCCCC", "D").replace("DD", "M")
 
-fun substituteSubtractives(romanNumeral: String): String =
+fun removeSubtractives(romanNumeral: String): String =
     romanNumeral.replace("IV", "IIII").replace("IX", "VIIII").replace("XC", "LXXXX").replace("XL", "XXXX")
         .replace("CD", "CCCC").replace("CM", "DCCCC")
 
@@ -41,11 +37,11 @@ class RomanNumeralComparator : Comparator<Char> {
         val c1Value = sortedNumerals.indexOf(c1)
         val c2Value = sortedNumerals.indexOf(c2)
 
-        if (c1Value > c2Value)
-            return 1
-        if (c2Value > c1Value)
-            return -1
-        return 0
+        return when {
+            c1Value > c2Value -> 1
+            c2Value > c1Value -> -1
+            else -> 0
+        }
     }
 }
 
