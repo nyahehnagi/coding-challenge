@@ -4,7 +4,6 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Test
 import org.hamcrest.MatcherAssert.assertThat
 
-
 class RomanNumeralTest {
 
     @Test
@@ -39,20 +38,21 @@ class RomanNumeralTest {
 
         assertThat(sortedRomanNumeral, equalTo("MMDDCCCCCCCCLLXXXXXXXXIIIIIIII"))
     }
+
     @Test
 
     fun `Should test that a roman numeral is combined to highlest level numerals possible`() {
         val romanString1 = "DCCCCCCLXXXXXVVIIII"
-        val sortedRomanNumeral = compressRomanNumerals(romanString1)
+        val compressedRomanNumeral = compressRomanNumeral(romanString1)
 
-        assertThat(sortedRomanNumeral, equalTo("MCCXIIII"))
+        assertThat(compressedRomanNumeral, equalTo("MCCXIIII"))
     }
 
     @Test
     fun `Should test the addition of subtractive elements of a roman numeral`() {
         val romanString1 = "MCCXIIII"
-        val sortedRomanNumeral = addSubtractives(romanString1)
+        val subtractiveAddedRomanNumeral = addSubtractives(romanString1)
 
-        assertThat(sortedRomanNumeral, equalTo("MCCXIV"))
+        assertThat(subtractiveAddedRomanNumeral, equalTo("MCCXIV"))
     }
 }

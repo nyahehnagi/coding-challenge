@@ -12,7 +12,7 @@ fun sumRomanNumerals(romanNumeral1: String, romanNumeral2: String): String {
     val catenatedNumeral = substitutedNumeral1 + substitutedNumeral2
 
     val sortedNumeral = sortRomanNumeral(catenatedNumeral)
-    val compressedNumeral = compressRomanNumerals(sortedNumeral)
+    val compressedNumeral = compressRomanNumeral(sortedNumeral)
     return addSubtractives(compressedNumeral)
 
 }
@@ -22,7 +22,7 @@ fun addSubtractives(romanNumeral: String): String {
         .replace("IIII","IV")
 }
 
-fun compressRomanNumerals(romanNumeral: String): String {
+fun compressRomanNumeral(romanNumeral: String): String {
 
     return romanNumeral.replace("IIIII", "V").replace("VV", "X").replace("XXXXX", "L").replace("LL", "C")
         .replace("CCCCC", "D").replace("DD", "M")
@@ -37,7 +37,7 @@ fun substituteSubtractives(romanNumeral: String): String {
 
 fun sortRomanNumeral(romanNumeral: String): String {
     val romanNumeralComparator = RomanNumeralComparator()
-    return romanNumeral.toList().sortedWith(romanNumeralComparator).joinToString().replace(",", "").replace(" ", "")
+    return romanNumeral.toList().sortedWith(romanNumeralComparator).joinToString("")
 }
 
 class RomanNumeralComparator : Comparator<Char> {
