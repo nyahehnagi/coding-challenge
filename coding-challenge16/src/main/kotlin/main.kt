@@ -1,7 +1,12 @@
 package codingchallenge16
 
 fun main() {
-
+    print("Enter first Roman numeral: ")
+    val romanNumeral1 :String = readLine()!!
+    print("Enter second Roman numeral: ")
+    val romanNumeral2 : String = readLine()!!
+    val result = sumRomanNumerals(romanNumeral1,romanNumeral2)
+    print("$romanNumeral1 + $romanNumeral2 is: $result")
 }
 
 fun sumRomanNumerals(romanNumeral1: String, romanNumeral2: String): String =
