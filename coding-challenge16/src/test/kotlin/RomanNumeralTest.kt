@@ -12,7 +12,7 @@ class RomanNumeralTest {
         val romanNumeral2 = RomanNumeral("X")
         val sumOfRomanNumerals = romanNumeral1 + romanNumeral2
 
-        assertThat(sumOfRomanNumerals.romanNumeral, equalTo("XX"))
+        assertThat(sumOfRomanNumerals.toString(), equalTo("XX"))
     }
 
     @Test

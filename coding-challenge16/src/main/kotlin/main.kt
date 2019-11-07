@@ -7,11 +7,13 @@ fun main() {
     }
 }
 
-
 data class RomanNumeral(val romanNumeral: String) {
 
     operator fun plus(other: RomanNumeral) =
-        RomanNumeral(this.removeSubtractives().romanNumeral + other.removeSubtractives().romanNumeral).sortRomanNumeral().compressRomanNumeral().addSubtractives()
+        RomanNumeral(this.removeSubtractives().romanNumeral + other.removeSubtractives().romanNumeral)
+            .sortRomanNumeral()
+            .compressRomanNumeral()
+            .addSubtractives()
 
     override fun toString(): String = romanNumeral
 
@@ -37,8 +39,6 @@ data class RomanNumeral(val romanNumeral: String) {
             romanNumeral.replace("CCCC", "CD").replace("LXXXX", "XC").replace("XXXX", "XL").replace("VIIII", "IX")
                 .replace("IIII", "IV")
         )
-
-
 }
 
 class RomanNumeralComparator : Comparator<Char> {
