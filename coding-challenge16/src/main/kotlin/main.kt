@@ -1,12 +1,10 @@
 package codingchallenge16
 
 fun main() {
-    print("Enter first Roman numeral: ")
-    val romanNumeral1 :String = readLine()!!
-    print("Enter second Roman numeral: ")
-    val romanNumeral2 : String = readLine()!!
-    val result = sumRomanNumerals(romanNumeral1,romanNumeral2)
-    print("$romanNumeral1 + $romanNumeral2 is: $result")
+
+    while (shallWeDoAnotherOne()){
+        consoleInputAndAnswer()
+    }
 }
 
 fun sumRomanNumerals(romanNumeral1: String, romanNumeral2: String): String =
@@ -50,4 +48,21 @@ class RomanNumeralComparator : Comparator<Char> {
     }
 }
 
+fun shallWeDoAnotherOne() : Boolean{
+    println("Do you want to add some Roman Numerals? (Y/N): ")
+    val userResponse = readLine()!!
+    return when {
+        userResponse.toUpperCase() == "Y" -> true
+        userResponse.toUpperCase() == "N" -> false
+        else -> false
+    }
+}
 
+fun consoleInputAndAnswer(){
+    println("Enter first Roman numeral: ")
+    val romanNumeral1 :String = readLine()!!
+    println("Enter second Roman numeral: ")
+    val romanNumeral2 : String = readLine()!!
+    val result = sumRomanNumerals(romanNumeral1,romanNumeral2)
+    println("$romanNumeral1 + $romanNumeral2 is: $result")
+}
