@@ -10,7 +10,7 @@ fun main() {
 data class RomanNumeral(val romanNumeral: String) {
 
     operator fun plus(other: RomanNumeral) =
-        RomanNumeral(this.removeSubtractives().romanNumeral + other.removeSubtractives().romanNumeral)
+        RomanNumeral(this.removeSubtractives().toString() + other.removeSubtractives().toString())
             .sortRomanNumeral()
             .compressRomanNumeral()
             .addSubtractives()
