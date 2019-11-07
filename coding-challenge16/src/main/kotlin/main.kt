@@ -2,35 +2,43 @@ package codingchallenge16
 
 fun main() {
 
-    while (shallWeDoAnotherOne()){
+    while (shallWeDoAnotherOne()) {
         consoleInputAndAnswer()
     }
 }
 
-fun sumRomanNumerals(romanNumeral1: String, romanNumeral2: String): String =
-    addSubtractives(
-        compressRomanNumeral(
-            sortRomanNumeral(
-                removeSubtractives(romanNumeral1) + removeSubtractives(romanNumeral2)
-            )
+
+data class RomanNumeral(val romanNumeral: String) {
+
+    operator fun plus(other: RomanNumeral) =
+        RomanNumeral(this.removeSubtractives().romanNumeral + other.removeSubtractives().romanNumeral).sortRomanNumeral().compressRomanNumeral().addSubtractives()
+
+    override fun toString(): String = romanNumeral
+
+    fun removeSubtractives(): RomanNumeral =
+        RomanNumeral(
+            romanNumeral.replace("IV", "IIII").replace("IX", "VIIII").replace("XC", "LXXXX").replace("XL", "XXXX")
+                .replace("CD", "CCCC").replace("CM", "DCCCC")
         )
-    )
 
-fun addSubtractives(romanNumeral: String): String =
-    romanNumeral.replace("CCCC", "CD").replace("LXXXX", "XC").replace("XXXX", "XL").replace("VIIII", "IX")
-        .replace("IIII", "IV")
+    fun sortRomanNumeral(): RomanNumeral {
+        val romanNumeralComparator = RomanNumeralComparator()
+        return RomanNumeral(romanNumeral.toList().sortedWith(romanNumeralComparator).joinToString(""))
+    }
 
-fun compressRomanNumeral(romanNumeral: String): String =
-    romanNumeral.replace("IIIII", "V").replace("VV", "X").replace("XXXXX", "L").replace("LL", "C")
-        .replace("CCCCC", "D").replace("DD", "M")
+    fun compressRomanNumeral(): RomanNumeral =
+        RomanNumeral(
+            romanNumeral.replace("IIIII", "V").replace("VV", "X").replace("XXXXX", "L").replace("LL", "C")
+                .replace("CCCCC", "D").replace("DD", "M")
+        )
 
-fun removeSubtractives(romanNumeral: String): String =
-    romanNumeral.replace("IV", "IIII").replace("IX", "VIIII").replace("XC", "LXXXX").replace("XL", "XXXX")
-        .replace("CD", "CCCC").replace("CM", "DCCCC")
+    fun addSubtractives(): RomanNumeral =
+        RomanNumeral(
+            romanNumeral.replace("CCCC", "CD").replace("LXXXX", "XC").replace("XXXX", "XL").replace("VIIII", "IX")
+                .replace("IIII", "IV")
+        )
 
-fun sortRomanNumeral(romanNumeral: String): String {
-    val romanNumeralComparator = RomanNumeralComparator()
-    return romanNumeral.toList().sortedWith(romanNumeralComparator).joinToString("")
+
 }
 
 class RomanNumeralComparator : Comparator<Char> {
@@ -48,7 +56,7 @@ class RomanNumeralComparator : Comparator<Char> {
     }
 }
 
-fun shallWeDoAnotherOne() : Boolean{
+fun shallWeDoAnotherOne(): Boolean {
     println("Do you want to add some Roman Numerals? (Y/N): ")
     val userResponse = readLine()!!
     return when {
@@ -58,11 +66,11 @@ fun shallWeDoAnotherOne() : Boolean{
     }
 }
 
-fun consoleInputAndAnswer(){
+fun consoleInputAndAnswer() {
     println("Enter first Roman numeral: ")
-    val romanNumeral1 :String = readLine()!!
+    val romanNumeral1 = RomanNumeral(readLine()!!)
     println("Enter second Roman numeral: ")
-    val romanNumeral2 : String = readLine()!!
-    val result = sumRomanNumerals(romanNumeral1,romanNumeral2)
-    println("$romanNumeral1 + $romanNumeral2 is: $result")
+    val romanNumeral2 = RomanNumeral(readLine()!!)
+    val result = romanNumeral1 + romanNumeral2
+    println("$romanNumeral1 + $romanNumeral2 is: ${result}")
 }

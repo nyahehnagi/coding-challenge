@@ -8,69 +8,69 @@ class RomanNumeralTest {
 
     @Test
     fun `Should test that 2 Roman numeral strings are summed together`() {
-        val romanString1 = "X"
-        val romanString2 = "X"
-        val sumOfRomanNumerals = sumRomanNumerals(romanString1, romanString2)
+        val romanNumeral1 = RomanNumeral("X")
+        val romanNumeral2 = RomanNumeral("X")
+        val sumOfRomanNumerals = romanNumeral1 + romanNumeral2
 
-        assertThat(sumOfRomanNumerals, equalTo("XX"))
+        assertThat(sumOfRomanNumerals.romanNumeral, equalTo("XX"))
     }
 
     @Test
     fun `Should test that 2 Roman numeral strings are summed together - bit more complicated`() {
-        val romanString1 = "DCCCXLV"
-        val romanString2 = "DCCCXLV"
-        val sumOfRomanNumerals = sumRomanNumerals(romanString1, romanString2)
+        val romanNumeral1 = RomanNumeral("DCCCXLV")
+        val romanNumeral2 = RomanNumeral("DCCCXLV")
+        val sumOfRomanNumerals  = romanNumeral1 + romanNumeral2
 
-        assertThat(sumOfRomanNumerals, equalTo("MDCXC"))
+        assertThat(sumOfRomanNumerals.romanNumeral, equalTo("MDCXC"))
     }
 
     @Test
     fun `Should test that 2 Roman numeral strings are summed together - bit more complicated 2 `() {
-        val romanString1 = "MMXXII"
-        val romanString2 = "MMXXII"
-        val sumOfRomanNumerals = sumRomanNumerals(romanString1, romanString2)
+        val romanNumeral1 = RomanNumeral("MMXXII")
+        val romanNumeral2 = RomanNumeral("MMXXII")
+        val sumOfRomanNumerals  = romanNumeral1 + romanNumeral2
 
-        assertThat(sumOfRomanNumerals, equalTo("MMMMXLIV"))
+        assertThat(sumOfRomanNumerals.romanNumeral, equalTo("MMMMXLIV"))
     }
 
     @Test
     fun `Should test that a roman numeral subtractives are substituted - one subtractive substitution`() {
-        val romanString1 = "IX"
-        val substitutedSubtractives = removeSubtractives(romanString1)
+        val romanNumeral1 = RomanNumeral("IX")
+        val removedSubtractives = romanNumeral1.removeSubtractives()
 
-        assertThat(substitutedSubtractives, equalTo("VIIII"))
+        assertThat(removedSubtractives.romanNumeral, equalTo("VIIII"))
     }
 
     @Test
     fun `Should test that a roman numeral subtractives are substituted - 3 subtractive substitutions `() {
-        val romanString1 = "MCMXCIV"
-        val substitutedSubtractives = removeSubtractives(romanString1)
+        val romanNumeral1 = RomanNumeral("MCMXCIV")
+        val removedSubtractives = romanNumeral1.removeSubtractives()
 
-        assertThat(substitutedSubtractives, equalTo("MDCCCCLXXXXIIII"))
+        assertThat(removedSubtractives.romanNumeral, equalTo("MDCCCCLXXXXIIII"))
     }
 
     @Test
     fun `Should test sorting a string of roman numerals into the correct order of precedence`() {
-        val romanString1 = "MDCCCCLXXXXIIIIMDCCCCLXXXXIIII"
-        val sortedRomanNumeral = sortRomanNumeral(romanString1)
+        val romanNumeral1 = RomanNumeral("MDCCCCLXXXXIIIIMDCCCCLXXXXIIII")
+        val sortedRomanNumeral = romanNumeral1.sortRomanNumeral()
 
-        assertThat(sortedRomanNumeral, equalTo("MMDDCCCCCCCCLLXXXXXXXXIIIIIIII"))
+        assertThat(sortedRomanNumeral.romanNumeral, equalTo("MMDDCCCCCCCCLLXXXXXXXXIIIIIIII"))
     }
 
     @Test
 
     fun `Should test that a roman numeral is combined to highlest level numerals possible`() {
-        val romanString1 = "DCCCCCCLXXXXXVVIIII"
-        val compressedRomanNumeral = compressRomanNumeral(romanString1)
+        val romanNumeral1 = RomanNumeral("DCCCCCCLXXXXXVVIIII")
+        val compressedRomanNumeral = romanNumeral1.compressRomanNumeral()
 
-        assertThat(compressedRomanNumeral, equalTo("MCCXIIII"))
+        assertThat(compressedRomanNumeral.romanNumeral, equalTo("MCCXIIII"))
     }
 
     @Test
     fun `Should test the addition of subtractive elements of a roman numeral`() {
-        val romanString1 = "MCCXIIII"
-        val subtractiveAddedRomanNumeral = addSubtractives(romanString1)
+        val romanNumeral1 = RomanNumeral("MCCXIIII")
+        val subtractiveAddedRomanNumeral = romanNumeral1.addSubtractives()
 
-        assertThat(subtractiveAddedRomanNumeral, equalTo("MCCXIV"))
+        assertThat(subtractiveAddedRomanNumeral.romanNumeral, equalTo("MCCXIV"))
     }
 }
