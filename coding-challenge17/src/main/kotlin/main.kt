@@ -31,7 +31,7 @@ enum class Rank(val rankValue: Int, val rankShortName: Char, val rankName: Strin
     ACE(14, 'A', "Ace")
 }
 
-class Card(val rankAndSuit: String) {
+class Card(rankAndSuit: String) {
 
     val rank: Rank
     val suit: Suit
@@ -63,12 +63,20 @@ class Card(val rankAndSuit: String) {
     }
 
     private fun setSuit(shortName: Char): Suit {
-        return when (shortName){
+        return when (shortName) {
             Suit.CLUBS.suitShortName -> Suit.CLUBS
             Suit.DIAMONDS.suitShortName -> Suit.DIAMONDS
             Suit.HEARTS.suitShortName -> Suit.HEARTS
             Suit.SPADES.suitShortName -> Suit.SPADES
             else -> throw IllegalArgumentException("Invalid Card Suit")
         }
+    }
+}
+
+class Hand(hand: List<Card> = emptyList()) {
+    val currentHand: List<Card> = hand
+
+    fun addCard(card: Card): Hand {
+        return Hand(currentHand + listOf(card))
     }
 }
