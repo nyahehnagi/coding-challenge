@@ -198,6 +198,24 @@ class PontoonTest {
     }
 
     @Test
+    fun `Should test that a hand's value is calculated correctly with 3 cards adding up 17 and 4 aces (all value 1) - not bust`() {
+        val listOfCards = listOf(Card("TD"), Card("4C"), Card("3H"), Card("AD"), Card("AH"), Card("AC"), Card("AS"))
+        val hand = Hand(listOfCards)
+        val playPontoon = Pontoon()
+        val handValue = playPontoon.handValue(hand)
+        assertThat(handValue, equalTo(21))
+    }
+
+    @Test
+    fun `Should test that a hand's value is calculated correctly with 3 cards adding up 21 and 4 aces (3 of value 1, one of 11) - not bust`() {
+        val listOfCards = listOf(Card("2D"), Card("2C"), Card("3H"), Card("AD"), Card("AH"), Card("AC"), Card("AS"))
+        val hand = Hand(listOfCards)
+        val playPontoon = Pontoon()
+        val handValue = playPontoon.handValue(hand)
+        assertThat(handValue, equalTo(21))
+    }
+
+    @Test
     fun `Should test the winner of a pontoon hand`() {
         val dealerPontoon = Hand(listOf(Card("AD"), Card("KC")))
         val playerPontoon = Hand(listOf(Card("AH"), Card("QC")))
