@@ -1,34 +1,35 @@
 package codingchallenge17
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import java.lang.IllegalArgumentException
 
 fun main() {
 
 }
 
-enum class Suit(val suitName: String, val suitShortName: Char, val suitValue: Int) {
-    CLUBS("Clubs", 'C', 1),
-    DIAMONDS("Diamonds", 'D', 2),
-    HEARTS("Hearts", 'H', 3),
-    SPADES("Spades", 'S', 4)
+enum class Suit(val suitName: String, val suitShortName: Char) {
+    CLUBS("Clubs", 'C'),
+    DIAMONDS("Diamonds", 'D'),
+    HEARTS("Hearts", 'H'),
+    SPADES("Spades", 'S')
 
 }
 
-enum class Rank(val rankValue: Int, val rankShortName: Char, val rankName: String) {
-    ONE(1, '1', "One"),
-    TWO(2, '2', "Two"),
-    THREE(3, '3', "Three"),
-    FOUR(4, '4', "Four"),
-    FIVE(5, '5', "Five"),
-    SIX(6, '6', "Six"),
-    SEVEN(7, '7', "Seven"),
-    EIGHT(8, '8', "Eight"),
-    NINE(9, '9', "Nine"),
-    TEN(10, 'T', "Ten"),
-    JACK(11, 'J', "Jack"),
-    QUEEN(12, 'Q', "Queen"),
-    KING(13, 'K', "King"),
-    ACE(14, 'A', "Ace")
+enum class Rank(val rankShortName: Char, val rankName: String) {
+    ONE('1', "One"),
+    TWO('2', "Two"),
+    THREE('3', "Three"),
+    FOUR('4', "Four"),
+    FIVE('5', "Five"),
+    SIX('6', "Six"),
+    SEVEN('7', "Seven"),
+    EIGHT('8', "Eight"),
+    NINE('9', "Nine"),
+    TEN('T', "Ten"),
+    JACK('J', "Jack"),
+    QUEEN('Q', "Queen"),
+    KING('K', "King"),
+    ACE('A', "Ace")
 }
 
 class Card(rankAndSuit: String) {
@@ -37,6 +38,7 @@ class Card(rankAndSuit: String) {
     val suit: Suit
 
     init {
+        validateCard(rankAndSuit)
         rank = setRank(rankAndSuit[0])
         suit = setSuit(rankAndSuit[1])
     }
@@ -71,6 +73,10 @@ class Card(rankAndSuit: String) {
             else -> throw IllegalArgumentException("Invalid Card Suit")
         }
     }
+
+    private fun validateCard(rankAndSuit : String){
+        //TODO Add some code to check length of String
+    }
 }
 
 class Hand(hand: List<Card> = emptyList()) {
@@ -79,4 +85,20 @@ class Hand(hand: List<Card> = emptyList()) {
     fun addCard(card: Card): Hand {
         return Hand(currentHand + listOf(card))
     }
+}
+
+class Pontoon(val dealerHand : Hand, val playerHand: Hand){
+
+    fun determineWinner() : String{
+
+    }
+
+    fun isPontoon(hand: Hand) : Boolean{
+
+    }
+
+    fun isFiveCardTrick(hand: Hand) : Boolean{
+
+    }
+
 }
