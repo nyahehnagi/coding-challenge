@@ -1,10 +1,9 @@
 package codingchallenge17
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import java.lang.IllegalArgumentException
 
 fun main() {
-
+    // TODO Add a game of pontoon :-)
 }
 
 enum class Suit(val suitName: String, val suitShortName: Char) {
@@ -38,15 +37,14 @@ class Card(rankAndSuit: String) {
     val suit: Suit
 
     init {
-        validateCard(rankAndSuit)
-        rank = setRank(rankAndSuit[0])
-        suit = setSuit(rankAndSuit[1])
+        //validateStringLength(rankAndSuit)
+        rank = setRank(rankAndSuit.first())
+        suit = setSuit(rankAndSuit.last())
     }
 
     private fun setRank(shortName: Char): Rank {
 
         return when (shortName) {
-            Rank.ONE.rankShortName -> Rank.ONE
             Rank.TWO.rankShortName -> Rank.TWO
             Rank.THREE.rankShortName -> Rank.THREE
             Rank.FOUR.rankShortName -> Rank.FOUR
@@ -73,32 +71,81 @@ class Card(rankAndSuit: String) {
             else -> throw IllegalArgumentException("Invalid Card Suit")
         }
     }
-
-    private fun validateCard(rankAndSuit : String){
-        //TODO Add some code to check length of String
+/*
+    private fun validateStringLength(rankAndSuit: String) {
+        if (rankAndSuit.length != 2) throw IllegalArgumentException("Invalid Card String")
     }
+ */
 }
 
 class Hand(hand: List<Card> = emptyList()) {
-    val currentHand: List<Card> = hand
+    val listOfCards: List<Card> = hand
 
     fun addCard(card: Card): Hand {
-        return Hand(currentHand + listOf(card))
+        return Hand(listOfCards + listOf(card))
     }
 }
 
-class Pontoon(val dealerHand : Hand, val playerHand: Hand){
+class Pontoon {
 
-    fun determineWinner() : String{
+    // giving ACE a default value of 1.
+    private val pontoonCardValues: Map<Rank, Int> = mapOf(
+        Rank.TWO to 2,
+        Rank.THREE to 3,
+        Rank.FOUR to 4,
+        Rank.FIVE to 5,
+        Rank.SIX to 6,
+        Rank.SEVEN to 7,
+        Rank.EIGHT to 8,
+        Rank.NINE to 9,
+        Rank.TEN to 10,
+        Rank.JACK to 10,
+        Rank.QUEEN to 10,
+        Rank.KING to 10,
+        Rank.ACE to 1
+    )
+
+    private val aceHigh: Int = 11
+    private val bust : Int = 22
+
+    fun determineWinner(dealerHand: Hand, playerHand: Hand): String {
+        return when{
+            isPontoon(dealerHand) -> "Dealer wins with Pontoon"
+            isPontoon(playerHand) -> "Player wins with Pontoon"
+            isFiveCardTrick(dealerHand) -> "Dealer wins with 5 Card Trick"
+            isFiveCardTrick(playerHand) -> "Player wins with 5 Card Trick"
+            handValue(playerHand) == bust && handValue(dealerHand) < bust -> "Dealer wins with ${handValue(dealerHand)}, Player Bust"
+            handValue(dealerHand) == bust && handValue(playerHand) < bust -> "Player wins with ${handValue(playerHand)}, Dealer Bust"
+            handValue(playerHand) == bust && handValue(dealerHand) == bust -> "Player and Dealer Bust - Dealer wins"
+            handValue(playerHand) > handValue(dealerHand) -> "Player wins with ${handValue(playerHand)}, Dealer has ${handValue(dealerHand)}"
+            handValue(dealerHand) >= handValue(playerHand) -> "Dealer wins with ${handValue(dealerHand)}, Player has ${handValue(playerHand)}"
+            else -> "How did we get here, logic is wrong"
+        }
+    }
+
+    fun isPontoon(hand: Hand): Boolean {
+        return hand.listOfCards.size == 2 &&
+                (hand.listOfCards[0].rank == Rank.ACE && hand.listOfCards[1].rank in Rank.JACK..Rank.KING) ||
+                (hand.listOfCards[0].rank in Rank.JACK..Rank.KING && hand.listOfCards[1].rank == Rank.ACE)
 
     }
 
-    fun isPontoon(hand: Hand) : Boolean{
-
+    fun isFiveCardTrick(hand: Hand): Boolean {
+        return hand.listOfCards.size == 5 &&
+                hand.listOfCards.sumBy { pontoonCardValues.getValue(it.rank) } <= 21
     }
 
-    fun isFiveCardTrick(hand: Hand) : Boolean{
+    fun handValue(hand: Hand): Int {
 
+        var handValue = hand.listOfCards.filter { it.rank != Rank.ACE }
+            .sumBy { pontoonCardValues.getValue(it.rank) }
+        var countOfAces = hand.listOfCards.filter { it.rank == Rank.ACE }.count()
+
+        while (handValue <= 21 && countOfAces > 0) {
+            handValue += if (handValue + aceHigh > 21) pontoonCardValues.getValue(Rank.ACE) else aceHigh
+            countOfAces -= 1
+        }
+
+        return if (handValue > 21) bust else handValue
     }
-
 }
