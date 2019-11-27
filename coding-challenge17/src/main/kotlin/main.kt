@@ -15,7 +15,6 @@ enum class Suit(val suitName: String, val suitShortName: Char) {
 }
 
 enum class Rank(val rankShortName: Char, val rankName: String) {
-    ONE('1', "One"),
     TWO('2', "Two"),
     THREE('3', "Three"),
     FOUR('4', "Four"),
@@ -37,7 +36,6 @@ class Card(rankAndSuit: String) {
     val suit: Suit
 
     init {
-        //validateStringLength(rankAndSuit)
         rank = setRank(rankAndSuit.first())
         suit = setSuit(rankAndSuit.last())
     }
@@ -71,11 +69,6 @@ class Card(rankAndSuit: String) {
             else -> throw IllegalArgumentException("Invalid Card Suit")
         }
     }
-/*
-    private fun validateStringLength(rankAndSuit: String) {
-        if (rankAndSuit.length != 2) throw IllegalArgumentException("Invalid Card String")
-    }
- */
 }
 
 class Hand(hand: List<Card> = emptyList()) {
