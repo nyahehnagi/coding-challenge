@@ -135,7 +135,7 @@ class Pontoon {
         var countOfAces = hand.listOfCards.filter { it.rank == Rank.ACE }.count()
 
         while (handValue <= 21 && countOfAces > 0) {
-            handValue += if (handValue + aceHigh > 21) pontoonCardValues.getValue(Rank.ACE) else aceHigh
+            handValue += if (handValue + aceHigh > 21 || countOfAces > 1) pontoonCardValues.getValue(Rank.ACE) else aceHigh
             countOfAces -= 1
         }
 

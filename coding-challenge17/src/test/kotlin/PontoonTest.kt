@@ -180,6 +180,15 @@ class PontoonTest {
     }
 
     @Test
+    fun `Should test that a hand's value is calculated correctly with 2 cards adding up to 10 and 2 aces not bust`() {
+        val listOfCards = listOf(Card("7D"), Card("3C"), Card("AD"), Card("AH"))
+        val hand = Hand(listOfCards)
+        val playPontoon = Pontoon()
+        val handValue = playPontoon.handValue(hand)
+        assertThat(handValue, equalTo(12))
+    }
+
+    @Test
     fun `Should test that a hand's value is calculated correctly with 3 cards and 3 aces not bust - all aces of value 1`() {
         val listOfCards = listOf(Card("TD"), Card("4C"), Card("2H"), Card("AD"), Card("AH"), Card("AC"))
         val hand = Hand(listOfCards)
