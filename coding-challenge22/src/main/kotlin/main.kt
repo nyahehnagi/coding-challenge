@@ -2,9 +2,8 @@ fun main() {
     var jlpLaptop : IJLPLaptop = JLPLaptop()
     jlpLaptop = ProcessorUpgrade(MemoryUpgrade(jlpLaptop))
 
-
-    println("${laptop.description}")
-    println("${laptop.totalPrice}")
+    println("${jlpLaptop.description}")
+    println("${jlpLaptop.totalPrice}")
 }
 
 interface IJLPLaptop {
