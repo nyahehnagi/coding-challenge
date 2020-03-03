@@ -1,3 +1,6 @@
+package codingchallenge22
+
+
 fun main() {
     var jlpLaptop : IJLPLaptop = JLPLaptop()
     jlpLaptop = ProcessorUpgrade(MemoryUpgrade(jlpLaptop))
